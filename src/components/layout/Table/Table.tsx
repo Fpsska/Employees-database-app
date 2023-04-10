@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Table as AntTable, Pagination } from 'antd';
 
@@ -41,6 +41,8 @@ interface dataType {
     note: string;
     //
 }
+
+// /. interfaces
 
 const columns: ColumnsType<dataType> = [
     {
@@ -137,7 +139,7 @@ const columns: ColumnsType<dataType> = [
                 title: 'Кем выдан',
                 dataIndex: 'passportProvider',
                 key: 'passportProvider',
-                width: 150
+                width: 190
             },
             {
                 title: 'Срок действия',
@@ -155,7 +157,7 @@ const columns: ColumnsType<dataType> = [
                 title: 'Адрес прописки',
                 dataIndex: 'residencePlace',
                 key: 'residencePlace',
-                width: 150
+                width: 190
             },
             {
                 title: 'Патент',
@@ -180,7 +182,7 @@ const columns: ColumnsType<dataType> = [
                 title: 'Мед.книжка',
                 dataIndex: 'medicalBook',
                 key: 'medicalBook',
-                width: 200
+                width: 120
             }
         ]
     },
@@ -260,7 +262,7 @@ for (let i = 0; i < 88; i++) {
         medicalBook: '-',
         //
         position: 'Бригадир',
-        subdivision: 'В2В',
+        subdivision: 'B2B',
         decision: 'Принят',
         sourse: 'hh',
         date: '12.09.2022',
@@ -269,17 +271,30 @@ for (let i = 0; i < 88; i++) {
 }
 
 const Table: React.FC = () => {
+    const [isDataLoading, setDataLoading] = useState<boolean>(true);
+
+    // /. hooks
+
+    useEffect(() => {
+        setTimeout(() => {
+            setDataLoading(false);
+        }, 1000);
+    }, []);
+
     return (
         <>
             <AntTable
+                className="table"
                 columns={columns}
                 dataSource={data}
                 bordered
                 size="large"
-                scroll={{ x: 'max-content', y: 'none' }}
+                scroll={{ x: 'max-content', y: '500px' }}
                 pagination={false}
+                loading={isDataLoading}
             />
             <Pagination
+                className="pagination"
                 total={data.length}
                 showTotal={(total, range) =>
                     `${range[0]}-${range[1]} of ${total} items`
