@@ -1,8 +1,11 @@
-import React from "react";
-import "./App.css";
+import React from 'react';
 
-function App() {
-  return <div className="App">Redux Toolkit</div>;
-}
+import './App.css';
+
+// /. imports
+
+const App: React.FC = () => {
+    return <div className="App">Redux Toolkit</div>;
+};
 
 export default App;
