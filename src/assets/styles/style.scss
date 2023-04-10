@@ -1,0 +1,28 @@
+@import './reset';
+@import './vars';
+
+// /. imports
+
+html {
+    font-size: 14px;
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Proxima Nova', sans-serif;
+    font-size: inherit;
+    font-weight: 400;
+    color: $charcoal-color;
+    background-color: $cultured-color;
+    height: 100%;
+}
+
+#root,
+.App,
+.page {
+    height: 100%;
+}
+
+// /. general-styles
