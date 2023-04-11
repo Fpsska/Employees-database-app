@@ -289,7 +289,7 @@ const Table: React.FC = () => {
                 dataSource={data}
                 bordered
                 size="large"
-                scroll={{ x: 'max-content', y: '500px' }}
+                scroll={{ x: 'max-content', y: '455px' }}
                 pagination={false}
                 loading={isDataLoading}
             />
@@ -297,7 +297,7 @@ const Table: React.FC = () => {
                 className="pagination"
                 total={data.length}
                 showTotal={(total, range) =>
-                    `${range[0]}-${range[1]} of ${total} items`
+                    `показано ${[0]}-${range[1]} из ${total} результатов`
                 }
                 defaultPageSize={10}
                 defaultCurrent={1}

@@ -26,3 +26,65 @@ body {
 }
 
 // /. general-styles
+
+.page {
+    background-color: $cultured-color;
+    padding: 27px 40px;
+    border-radius: 56px;
+
+    &__title {
+        font-size: 28px;
+        font-weight: 800;
+        color: $charcoal-color;
+        margin: 0 0 20px 0;
+    }
+}
+
+.search-section {
+    margin-bottom: 50px;
+    padding: 38px 34px;
+    background-color: $white-color;
+    border-radius: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &__group {
+        display: flex;
+        margin-right: 20px;
+    }
+
+    &__info {
+        display: flex;
+        align-items: center;
+        margin-right: 40px;
+    }
+
+    &__counter {
+        margin-right: 10px;
+        font-size: 28px;
+        font-weight: 600;
+        color: $turquoise-color;
+    }
+
+    &__text {
+        font-size: 12px;
+        font-weight: 600;
+        color: $auroMetalSaurus-color;
+    }
+
+    &__button {
+        font-size: 16px;
+        font-weight: 600;
+        color: $turquoise-color;
+        border: 1.5px solid $turquoise-color;
+        border-radius: 24px;
+        text-align: center;
+        background-color: $white-color;
+        padding: 14px 10px;
+        max-width: max-content;
+        width: 100%;
+        cursor: pointer;
+    }
+}

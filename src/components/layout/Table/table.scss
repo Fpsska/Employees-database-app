@@ -23,6 +23,8 @@
 
     tr>th.ant-table-cell {
         color: $turquoise-color;
+        border-bottom: 2px solid $cultured-color !important;
+        border-inline-end: 2px solid $cultured-color !important;
     }
 
     tr {
@@ -42,8 +44,10 @@
         }
     }
 
-    .ant-table-cell {
+    td.ant-table-cell {
         color: $auroMetalSaurus-color;
+        border-bottom: 2px solid $cultured-color !important;
+        border-inline-end: 2px solid $cultured-color !important;
     }
 
     .ant-spin.ant-spin-spinning {

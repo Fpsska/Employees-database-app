@@ -1,0 +1,34 @@
+@import 'assets/styles/vars';
+
+// /. imports
+
+.find-form {
+    position: relative;
+
+    &__input {
+        font-size: 16px;
+        font-weight: 600;
+        color: $manatee-color;
+        background-color: $cultured-color;
+        padding: 13px 25px 13px 45px;
+        border-radius: 24px;
+        border-color: transparent;
+        max-width: 360px;
+        width: 100%;
+
+        &:focus {
+            outline-color: $gray-color;
+        }
+    }
+
+    &__button {
+        background-color: transparent;
+        border-color: transparent;
+        padding: 0;
+        cursor: pointer;
+        position: absolute;
+        top: 0;
+        left: 0;
+        margin: 15px;
+    }
+}
