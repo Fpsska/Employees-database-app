@@ -16,11 +16,16 @@ import 'assets/styles/style.scss';
 // /. imports
 
 const App: React.FC = () => {
-    const { fetchContactsDataStatus } = useAppSelector(
-        state => state.tableSlice
-    );
+    const {
+        contactsData,
+        fetchContactsDataStatus,
+        isContactsDataLoading,
+        fetchContactsDataError
+    } = useAppSelector(state => state.tableSlice);
 
     const dispatch = useAppDispatch();
+
+    const isBtnAvailable = !isContactsDataLoading && !fetchContactsDataError;
 
     // /. hooks
 
@@ -46,7 +51,7 @@ const App: React.FC = () => {
                     <div className="search-section__group">
                         <div className="search-section__info">
                             <span className="search-section__counter">
-                                2345
+                                {contactsData.length}
                             </span>
                             <span className="search-section__text">
                                 Контактов
@@ -57,6 +62,7 @@ const App: React.FC = () => {
                     <button
                         className="search-section__button"
                         type="button"
+                        disabled={!isBtnAvailable}
                     >
                         Режим редактирования
                     </button>

@@ -1,10 +1,21 @@
 import React from 'react';
 
+import { useAppSelector } from 'app/hooks';
+
 import './find-form.scss';
 
 // /. imports
 
 const FindForm: React.FC = () => {
+    const { isContactsDataLoading, fetchContactsDataError } = useAppSelector(
+        state => state.tableSlice
+    );
+
+    // /. hooks
+
+    const isControlsAvailable =
+        !isContactsDataLoading && !fetchContactsDataError;
+
     return (
         <form
             className="find-form"
@@ -15,11 +26,13 @@ const FindForm: React.FC = () => {
                 className="find-form__input"
                 type="text"
                 placeholder="Поиск"
+                disabled={!isControlsAvailable}
             />
             <button
                 className="find-form__button"
                 type="submit"
-                aria-label="find contacts"
+                aria-label="find contact"
+                disabled={!isControlsAvailable}
             >
                 <svg
                     width="17"

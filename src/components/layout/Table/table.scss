@@ -5,6 +5,12 @@
     border-radius: 32px;
     background-color: $white-color;
 
+    .ant-table-empty {
+        .ant-table-thead .ant-table-cell {
+            pointer-events: none;
+        }
+    }
+
     .ant-table-body {
         &::-webkit-scrollbar {
             height: 8px;

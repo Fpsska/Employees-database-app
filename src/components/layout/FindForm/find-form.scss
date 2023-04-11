@@ -15,9 +15,15 @@
         border-color: transparent;
         max-width: 360px;
         width: 100%;
+        opacity: 1;
 
         &:focus {
             outline-color: $gray-color;
+        }
+
+        &:disabled {
+            cursor: not-allowed;
+            opacity: 0.25;
         }
     }
 
@@ -30,5 +36,10 @@
         top: 0;
         left: 0;
         margin: 15px;
+
+        &:disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
     }
 }
