@@ -1,187 +1,236 @@
 {
-    "contactsData": [
-        {
-            "title": "№",
-            "dataIndex": "serialNumber",
-            "width": 50
-        },
-        {
-            "title": "Имя сотрудника",
-            "dataIndex": "name",
-            "key": "name",
-            "width": 230,
-            "sortedOpt": "name"
-        },
-        {
-            "title": "Основная информация",
-            "children": [
-                {
-                    "title": "ID номер",
-                    "dataIndex": "id",
-                    "key": "id",
-                    "width": 150
-                },
-                {
-                    "title": "Телефона",
-                    "dataIndex": "phone",
-                    "key": "phone",
-                    "width": 120
-                },
-                {
-                    "title": "Пол",
-                    "dataIndex": "gender",
-                    "key": "gender",
-                    "sortedOpt": "gender",
-                    "width": 100
-                },
-                {
-                    "title": "Дата рождения",
-                    "dataIndex": "birthday",
-                    "key": "birthday",
-                    "width": 140
-                },
-                {
-                    "title": "Метро",
-                    "dataIndex": "subway",
-                    "key": "subway",
-                    "sortedOpt": "subway",
-                    "width": 100
-                },
-                {
-                    "title": "Адрес проживания",
-                    "dataIndex": "address",
-                    "key": "address",
-                    "width": 170
-                }
-            ]
-        },
-        {
-            "title": "Банковская информация",
-            "children": [
-                {
-                    "title": "Банк",
-                    "dataIndex": "bank",
-                    "key": "bank",
-                    "width": 100
-                },
-                {
-                    "title": "Номер карты",
-                    "dataIndex": "cardNum",
-                    "key": "cardNum",
-                    "width": 170
-                }
-            ]
-        },
-        {
-            "title": "Документы сотрудника",
-            "children": [
-                {
-                    "title": "Гражданство",
-                    "dataIndex": "citizenship",
-                    "key": "citizenship",
-                    "sortedOpt": "citizenship",
-                    "width": 130
-                },
-                {
-                    "title": "Паспорт",
-                    "dataIndex": "passport",
-                    "key": "passport",
-                    "width": 120
-                },
-                {
-                    "title": "Кем выдан",
-                    "dataIndex": "passportProvider",
-                    "key": "passportProvider",
-                    "width": 190
-                },
-                {
-                    "title": "Срок действия",
-                    "dataIndex": "validity",
-                    "key": "validity",
-                    "width": 130
-                },
-                {
-                    "title": "Место рождения",
-                    "dataIndex": "birthplace",
-                    "key": "birthplace",
-                    "width": 160
-                },
-                {
-                    "title": "Адрес прописки",
-                    "dataIndex": "residencePlace",
-                    "key": "residencePlace",
-                    "width": 190
-                },
-                {
-                    "title": "Патент",
-                    "dataIndex": "patent",
-                    "key": "patent",
-                    "sortedOpt": "patent",
-                    "width": 150
-                },
-                {
-                    "title": "СНИЛС",
-                    "dataIndex": "SNILS",
-                    "key": "SNILS",
-                    "width": 160
-                },
-                {
-                    "title": "ИНН",
-                    "dataIndex": "TIL",
-                    "key": "TIL",
-                    "width": 150
-                },
-                {
-                    "title": "Мед.книжка",
-                    "dataIndex": "medicalBook",
-                    "key": "medicalBook",
-                    "width": 120
-                }
-            ]
-        },
-        {
-            "title": "Информация от HR",
-            "children": [
-                {
-                    "title": "Должность",
-                    "dataIndex": "position",
-                    "key": "position",
-                    "sortedOpt": "position",
-                    "width": 120
-                },
-                {
-                    "title": "Подразделение",
-                    "dataIndex": "subdivision",
-                    "key": "subdivision",
-                    "sortedOpt": "subdivision",
-                    "width": 150
-                },
-                {
-                    "title": "Решение",
-                    "dataIndex": "decision",
-                    "key": "decision",
-                    "sortedOpt": "decision",
-                    "width": 130
-                },
-                {
-                    "title": "Источник",
-                    "dataIndex": "sourse",
-                    "key": "sourse",
-                    "width": 130
-                },
-                {
-                    "title": "Дата",
-                    "dataIndex": "date",
-                    "key": "date",
-                    "width": 130
-                },
-                {
-                    "title": "Примечание",
-                    "dataIndex": "note",
-                    "key": "note",
-                    "width": 220
-                }
-            ]
-        }
-    ]
+  "contactsData": [
+    {
+      "key": 1,
+      "serialNumber": 45,
+      "id": 1,
+      "name": "Морозов Павел",
+      "phone": "89764554323",
+      "gender": "Мужской",
+      "birthday": "09.12.1986",
+      "subway": "Василеостровская",
+      "address": "Наставников 15 к2 кв33 ",
+      " bank": "ВТБ",
+      "cardNum": "3333 4445 4532 3353",
+      "citizenship": "РФ",
+      "passport": "4565 567887",
+      "passportProvider": "ТП 44 по СПб и Лен обл",
+      "validity": "12.09.2024",
+      "birthplace": "Узбекистан",
+      "residencePlace": "Наставников 15 к2 кв33",
+      "patent": "-",
+      "SNILS": "111-345-344 11",
+      "TIL": "354790582525",
+      "medicalBook": "-",
+      "position": "Бригадир",
+      " subdivision": "B2B",
+      "decision": "Принят",
+      "sourse": "Авито",
+      "date": "12.09.2022",
+      "note": "карта на Максима Вилина"
+    },
+    {
+      "key": 2,
+      "serialNumber": 568,
+      "id": 1,
+      "name": "Полякова Наталья",
+      "phone": "89764554323",
+      "gender": "Женский",
+      "birthday": "09.12.1986",
+      "subway": "Ладожская",
+      "address": "Наставников 15 к2 кв33 ",
+      " bank": "Сбер",
+      "cardNum": "3333 4445 4532 3353",
+      "citizenship": "Азербайджан",
+      "passport": "4565 567887",
+      "passportProvider": "ТП 44 по СПб и Лен обл",
+      "validity": "12.09.2024",
+      "birthplace": "Узбекистан",
+      "residencePlace": "Наставников 15 к2 кв33",
+      "patent": "Регистрация",
+      "SNILS": "-",
+      "TIL": "-",
+      "medicalBook": "-",
+      "position": "Клинер",
+      " subdivision": "B2B",
+      "decision": "Принят",
+      "sourse": "-",
+      "date": "12.09.2022",
+      "note": "карта на Максима Вилина"
+    },
+    {
+      "key": 3,
+      "serialNumber": 4125,
+      "id": 3,
+      "name": "Полякова Наталья",
+      "phone": "89764554323",
+      "gender": "Женский",
+      "birthday": "09.12.1986",
+      "subway": "Московская",
+      "address": "Наставников 15 к2 кв33 ",
+      " bank": "Сбер",
+      "cardNum": "3333 4445 4532 3353",
+      "citizenship": "Казахстан",
+      "passport": "4565 567887",
+      "passportProvider": "ТП 44 по СПб и Лен обл",
+      "validity": "12.09.2024",
+      "birthplace": "Казахстан",
+      "residencePlace": "Наставников 15 к2 кв33",
+      "patent": "РВП",
+      "SNILS": "111-345-344 11",
+      "TIL": "354790582525",
+      "medicalBook": "-",
+      "position": "Клинер",
+      " subdivision": "B2B",
+      "decision": "Не принят",
+      "sourse": "-",
+      "date": "12.09.2022",
+      "note": "карта на Максима Вилина"
+    },
+    {
+      "key": 4,
+      "serialNumber": 5,
+      "id": 4,
+      "name": "Полякова Наталья",
+      "phone": "89764554323",
+      "gender": "Женский",
+      "birthday": "09.12.1986",
+      "subway": "Василеостровская",
+      "address": "Наставников 15 к2 кв33 ",
+      " bank": "Альфа",
+      "cardNum": "3333 4445 4532 3353",
+      "citizenship": "Узбекистан",
+      "passport": "4565 567887",
+      "passportProvider": "ТП 44 по СПб и Лен обл",
+      "validity": "12.09.2024",
+      "birthplace": "Узбекистан",
+      "residencePlace": "Наставников 15 к2 кв33",
+      "patent": "ВНЖ",
+      "SNILS": "111-345-344 11",
+      "TIL": "354790582525",
+      "medicalBook": "-",
+      "position": "Клинер",
+      " subdivision": "B2B",
+      "decision": "Принят",
+      "sourse": "-",
+      "date": "12.09.2022",
+      "note": "карта на Максима Вилина"
+    },
+    {
+      "key": 5,
+      "serialNumber": 34,
+      "id": 5,
+      "name": "Хидирова Алена",
+      "phone": "89764554323",
+      "gender": "Женский",
+      "birthday": "09.12.1986",
+      "subway": "Технологический институт",
+      "address": "Наставников 15 к2 кв33 ",
+      " bank": "Сбер",
+      "cardNum": "3333 4445 4532 3353",
+      "citizenship": "Узбекистан",
+      "passport": "4565 567887",
+      "passportProvider": "ТП 44 по СПб и Лен обл",
+      "validity": "12.09.2024",
+      "birthplace": "Узбекистан",
+      "residencePlace": "Наставников 15 к2 кв33",
+      "patent": "Патент",
+      "SNILS": "-",
+      "TIL": "-",
+      "medicalBook": "-",
+      "position": "Клинер",
+      " subdivision": "B2B",
+      "decision": "Принят",
+      "sourse": "-",
+      "date": "12.09.2022",
+      "note": "карта на Максима Вилина"
+    },
+    {
+      "key": 6,
+      "serialNumber": 234,
+      "id": 6,
+      "name": "Полякова Наталья",
+      "phone": "89764554323",
+      "gender": "Женский",
+      "birthday": "09.12.1986",
+      "subway": "Купчино",
+      "address": "Наставников 15 к2 кв33 ",
+      " bank": "ВТБ",
+      "cardNum": "3333 4445 4532 3353",
+      "citizenship": "Узбекистан",
+      "passport": "4565 567887",
+      "passportProvider": "ТП 44 по СПб и Лен обл",
+      "validity": "12.09.2024",
+      "birthplace": "Узбекистан",
+      "residencePlace": "Наставников 15 к2 кв33",
+      "patent": "-",
+      "SNILS": "-",
+      "TIL": "-",
+      "medicalBook": "-",
+      "position": "Клинер",
+      " subdivision": "B2B",
+      "decision": "Не принят",
+      "sourse": "-",
+      "date": "12.09.2022",
+      "note": "карта на Максима Вилина"
+    },
+    {
+      "key": 7,
+      "serialNumber": 112,
+      "id": 7,
+      "name": "Полякова Наталья",
+      "phone": "89764554323",
+      "gender": "Женский",
+      "birthday": "09.12.1986",
+      "subway": "Девяткино",
+      "address": "Наставников 15 к2 кв33 ",
+      " bank": "Сбер",
+      "cardNum": "3333 4445 4532 3353",
+      "citizenship": "РФ",
+      "passport": "4565 567887",
+      "passportProvider": "ТП 44 по СПб и Лен обл",
+      "validity": "12.09.2024",
+      "birthplace": "РФ",
+      "residencePlace": "Наставников 15 к2 кв33",
+      "patent": "-",
+      "SNILS": "-",
+      "TIL": "-",
+      "medicalBook": "-",
+      "position": "Клинер",
+      " subdivision": "B2B",
+      "decision": "Принят",
+      "sourse": "-",
+      "date": "12.09.2022",
+      "note": "карта на Максима Вилина"
+    },
+    {
+      "key": 8,
+      "serialNumber": 67,
+      "id": 8,
+      "name": "Морозов Павел ",
+      "phone": "89764554323",
+      "gender": "Мужской",
+      "birthday": "09.12.1986",
+      "subway": "Ладожская",
+      "address": "Наставников 15 к2 кв33 ",
+      " bank": "Сбер",
+      "cardNum": "3333 4445 4532 3353",
+      "citizenship": "Казахстан",
+      "passport": "4565 567887",
+      "passportProvider": "ТП 44 по СПб и Лен обл",
+      "validity": "12.09.2024",
+      "birthplace": "Казахстан",
+      "residencePlace": "Наставников 15 к2 кв33",
+      "patent": "-",
+      "SNILS": "-",
+      "TIL": "-",
+      "medicalBook": "-",
+      "position": "Клинер",
+      " subdivision": "B2B",
+      "decision": "Принят",
+      "sourse": "-",
+      "date": "12.09.2022",
+      "note": "карта на Максима Вилина"
+    }
+  ]
 }
