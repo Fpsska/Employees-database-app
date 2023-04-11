@@ -1,5 +1,7 @@
 const express = require("express");
 
+const contactsRouter = require("./routes/contacts.routes");
+
 const app = express();
 
 require("dotenv").config();
@@ -9,6 +11,8 @@ require("dotenv").config();
 app.use(express.json());
 
 // routes
+
+app.use("/api/data", contactsRouter);
 
 app.get("/", (req, res) => {
   res.send("START route");
