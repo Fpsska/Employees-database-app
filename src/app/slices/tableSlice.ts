@@ -6,6 +6,7 @@ import { Icontact } from 'types/tableSliceTypes';
 
 interface tableSliceTypes {
     contactsData: Icontact[];
+    filteredContactsData: Icontact[];
     isContactsDataLoading: boolean;
     fetchContactsDataStatus: string;
     fetchContactsDataError: null | string;
@@ -15,6 +16,7 @@ interface tableSliceTypes {
 
 const initialState: tableSliceTypes = {
     contactsData: [],
+    filteredContactsData: [],
     isContactsDataLoading: true,
     fetchContactsDataStatus: '',
     fetchContactsDataError: null
@@ -28,6 +30,17 @@ const tableSlice = createSlice({
     reducers: {
         switchContactsDataLoadingStatus(state, action: PayloadAction<boolean>) {
             state.isContactsDataLoading = action.payload;
+        },
+        filterContactsData(
+            state,
+            action: PayloadAction<{ enteredValue: string }>
+        ) {
+            const { enteredValue } = action.payload;
+            // /. payload
+
+            state.filteredContactsData = state.contactsData.filter(item =>
+                RegExp(enteredValue, 'gi').test(item.name)
+            );
         }
     },
     extraReducers: {
@@ -58,6 +71,7 @@ const tableSlice = createSlice({
             );
 
             state.contactsData = outputData;
+            state.filteredContactsData = outputData;
             state.fetchContactsDataStatus = 'success';
         },
         [fetchContactsData.rejected.type]: (
@@ -70,6 +84,7 @@ const tableSlice = createSlice({
     }
 });
 
-export const { switchContactsDataLoadingStatus } = tableSlice.actions;
+export const { switchContactsDataLoadingStatus, filterContactsData } =
+    tableSlice.actions;
 
 export default tableSlice.reducer;

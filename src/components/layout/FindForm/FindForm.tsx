@@ -1,6 +1,8 @@
 import React from 'react';
 
-import { useAppSelector } from 'app/hooks';
+import { useAppSelector, useAppDispatch } from 'app/hooks';
+
+import { filterContactsData } from 'app/slices/tableSlice';
 
 import './find-form.scss';
 
@@ -11,10 +13,20 @@ const FindForm: React.FC = () => {
         state => state.tableSlice
     );
 
+    const dispatch = useAppDispatch();
+
     // /. hooks
 
     const isControlsAvailable =
         !isContactsDataLoading && !fetchContactsDataError;
+
+    // /. variables
+
+    const onInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+        dispatch(filterContactsData({ enteredValue: e.target.value.trim() }));
+    };
+
+    // /. functions
 
     return (
         <form
@@ -27,6 +39,7 @@ const FindForm: React.FC = () => {
                 type="text"
                 placeholder="Поиск"
                 disabled={!isControlsAvailable}
+                onChange={e => onInputChange(e)}
             />
             <button
                 className="find-form__button"

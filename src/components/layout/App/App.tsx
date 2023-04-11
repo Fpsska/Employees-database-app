@@ -17,7 +17,7 @@ import 'assets/styles/style.scss';
 
 const App: React.FC = () => {
     const {
-        contactsData,
+        filteredContactsData,
         fetchContactsDataStatus,
         isContactsDataLoading,
         fetchContactsDataError
@@ -51,7 +51,7 @@ const App: React.FC = () => {
                     <div className="search-section__group">
                         <div className="search-section__info">
                             <span className="search-section__counter">
-                                {contactsData.length}
+                                {filteredContactsData.length}
                             </span>
                             <span className="search-section__text">
                                 Контактов

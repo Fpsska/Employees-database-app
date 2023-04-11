@@ -203,12 +203,16 @@ const columns: ColumnsType<Icontact> = [
 ];
 
 const Table: React.FC = () => {
-    const { contactsData, isContactsDataLoading, fetchContactsDataError } =
-        useAppSelector(state => state.tableSlice);
+    const {
+        filteredContactsData,
+        isContactsDataLoading,
+        fetchContactsDataError
+    } = useAppSelector(state => state.tableSlice);
 
     // /. hooks
 
-    const isTableDataExist = contactsData.length > 0;
+    const isTableDataEmpty =
+        filteredContactsData.length <= 0 || !fetchContactsDataError;
 
     const dataErrorMarkup: JSX.Element = (
         <Empty
@@ -222,24 +226,35 @@ const Table: React.FC = () => {
         />
     );
 
+    const dataEmptyMarkup: JSX.Element = (
+        <Empty
+            image={Empty.PRESENTED_IMAGE_SIMPLE}
+            description={'no data'}
+        />
+    );
+
+    // /. variables
+
     return (
         <>
             <AntTable
                 className="table"
                 columns={columns}
-                dataSource={isTableDataExist ? contactsData : []}
+                dataSource={filteredContactsData}
                 bordered
                 size="small"
                 scroll={{ x: 'max-content', y: '500px' }}
                 pagination={false}
                 loading={isContactsDataLoading}
                 locale={{
-                    emptyText: isContactsDataLoading ? null : dataErrorMarkup
+                    emptyText: isTableDataEmpty
+                        ? dataEmptyMarkup
+                        : dataErrorMarkup
                 }}
             />
             <Pagination
                 className="pagination"
-                total={contactsData.length}
+                total={filteredContactsData.length}
                 showTotal={(total, range) =>
                     `показано ${[0]}-${range[1]} из ${total} результатов`
                 }
