@@ -2,8 +2,10 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { fetchContactsData } from 'app/api/fetchContactsData';
 
+import { Icontact } from 'types/tableSliceTypes';
+
 interface tableSliceTypes {
-    contactsData: any[];
+    contactsData: Icontact[];
     isContactsDataLoading: boolean;
     fetchContactsDataStatus: string;
     fetchContactsDataError: null | string;
@@ -39,7 +41,23 @@ const tableSlice = createSlice({
         ) => {
             const { contactsData } = action.payload;
             // /. payload
-            state.contactsData = contactsData;
+
+            const dublicatedData: Icontact[] = [...contactsData];
+            const extendedData: Icontact[] = [
+                ...contactsData,
+                ...dublicatedData
+            ];
+
+            const outputData: Icontact[] = extendedData.map(
+                ({ ...item }, idx: number) => ({
+                    ...item,
+                    key: idx,
+                    id: Math.floor(Math.random() * item.id),
+                    serialNumber: idx + 1
+                })
+            );
+
+            state.contactsData = outputData;
             state.fetchContactsDataStatus = 'success';
         },
         [fetchContactsData.rejected.type]: (
