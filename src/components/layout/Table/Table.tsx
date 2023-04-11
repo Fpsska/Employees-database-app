@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Table as AntTable, Pagination } from 'antd';
+import { Table as AntTable, Pagination, Empty } from 'antd';
 
 import { useAppSelector } from 'app/hooks';
 
@@ -237,13 +237,24 @@ const columns: ColumnsType<dataType> = [
 ];
 
 const Table: React.FC = () => {
-    const { contactsData, isContactsDataLoading } = useAppSelector(
-        state => state.tableSlice
-    );
+    const { contactsData, isContactsDataLoading, fetchContactsDataError } =
+        useAppSelector(state => state.tableSlice);
 
     // /. hooks
 
-    const isTableDataExist = contactsData.length !== 0;
+    const isTableDataExist = contactsData.length > 0;
+
+    const dataErrorMarkup: JSX.Element = (
+        <Empty
+            image={Empty.PRESENTED_IMAGE_DEFAULT}
+            description={
+                <span style={{ color: 'red' }}>
+                    Error of fetchContactsData promise:
+                    {fetchContactsDataError}
+                </span>
+            }
+        />
+    );
 
     return (
         <>
@@ -252,10 +263,13 @@ const Table: React.FC = () => {
                 columns={columns}
                 dataSource={isTableDataExist ? contactsData : []}
                 bordered
-                size="large"
-                scroll={{ x: 'max-content', y: '455px' }}
+                size="small"
+                scroll={{ x: 'max-content', y: '500px' }}
                 pagination={false}
                 loading={isContactsDataLoading}
+                locale={{
+                    emptyText: isContactsDataLoading ? null : dataErrorMarkup
+                }}
             />
             <Pagination
                 className="pagination"
