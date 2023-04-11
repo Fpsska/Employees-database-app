@@ -1,9 +1,11 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 
+import tableSlice from './slices/tableSlice';
+
 // /. imports
 
 export const store = configureStore({
-  reducer: {}
+  reducer: { tableSlice }
 });
 
 export type AppDispatch = typeof store.dispatch;

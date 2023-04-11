@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import { Table as AntTable, Pagination } from 'antd';
+
+import { useAppSelector } from 'app/hooks';
 
 import type { ColumnsType } from 'antd/es/table';
 
@@ -234,68 +236,30 @@ const columns: ColumnsType<dataType> = [
     // /. Информация от HR
 ];
 
-const data: dataType[] = [];
-for (let i = 0; i < 88; i++) {
-    data.push({
-        key: i,
-        serialNumber: i + 1,
-        id: Math.floor(Math.random() * 125),
-        name: 'John Brown',
-        phone: '89764554323',
-        gender: 'Мужской',
-        birthday: '01.09.2000',
-        subway: 'Дыбенко',
-        address: 'Санкт-Петербург',
-        //
-        bank: 'СБЕР',
-        cardNum: '3333 4445 4532 3353',
-        //
-        citizenship: 'РФ',
-        passport: '4565 567887',
-        passportProvider: 'ТП 44 по СПб и Лен обл',
-        validity: '12.09.2024',
-        birthplace: 'Казахстан',
-        residencePlace: 'Наставников 15 к2 кв33',
-        patent: 'Регистрация',
-        SNILS: '111-345-344 11',
-        TIL: '354790582525',
-        medicalBook: '-',
-        //
-        position: 'Бригадир',
-        subdivision: 'B2B',
-        decision: 'Принят',
-        sourse: 'hh',
-        date: '12.09.2022',
-        note: 'карта на Максима Вилина'
-    });
-}
-
 const Table: React.FC = () => {
-    const [isDataLoading, setDataLoading] = useState<boolean>(true);
+    const { contactsData, isContactsDataLoading } = useAppSelector(
+        state => state.tableSlice
+    );
 
     // /. hooks
 
-    useEffect(() => {
-        setTimeout(() => {
-            setDataLoading(false);
-        }, 1000);
-    }, []);
+    const isTableDataExist = contactsData.length !== 0;
 
     return (
         <>
             <AntTable
                 className="table"
                 columns={columns}
-                dataSource={data}
+                dataSource={isTableDataExist ? contactsData : []}
                 bordered
                 size="large"
                 scroll={{ x: 'max-content', y: '455px' }}
                 pagination={false}
-                loading={isDataLoading}
+                loading={isContactsDataLoading}
             />
             <Pagination
                 className="pagination"
-                total={data.length}
+                total={contactsData.length}
                 showTotal={(total, range) =>
                     `показано ${[0]}-${range[1]} из ${total} результатов`
                 }

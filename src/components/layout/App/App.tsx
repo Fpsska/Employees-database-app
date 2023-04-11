@@ -1,4 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+
+import { fetchContactsData } from 'app/api/fetchContactsData';
+
+import { switchContactsDataLoadingStatus } from 'app/slices/tableSlice';
+
+import { useAppSelector, useAppDispatch } from 'app/hooks';
 
 import FindForm from 'components/layout/FindForm/FindForm';
 
@@ -10,6 +16,28 @@ import 'assets/styles/style.scss';
 // /. imports
 
 const App: React.FC = () => {
+    const { fetchContactsDataStatus } = useAppSelector(
+        state => state.tableSlice
+    );
+
+    const dispatch = useAppDispatch();
+
+    // /. hooks
+
+    useEffect(() => {
+        dispatch(fetchContactsData());
+    }, []);
+
+    useEffect(() => {
+        if (fetchContactsDataStatus !== 'loading') {
+            setTimeout(() => {
+                dispatch(switchContactsDataLoadingStatus(false));
+            }, 1500);
+        }
+    }, [fetchContactsDataStatus]);
+
+    // /. effects
+
     return (
         <section className="App">
             <div className="page">
