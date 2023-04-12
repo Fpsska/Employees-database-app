@@ -10,6 +10,8 @@ import FindForm from 'components/layout/FindForm/FindForm';
 
 import Table from 'components/layout/Table/Table';
 
+import Pagination from 'components/layout/Pagination/Pagination';
+
 import './App.css';
 import 'assets/styles/style.scss';
 
@@ -68,6 +70,7 @@ const App: React.FC = () => {
                     </button>
                 </div>
                 <Table />
+                <Pagination />
             </div>
         </section>
     );

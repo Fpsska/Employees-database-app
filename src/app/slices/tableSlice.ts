@@ -10,6 +10,8 @@ interface tableSliceTypes {
     isContactsDataLoading: boolean;
     fetchContactsDataStatus: string;
     fetchContactsDataError: null | string;
+    itemPerPage: number;
+    currentPage: number;
 }
 
 // /. interfaces
@@ -19,7 +21,9 @@ const initialState: tableSliceTypes = {
     filteredContactsData: [],
     isContactsDataLoading: true,
     fetchContactsDataStatus: '',
-    fetchContactsDataError: null
+    fetchContactsDataError: null,
+    itemPerPage: 8,
+    currentPage: 1
 };
 
 // /. state
@@ -41,6 +45,12 @@ const tableSlice = createSlice({
             state.filteredContactsData = state.contactsData.filter(item =>
                 RegExp(enteredValue, 'gi').test(item.name)
             );
+        },
+        setCurrentPageValue(state, action: PayloadAction<number>) {
+            state.currentPage = action.payload;
+        },
+        setItemsPerPage(state, action: PayloadAction<number>) {
+            state.itemPerPage = action.payload;
         }
     },
     extraReducers: {
@@ -66,7 +76,8 @@ const tableSlice = createSlice({
                     ...item,
                     key: idx,
                     id: Math.floor(Math.random() * item.id),
-                    serialNumber: idx + 1
+                    serialNumber: idx + 1,
+                    isEditable: false
                 })
             );
 
@@ -84,7 +95,11 @@ const tableSlice = createSlice({
     }
 });
 
-export const { switchContactsDataLoadingStatus, filterContactsData } =
-    tableSlice.actions;
+export const {
+    switchContactsDataLoadingStatus,
+    filterContactsData,
+    setCurrentPageValue,
+    setItemsPerPage
+} = tableSlice.actions;
 
 export default tableSlice.reducer;

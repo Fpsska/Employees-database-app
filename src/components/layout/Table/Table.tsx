@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Table as AntTable, Pagination, Empty } from 'antd';
+import { Table as AntTable, Empty } from 'antd';
 
 import { useAppSelector } from 'app/hooks';
 
@@ -206,10 +206,16 @@ const Table: React.FC = () => {
     const {
         filteredContactsData,
         isContactsDataLoading,
-        fetchContactsDataError
+        fetchContactsDataError,
+        itemPerPage,
+        currentPage
     } = useAppSelector(state => state.tableSlice);
 
     // /. hooks
+
+    const startEl = (currentPage - 1) * itemPerPage; // (1 - 1) * 8 = 0
+    const endEl = startEl + itemPerPage; // 0 + 8 = 8
+    const visibleItems = filteredContactsData.slice(startEl, endEl);
 
     const isTableDataEmpty =
         filteredContactsData.length <= 0 || !fetchContactsDataError;
@@ -240,10 +246,10 @@ const Table: React.FC = () => {
             <AntTable
                 className="table"
                 columns={columns}
-                dataSource={filteredContactsData}
+                dataSource={visibleItems}
                 bordered
                 size="small"
-                scroll={{ x: 'max-content', y: '500px' }}
+                scroll={{ x: 'max-content', y: '505px' }}
                 pagination={false}
                 loading={isContactsDataLoading}
                 locale={{
@@ -251,15 +257,6 @@ const Table: React.FC = () => {
                         ? dataEmptyMarkup
                         : dataErrorMarkup
                 }}
-            />
-            <Pagination
-                className="pagination"
-                total={filteredContactsData.length}
-                showTotal={(total, range) =>
-                    `показано ${[0]}-${range[1]} из ${total} результатов`
-                }
-                defaultPageSize={10}
-                defaultCurrent={1}
             />
         </>
     );
