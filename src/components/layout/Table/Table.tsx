@@ -1,206 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import { Table as AntTable, Empty } from 'antd';
+import { Table as AntTable, Empty, Typography, Popconfirm, Form } from 'antd';
 
-import { useAppSelector } from 'app/hooks';
+import { useAppSelector, useAppDispatch } from 'app/hooks';
+
+import { updateFilteredContactsData } from 'app/slices/tableSlice';
 
 import { Icontact } from 'types/tableSliceTypes';
+
+import EditableTableCell from 'components/layout/EditableTableCell/EditableTableCell';
+
+import { mergingNestedCol } from 'utilts/helpers/mergingNestedCol';
+
+import { checkEditingStatus } from 'utilts/helpers/checkEditingStatus';
 
 import type { ColumnsType } from 'antd/es/table';
 
 import './table.scss';
 
 // /. imports
-
-const columns: ColumnsType<Icontact> = [
-    {
-        title: '№',
-        dataIndex: 'serialNumber',
-        width: 50
-    },
-    {
-        title: 'Имя сотрудника',
-        dataIndex: 'name',
-        key: 'name',
-        width: 230,
-        sorter: (a, b) => a.name.localeCompare(b.name)
-    },
-    {
-        title: 'Основная информация',
-        children: [
-            {
-                title: 'ID номер',
-                dataIndex: 'id',
-                key: 'id',
-                width: 150
-            },
-            {
-                title: 'Телефона',
-                dataIndex: 'phone',
-                key: 'phone',
-                width: 120
-            },
-            {
-                title: 'Пол',
-                dataIndex: 'gender',
-                key: 'gender',
-                sorter: (a, b) => a.gender.localeCompare(b.gender),
-                width: 100
-            },
-            {
-                title: 'Дата рождения',
-                dataIndex: 'birthday',
-                key: 'birthday',
-                width: 140
-            },
-            {
-                title: 'Метро',
-                dataIndex: 'subway',
-                key: 'subway',
-                sorter: (a, b) => a.subway.localeCompare(b.subway),
-                width: 100
-            },
-            {
-                title: 'Адрес проживания',
-                dataIndex: 'address',
-                key: 'address',
-                width: 170
-            }
-        ]
-    },
-    // /. Основная информация
-    {
-        title: 'Банковская информация',
-        children: [
-            {
-                title: 'Банк',
-                dataIndex: 'bank',
-                key: 'bank',
-                width: 100
-            },
-            {
-                title: 'Номер карты',
-                dataIndex: 'cardNum',
-                key: 'cardNum',
-                width: 170
-            }
-        ]
-    },
-    // /. Банковская информация
-    {
-        title: 'Документы сотрудника',
-        children: [
-            {
-                title: 'Гражданство',
-                dataIndex: 'citizenship',
-                key: 'citizenship',
-                sorter: (a, b) => a.citizenship.localeCompare(b.citizenship),
-                width: 130
-            },
-            {
-                title: 'Паспорт',
-                dataIndex: 'passport',
-                key: 'passport',
-                width: 120
-            },
-            {
-                title: 'Кем выдан',
-                dataIndex: 'passportProvider',
-                key: 'passportProvider',
-                width: 190
-            },
-            {
-                title: 'Срок действия',
-                dataIndex: 'validity',
-                key: 'validity',
-                width: 130
-            },
-            {
-                title: 'Место рождения',
-                dataIndex: 'birthplace',
-                key: 'birthplace',
-                width: 160
-            },
-            {
-                title: 'Адрес прописки',
-                dataIndex: 'residencePlace',
-                key: 'residencePlace',
-                width: 190
-            },
-            {
-                title: 'Патент',
-                dataIndex: 'patent',
-                key: 'patent',
-                sorter: (a, b) => a.patent.localeCompare(b.patent),
-                width: 150
-            },
-            {
-                title: 'СНИЛС',
-                dataIndex: 'SNILS',
-                key: 'SNILS',
-                width: 160
-            },
-            {
-                title: 'ИНН',
-                dataIndex: 'TIL',
-                key: 'TIL',
-                width: 150
-            },
-            {
-                title: 'Мед.книжка',
-                dataIndex: 'medicalBook',
-                key: 'medicalBook',
-                width: 120
-            }
-        ]
-    },
-    // /. Документы сотрудника
-    {
-        title: 'Информация от HR',
-        children: [
-            {
-                title: 'Должность',
-                dataIndex: 'position',
-                key: 'position',
-                sorter: (a, b) => a.position.localeCompare(b.position),
-                width: 120
-            },
-            {
-                title: 'Подразделение',
-                dataIndex: 'subdivision',
-                key: 'subdivision',
-                sorter: (a, b) => a.subdivision.localeCompare(b.subdivision),
-                width: 150
-            },
-            {
-                title: 'Решение',
-                dataIndex: 'decision',
-                key: 'decision',
-                sorter: (a, b) => a.decision.localeCompare(b.decision),
-                width: 130
-            },
-            {
-                title: 'Источник',
-                dataIndex: 'sourse',
-                key: 'sourse',
-                width: 130
-            },
-            {
-                title: 'Дата',
-                dataIndex: 'date',
-                key: 'date',
-                width: 130
-            },
-            {
-                title: 'Примечание',
-                dataIndex: 'note',
-                key: 'note',
-                width: 220
-            }
-        ]
-    }
-    // /. Информация от HR
-];
 
 const Table: React.FC = () => {
     const {
@@ -211,11 +29,19 @@ const Table: React.FC = () => {
         currentPage
     } = useAppSelector(state => state.tableSlice);
 
+    const [editingKey, setEditingKey] = useState<string>('');
+
+    const [form] = Form.useForm();
+
+    const dispatch = useAppDispatch();
+
     // /. hooks
 
+    // pagination logic //
     const startEl = (currentPage - 1) * itemPerPage; // (1 - 1) * 8 = 0
     const endEl = startEl + itemPerPage; // 0 + 8 = 8
     const visibleItems = filteredContactsData.slice(startEl, endEl);
+    // pagination logic //
 
     const isTableDataEmpty =
         filteredContactsData.length <= 0 || !fetchContactsDataError;
@@ -239,16 +65,337 @@ const Table: React.FC = () => {
         />
     );
 
+    const columns = [
+        {
+            title: 'action',
+            dataIndex: 'action',
+            width: 120,
+            render: (_: any, record: Icontact) => {
+                const editable = checkEditingStatus(record, editingKey);
+                return editable ? (
+                    <span>
+                        <Typography.Link
+                            onClick={() => onButtonSaveClick(record.key)}
+                            style={{ marginRight: 8 }}
+                        >
+                            Save
+                        </Typography.Link>
+                        <Popconfirm
+                            title="Sure to cancel?"
+                            onConfirm={onButtonCancelClick}
+                        >
+                            <a>Cancel</a>
+                        </Popconfirm>
+                    </span>
+                ) : (
+                    <Typography.Link
+                        disabled={!!editingKey}
+                        onClick={() => {
+                            onEditClick(record, record.key);
+                        }}
+                    >
+                        Edit
+                    </Typography.Link>
+                );
+            }
+        },
+        // /. action col
+        {
+            title: '№',
+            dataIndex: 'serialNumber',
+            width: 50
+        },
+        {
+            title: 'Имя сотрудника',
+            dataIndex: 'name',
+            key: 'name',
+            width: 230,
+            editable: true,
+            sorter: (a: any, b: any) => a.name.localeCompare(b.name)
+        },
+        {
+            title: 'Основная информация',
+            children: [
+                {
+                    title: 'ID номер',
+                    dataIndex: 'id',
+                    key: 'id',
+                    width: 150,
+                    editable: true
+                },
+                {
+                    title: 'Телефона',
+                    dataIndex: 'phone',
+                    key: 'phone',
+                    width: 120,
+                    editable: true
+                },
+                {
+                    title: 'Пол',
+                    dataIndex: 'gender',
+                    key: 'gender',
+                    width: 100,
+                    editable: true,
+                    sorter: (a: any, b: any) => a.gender.localeCompare(b.gender)
+                },
+                {
+                    title: 'Дата рождения',
+                    dataIndex: 'birthday',
+                    key: 'birthday',
+                    width: 140,
+                    editable: true
+                },
+                {
+                    title: 'Метро',
+                    dataIndex: 'subway',
+                    key: 'subway',
+                    width: 100,
+                    editable: true,
+                    sorter: (a: any, b: any) => a.subway.localeCompare(b.subway)
+                },
+                {
+                    title: 'Адрес проживания',
+                    dataIndex: 'address',
+                    key: 'address',
+                    width: 180,
+                    editable: true
+                }
+            ]
+        },
+        // /. Основная информация
+        {
+            title: 'Банковская информация',
+            children: [
+                {
+                    title: 'Банк',
+                    dataIndex: 'bank',
+                    key: 'bank',
+                    width: 100,
+                    editable: true
+                },
+                {
+                    title: 'Номер карты',
+                    dataIndex: 'cardNum',
+                    key: 'cardNum',
+                    width: 170,
+                    editable: true
+                }
+            ]
+        },
+        // /. Банковская информация
+        {
+            title: 'Документы сотрудника',
+            children: [
+                {
+                    title: 'Гражданство',
+                    dataIndex: 'citizenship',
+                    key: 'citizenship',
+                    width: 130,
+                    editable: true,
+                    sorter: (a: any, b: any) =>
+                        a.citizenship.localeCompare(b.citizenship)
+                },
+                {
+                    title: 'Паспорт',
+                    dataIndex: 'passport',
+                    key: 'passport',
+                    width: 120,
+                    editable: true
+                },
+                {
+                    title: 'Кем выдан',
+                    dataIndex: 'passportProvider',
+                    key: 'passportProvider',
+                    width: 190,
+                    editable: true
+                },
+                {
+                    title: 'Срок действия',
+                    dataIndex: 'validity',
+                    key: 'validity',
+                    width: 130,
+                    editable: true
+                },
+                {
+                    title: 'Место рождения',
+                    dataIndex: 'birthplace',
+                    key: 'birthplace',
+                    width: 160,
+                    editable: true
+                },
+                {
+                    title: 'Адрес прописки',
+                    dataIndex: 'residencePlace',
+                    key: 'residencePlace',
+                    width: 190,
+                    editable: true
+                },
+                {
+                    title: 'Патент',
+                    dataIndex: 'patent',
+                    key: 'patent',
+                    width: 150,
+                    editable: true,
+                    sorter: (a: any, b: any) => a.patent.localeCompare(b.patent)
+                },
+                {
+                    title: 'СНИЛС',
+                    dataIndex: 'SNILS',
+                    key: 'SNILS',
+                    width: 160,
+                    editable: true
+                },
+                {
+                    title: 'ИНН',
+                    dataIndex: 'TIL',
+                    key: 'TIL',
+                    width: 150,
+                    editable: true
+                },
+                {
+                    title: 'Мед.книжка',
+                    dataIndex: 'medicalBook',
+                    key: 'medicalBook',
+                    width: 120,
+                    editable: true
+                }
+            ]
+        },
+        // /. Документы сотрудника
+        {
+            title: 'Информация от HR',
+            children: [
+                {
+                    title: 'Должность',
+                    dataIndex: 'position',
+                    key: 'position',
+                    width: 120,
+                    editable: true,
+                    sorter: (a: any, b: any) =>
+                        a.position.localeCompare(b.position)
+                },
+                {
+                    title: 'Подразделение',
+                    dataIndex: 'subdivision',
+                    key: 'subdivision',
+                    width: 150,
+                    editable: true,
+                    sorter: (a: any, b: any) =>
+                        a.subdivision.localeCompare(b.subdivision)
+                },
+                {
+                    title: 'Решение',
+                    dataIndex: 'decision',
+                    key: 'decision',
+                    width: 130,
+                    editable: true,
+                    sorter: (a: any, b: any) =>
+                        a.decision.localeCompare(b.decision)
+                },
+                {
+                    title: 'Источник',
+                    dataIndex: 'sourse',
+                    key: 'sourse',
+                    width: 130,
+                    editable: true
+                },
+                {
+                    title: 'Дата',
+                    dataIndex: 'date',
+                    key: 'date',
+                    width: 130,
+                    editable: true
+                },
+                {
+                    title: 'Примечание',
+                    dataIndex: 'note',
+                    key: 'note',
+                    width: 220,
+                    editable: true
+                }
+            ]
+        }
+        // /. Информация от HR
+    ];
+
+    const mergedColumns = columns.map(col => {
+        if (col.children) {
+            return {
+                ...col,
+                children: mergingNestedCol(col.children, editingKey)
+            };
+        }
+        if (col.editable) {
+            return {
+                ...col,
+                onCell: (record: Icontact) => ({
+                    record,
+                    dataIndex: col.dataIndex,
+                    title: col.title,
+                    editing: checkEditingStatus(record, editingKey)
+                })
+            };
+        } else {
+            return col;
+        }
+    });
+
     // /. variables
 
+    const onEditClick = (record: Partial<Icontact>, key: React.Key): void => {
+        form.setFieldsValue({
+            ...record
+        });
+        setEditingKey(key.toString());
+    };
+
+    const onButtonCancelClick = (): void => {
+        setEditingKey('');
+    };
+
+    const onButtonSaveClick = async (key: React.Key): Promise<any> => {
+        try {
+            const row = (await form.validateFields()) as Icontact;
+            const newData = [...filteredContactsData];
+            const index = newData.findIndex(item => key === item.key);
+
+            if (index > -1) {
+                const item = newData[index];
+                newData.splice(index, 1, {
+                    ...item,
+                    ...row
+                });
+                dispatch(updateFilteredContactsData(newData));
+                setEditingKey('');
+            } else {
+                newData.push(row);
+                dispatch(updateFilteredContactsData(newData));
+                setEditingKey('');
+            }
+        } catch (errInfo) {
+            console.log('Validate Failed:', errInfo);
+        }
+    };
+
+    // /. functions
+
     return (
-        <>
+        <Form
+            form={form}
+            component={false}
+        >
             <AntTable
                 className="table"
-                columns={columns}
+                components={{
+                    body: {
+                        cell: EditableTableCell
+                    }
+                }}
+                rowClassName="editable-row"
+                columns={mergedColumns}
                 dataSource={visibleItems}
                 bordered
-                size="small"
+                size="middle"
                 scroll={{ x: 'max-content', y: '505px' }}
                 pagination={false}
                 loading={isContactsDataLoading}
@@ -258,7 +405,7 @@ const Table: React.FC = () => {
                         : dataErrorMarkup
                 }}
             />
-        </>
+        </Form>
     );
 };
 

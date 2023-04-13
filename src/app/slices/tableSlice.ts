@@ -46,6 +46,9 @@ const tableSlice = createSlice({
                 RegExp(enteredValue, 'gi').test(item.name)
             );
         },
+        updateFilteredContactsData(state, action: PayloadAction<any[]>) {
+            state.filteredContactsData = action.payload;
+        },
         setCurrentPageValue(state, action: PayloadAction<number>) {
             state.currentPage = action.payload;
         },
@@ -99,7 +102,8 @@ export const {
     switchContactsDataLoadingStatus,
     filterContactsData,
     setCurrentPageValue,
-    setItemsPerPage
+    setItemsPerPage,
+    updateFilteredContactsData
 } = tableSlice.actions;
 
 export default tableSlice.reducer;
