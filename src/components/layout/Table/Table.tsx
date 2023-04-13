@@ -10,9 +10,13 @@ import { Icontact, Icolumn } from 'types/tableSliceTypes';
 
 import EditableTableCell from 'components/layout/EditableTableCell/EditableTableCell';
 
-import { mergingNestedCol } from 'utilts/helpers/mergingNestedCol';
+import { mergeNestedCol } from 'utilts/helpers/mergeNestedCol';
 
 import { checkEditingStatus } from 'utilts/helpers/checkEditingStatus';
+
+import { formatDataToPreview } from 'utilts/helpers/formatDataToPreview';
+
+import { checkValidity } from 'utilts/helpers/checkValidity';
 
 import './table.scss';
 
@@ -35,12 +39,6 @@ const Table: React.FC = () => {
     const dispatch = useAppDispatch();
 
     // /. hooks
-
-    // pagination logic //
-    const startEl = (currentPage - 1) * itemPerPage; // (1 - 1) * 8 = 0
-    const endEl = startEl + itemPerPage; // 0 + 8 = 8
-    const visibleItems = filteredContactsData.slice(startEl, endEl);
-    // pagination logic //
 
     const isTableDataEmpty =
         filteredContactsData.length <= 0 || !fetchContactsDataError;
@@ -216,7 +214,28 @@ const Table: React.FC = () => {
                     dataIndex: 'validity',
                     key: 'validity',
                     width: 130,
-                    editable: true
+                    editable: true,
+                    // onCell: (text: string, record: any) => {
+                    //     const checkCase = record.key > 50 ? 'red' : 'green';
+                    //     return {
+                    //         ['style']: { background: checkCase },
+                    //         className: 'TEST'
+                    //     };
+                    // }
+                    render(text: string, record: any) {
+                        return {
+                            props: {
+                                style: {
+                                    color: checkValidity(record.validity)
+                                        ? '#6D7986'
+                                        : '#FC5C65'
+                                }
+                            },
+                            children: (
+                                <span className="cell-content">{text}</span>
+                            )
+                        };
+                    }
                 },
                 {
                     title: 'Место рождения',
@@ -324,7 +343,7 @@ const Table: React.FC = () => {
         if (col.children) {
             return {
                 ...col,
-                children: mergingNestedCol(col.children, editingKey)
+                children: mergeNestedCol(col.children, editingKey)
             };
         }
         if (col.editable) {
@@ -385,17 +404,6 @@ const Table: React.FC = () => {
 
     // /. functions
 
-    // useEffect(() => {
-    //     const actionsCol = mergedColumns.find(
-    //         col => col.dataIndex === 'action'
-    //     );
-    //     if (actionsCol) {
-    //         isEditingMode
-    //             ? (actionsCol.hidden = false)
-    //             : (actionsCol.hidden = true);
-    //     }
-    // }, [isEditingMode, mergedColumns]);
-
     return (
         <Form
             form={form}
@@ -408,9 +416,15 @@ const Table: React.FC = () => {
                         cell: EditableTableCell
                     }
                 }}
-                rowClassName="editable-row"
+                // rowClassName={record =>
+                //     checkValidity(record.validity) ? 'green' : 'red'
+                // }
                 columns={outputTableData as any[]}
-                dataSource={visibleItems}
+                dataSource={formatDataToPreview(
+                    currentPage,
+                    itemPerPage,
+                    filteredContactsData
+                )}
                 bordered
                 size="middle"
                 scroll={{ x: 'max-content', y: '505px' }}

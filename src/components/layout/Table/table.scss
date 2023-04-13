@@ -80,8 +80,14 @@
     }
 }
 
-.editable-row .ant-form-item-explain {
-    position: absolute;
-    top: 100%;
-    font-size: 12px;
+.cell-content {
+    background-color: transparent;
+    transition: all .25s ease-in-out;
+
+    &:hover {
+        background-color: $fieryRose-color;
+        color: $white-color;
+        border-radius: 4px;
+        padding: 5px;
+    }
 }
