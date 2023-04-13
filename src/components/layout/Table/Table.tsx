@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Table as AntTable, Empty, Typography, Popconfirm, Form } from 'antd';
 
@@ -6,15 +6,13 @@ import { useAppSelector, useAppDispatch } from 'app/hooks';
 
 import { updateFilteredContactsData } from 'app/slices/tableSlice';
 
-import { Icontact } from 'types/tableSliceTypes';
+import { Icontact, Icolumn } from 'types/tableSliceTypes';
 
 import EditableTableCell from 'components/layout/EditableTableCell/EditableTableCell';
 
 import { mergingNestedCol } from 'utilts/helpers/mergingNestedCol';
 
 import { checkEditingStatus } from 'utilts/helpers/checkEditingStatus';
-
-import type { ColumnsType } from 'antd/es/table';
 
 import './table.scss';
 
@@ -26,7 +24,8 @@ const Table: React.FC = () => {
         isContactsDataLoading,
         fetchContactsDataError,
         itemPerPage,
-        currentPage
+        currentPage,
+        isEditingMode
     } = useAppSelector(state => state.tableSlice);
 
     const [editingKey, setEditingKey] = useState<string>('');
@@ -65,11 +64,14 @@ const Table: React.FC = () => {
         />
     );
 
-    const columns = [
+    const columnsData: Icolumn[] = [
         {
-            title: 'action',
+            title: 'ACTION',
+            align: 'center',
             dataIndex: 'action',
+            fixed: 'left',
             width: 120,
+            hidden: true,
             render: (_: any, record: Icontact) => {
                 const editable = checkEditingStatus(record, editingKey);
                 return editable ? (
@@ -318,7 +320,7 @@ const Table: React.FC = () => {
         // /. Информация от HR
     ];
 
-    const mergedColumns = columns.map(col => {
+    const mergedColumns: Icolumn[] = columnsData.map((col: Icolumn) => {
         if (col.children) {
             return {
                 ...col,
@@ -339,6 +341,10 @@ const Table: React.FC = () => {
             return col;
         }
     });
+
+    const outputTableData: Icolumn[] = isEditingMode
+        ? mergedColumns
+        : mergedColumns.filter(col => !col.hidden);
 
     // /. variables
 
@@ -379,6 +385,17 @@ const Table: React.FC = () => {
 
     // /. functions
 
+    // useEffect(() => {
+    //     const actionsCol = mergedColumns.find(
+    //         col => col.dataIndex === 'action'
+    //     );
+    //     if (actionsCol) {
+    //         isEditingMode
+    //             ? (actionsCol.hidden = false)
+    //             : (actionsCol.hidden = true);
+    //     }
+    // }, [isEditingMode, mergedColumns]);
+
     return (
         <Form
             form={form}
@@ -392,7 +409,7 @@ const Table: React.FC = () => {
                     }
                 }}
                 rowClassName="editable-row"
-                columns={mergedColumns}
+                columns={outputTableData as any[]}
                 dataSource={visibleItems}
                 bordered
                 size="middle"

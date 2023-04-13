@@ -92,4 +92,9 @@ body {
             opacity: 0.5;
         }
     }
+
+    &__button.active {
+        background-color: $turquoise-color;
+        color: $white-color;
+    }
 }

@@ -2,7 +2,10 @@ import React, { useEffect } from 'react';
 
 import { fetchContactsData } from 'app/api/fetchContactsData';
 
-import { switchContactsDataLoadingStatus } from 'app/slices/tableSlice';
+import {
+    switchContactsDataLoadingStatus,
+    switchEditingMode
+} from 'app/slices/tableSlice';
 
 import { useAppSelector, useAppDispatch } from 'app/hooks';
 
@@ -22,7 +25,8 @@ const App: React.FC = () => {
         filteredContactsData,
         fetchContactsDataStatus,
         isContactsDataLoading,
-        fetchContactsDataError
+        fetchContactsDataError,
+        isEditingMode
     } = useAppSelector(state => state.tableSlice);
 
     const dispatch = useAppDispatch();
@@ -62,9 +66,14 @@ const App: React.FC = () => {
                         <FindForm />
                     </div>
                     <button
-                        className="search-section__button"
+                        className={`search-section__button ${
+                            isEditingMode ? 'active' : ''
+                        }`}
                         type="button"
                         disabled={!isBtnAvailable}
+                        onClick={() =>
+                            dispatch(switchEditingMode(!isEditingMode))
+                        }
                     >
                         Режим редактирования
                     </button>

@@ -8,6 +8,7 @@ interface tableSliceTypes {
     contactsData: Icontact[];
     filteredContactsData: Icontact[];
     isContactsDataLoading: boolean;
+    isEditingMode: boolean;
     fetchContactsDataStatus: string;
     fetchContactsDataError: null | string;
     itemPerPage: number;
@@ -20,6 +21,7 @@ const initialState: tableSliceTypes = {
     contactsData: [],
     filteredContactsData: [],
     isContactsDataLoading: true,
+    isEditingMode: false,
     fetchContactsDataStatus: '',
     fetchContactsDataError: null,
     itemPerPage: 8,
@@ -54,6 +56,9 @@ const tableSlice = createSlice({
         },
         setItemsPerPage(state, action: PayloadAction<number>) {
             state.itemPerPage = action.payload;
+        },
+        switchEditingMode(state, action: PayloadAction<boolean>) {
+            state.isEditingMode = action.payload;
         }
     },
     extraReducers: {
@@ -103,7 +108,8 @@ export const {
     filterContactsData,
     setCurrentPageValue,
     setItemsPerPage,
-    updateFilteredContactsData
+    updateFilteredContactsData,
+    switchEditingMode
 } = tableSlice.actions;
 
 export default tableSlice.reducer;

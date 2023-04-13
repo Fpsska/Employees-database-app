@@ -27,3 +27,17 @@ export interface Icontact {
     date: string;
     note: string;
 }
+
+export interface Icolumn {
+    title: string;
+    sorter?: (arg1: any, arg2: any) => void;
+    key?: string;
+    dataIndex?: string;
+    width?: string | number;
+    hidden?: boolean;
+    fixed?: string;
+    editable?: boolean;
+    align?: string;
+    children?: any[];
+    render?: any;
+}
