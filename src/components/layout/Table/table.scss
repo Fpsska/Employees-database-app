@@ -80,8 +80,24 @@
     }
 }
 
-.editable-row .ant-form-item-explain {
-    position: absolute;
-    top: 100%;
-    font-size: 12px;
+.cell-content {
+    background-color: transparent;
+    transition: all .25s ease-in-out;
+}
+
+.cell-content.ok {
+    color: $auroMetalSaurus-color;
+    background-color: transparent;
+}
+
+.cell-content.bad {
+    color: $white-color;
+    background-color: $fieryRose-color;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.cell-content.cooming {
+    color: $fieryRose-color;
+    background-color: transparent;
 }

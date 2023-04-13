@@ -4,7 +4,7 @@ import { checkEditingStatus } from './checkEditingStatus';
 
 // /. imports
 
-export function mergingNestedCol(
+export function mergeNestedCol(
     childrenData: any[],
     editingKey: string
 ): Icontact[] {
