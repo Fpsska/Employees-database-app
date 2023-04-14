@@ -38,7 +38,10 @@ const App: React.FC = () => {
 
     const dispatch = useAppDispatch();
 
-    const isBtnAvailable = !isContactsDataLoading && !fetchContactsDataError;
+    const isBtnAvailable =
+        !isContactsDataLoading &&
+        !fetchContactsDataError &&
+        filteredContactsData.length > 0;
 
     // /. hooks
 
