@@ -17,6 +17,8 @@ import Pagination from 'components/layout/Pagination/Pagination';
 
 import { declensionByQuantity } from 'utilts/helpers/declensionByQuantity';
 
+import Navigation from 'components/layout/Navigation/Navigation';
+
 import './App.css';
 import 'assets/styles/style.scss';
 
@@ -63,38 +65,44 @@ const App: React.FC = () => {
     // /. effects
 
     return (
-        <section className="App">
+        <div className="App">
             <div className="page">
-                <h1 className="page__title">Общая база сотрудников</h1>
-                <div className="search-section">
-                    <div className="search-section__group">
-                        <div className="search-section__info">
-                            <span className="search-section__counter">
-                                {filteredContactsData.length}
-                            </span>
-                            <span className="search-section__text">
-                                {contactsTextValue}
-                            </span>
+                <header className="header">
+                    <Navigation additionalClass="header__navigation" />
+                </header>
+                <main className="main">
+                    <h1 className="page__title">Общая база сотрудников</h1>
+                    <div className="search-section">
+                        <div className="search-section__group">
+                            <div className="search-section__info">
+                                <span className="search-section__counter">
+                                    {filteredContactsData.length}
+                                </span>
+                                <span className="search-section__text">
+                                    {contactsTextValue}
+                                </span>
+                            </div>
+                            <FindForm />
                         </div>
-                        <FindForm />
+                        <button
+                            className={`search-section__button ${
+                                isEditingMode ? 'active' : ''
+                            }`}
+                            type="button"
+                            disabled={!isBtnAvailable}
+                            onClick={() =>
+                                dispatch(switchEditingMode(!isEditingMode))
+                            }
+                        >
+                            Режим редактирования
+                        </button>
                     </div>
-                    <button
-                        className={`search-section__button ${
-                            isEditingMode ? 'active' : ''
-                        }`}
-                        type="button"
-                        disabled={!isBtnAvailable}
-                        onClick={() =>
-                            dispatch(switchEditingMode(!isEditingMode))
-                        }
-                    >
-                        Режим редактирования
-                    </button>
-                </div>
-                <Table />
-                <Pagination />
+                    <Table />
+                    <Pagination />
+                </main>
+                <footer className="footer"></footer>
             </div>
-        </section>
+        </div>
     );
 };
 export default App;

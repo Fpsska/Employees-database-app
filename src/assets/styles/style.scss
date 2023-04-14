@@ -29,7 +29,7 @@ body {
 
 .page {
     background-color: $cultured-color;
-    padding: 27px 40px;
+    padding: 20px 40px;
     border-radius: 56px;
 
     &__title {
@@ -100,5 +100,11 @@ body {
     &__button.active {
         background-color: $turquoise-color;
         color: $white-color;
+    }
+}
+
+.header {
+    &__navigation {
+        margin-bottom: 45px;
     }
 }
