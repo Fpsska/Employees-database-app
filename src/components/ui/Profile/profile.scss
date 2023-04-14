@@ -24,7 +24,8 @@
     &__image {
         width: 56px;
         height: 56px;
-        // overflow: hidden;
+        overflow: hidden;
+        object-fit: cover;
         border-radius: 50%;
         margin-right: 23px;
     }

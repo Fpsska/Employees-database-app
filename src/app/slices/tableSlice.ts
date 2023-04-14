@@ -62,45 +62,46 @@ const tableSlice = createSlice({
             state.isEditingMode = action.payload;
         }
     },
-    extraReducers: {
-        [fetchContactsData.pending.type]: state => {
-            state.fetchContactsDataStatus = 'loading';
-            state.fetchContactsDataError = null;
-        },
-        [fetchContactsData.fulfilled.type]: (
-            state,
-            action: PayloadAction<any>
-        ) => {
-            const { contactsData } = action.payload;
-            // /. payload
+    extraReducers: builder => {
+        builder
+            .addCase(fetchContactsData.pending, state => {
+                state.fetchContactsDataStatus = 'loading';
+                state.fetchContactsDataError = null;
+            })
+            .addCase(
+                fetchContactsData.fulfilled,
+                (state, action: PayloadAction<any>) => {
+                    const { contactsData } = action.payload;
+                    // /. payload
 
-            const dublicatedData: Icontact[] = [...contactsData];
-            const extendedData: Icontact[] = [
-                ...contactsData,
-                ...dublicatedData
-            ];
+                    const dublicatedData: Icontact[] = [...contactsData];
+                    const extendedData: Icontact[] = [
+                        ...contactsData,
+                        ...dublicatedData
+                    ];
 
-            const outputData: Icontact[] = extendedData.map(
-                ({ ...item }, idx: number) => ({
-                    ...item,
-                    key: idx,
-                    id: Math.floor(Math.random() * item.id),
-                    serialNumber: idx + 1,
-                    isEditable: false
-                })
+                    const outputData: Icontact[] = extendedData.map(
+                        ({ ...item }, idx: number) => ({
+                            ...item,
+                            key: idx,
+                            id: Math.floor(Math.random() * item.id),
+                            serialNumber: idx + 1,
+                            isEditable: false
+                        })
+                    );
+
+                    state.contactsData = outputData;
+                    state.filteredContactsData = outputData;
+                    state.fetchContactsDataStatus = 'success';
+                }
+            )
+            .addCase(
+                fetchContactsData.rejected,
+                (state, action: PayloadAction<any>) => {
+                    state.fetchContactsDataStatus = 'failed';
+                    state.fetchContactsDataError = action.payload as string;
+                }
             );
-
-            state.contactsData = outputData;
-            state.filteredContactsData = outputData;
-            state.fetchContactsDataStatus = 'success';
-        },
-        [fetchContactsData.rejected.type]: (
-            state,
-            action: PayloadAction<string>
-        ) => {
-            state.fetchContactsDataStatus = 'failed';
-            state.fetchContactsDataError = action.payload;
-        }
     }
 });
 

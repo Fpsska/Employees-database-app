@@ -1,8 +1,6 @@
 import React from 'react';
 
-import { UserOutlined } from '@ant-design/icons';
-
-import { Avatar } from 'antd';
+import avatar from 'assets/images/profile-image.png';
 
 import './profile.scss';
 
@@ -16,9 +14,9 @@ const Profile: React.FC<{ additionalClass: string }> = ({
             <div className="profile__wrapper">
                 <div className="profile__preview">
                     <div className="profile__image">
-                        <Avatar
-                            size={56}
-                            icon={<UserOutlined />}
+                        <img
+                            src={avatar}
+                            alt="profile image"
                         />
                     </div>
                     <div className="profile__information">
