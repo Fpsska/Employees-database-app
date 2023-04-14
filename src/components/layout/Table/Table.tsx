@@ -408,9 +408,6 @@ const Table: React.FC = () => {
                         cell: EditableTableCell
                     }
                 }}
-                // rowClassName={record =>
-                //     checkValidity(record.validity) ? 'green' : 'red'
-                // }
                 columns={outputTableData as any[]}
                 dataSource={formatDataToPreview(
                     currentPage,
@@ -419,7 +416,7 @@ const Table: React.FC = () => {
                 )}
                 bordered
                 size="middle"
-                scroll={{ x: 'max-content', y: '505px' }}
+                scroll={{ x: 'max-content', y: '490px' }}
                 pagination={false}
                 loading={isContactsDataLoading}
                 locale={{
