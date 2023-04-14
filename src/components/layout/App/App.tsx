@@ -18,6 +18,7 @@ import Pagination from 'components/layout/Pagination/Pagination';
 import { declensionByQuantity } from 'utilts/helpers/declensionByQuantity';
 
 import Navigation from 'components/layout/Navigation/Navigation';
+import Profile from 'components/ui/Profile/Profile';
 
 import './App.css';
 import 'assets/styles/style.scss';
@@ -68,7 +69,10 @@ const App: React.FC = () => {
         <div className="App">
             <div className="page">
                 <header className="header">
-                    <Navigation additionalClass="header__navigation" />
+                    <div className="header__wrapper">
+                        <Navigation additionalClass="header__navigation" />
+                        <Profile />
+                    </div>
                 </header>
                 <main className="main">
                     <h1 className="page__title">Общая база сотрудников</h1>

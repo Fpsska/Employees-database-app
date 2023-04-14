@@ -3,9 +3,9 @@
 // /. imports
 
 .table {
-    padding-bottom: 34px;
-    border-radius: 32px;
+    padding-bottom: 30px;
     background-color: $white-color;
+    border-radius: 32px;
 
     .ant-table-empty {
         .ant-table-thead .ant-table-cell {
@@ -73,6 +73,7 @@
         color: $auroMetalSaurus-color;
         border-bottom: 2px solid $cultured-color !important;
         border-inline-end: 2px solid $cultured-color !important;
+        padding: 13px 8px !important;
     }
 
     .ant-spin.ant-spin-spinning {

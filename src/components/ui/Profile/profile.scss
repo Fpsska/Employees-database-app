@@ -1,0 +1,54 @@
+@import 'assets/styles/vars';
+
+// /. imports
+
+.profile {
+
+    flex: 0 auto 361px;
+
+    &__preview {
+        display: flex;
+        align-items: center;
+        margin-right: 10px;
+    }
+
+    &__wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    &__information {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__image {
+        width: 56px;
+        height: 56px;
+        overflow: hidden;
+        border-radius: 50%;
+        margin-right: 23px;
+    }
+
+    &__nickname {
+        font-size: 16px;
+        font-weight: 700;
+        color: $charcoal-color;
+    }
+
+    &__position {
+        font-size: 14px;
+        font-weight: 600;
+        color: $manatee-color;
+    }
+
+    &__button {
+        background-color: transparent;
+        border-color: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+}

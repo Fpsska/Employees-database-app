@@ -28,8 +28,7 @@ body {
 // /. general-styles
 
 .page {
-    background-color: $cultured-color;
-    padding: 20px 40px;
+    background-color: $white-color;
     border-radius: 56px;
 
     &__title {
@@ -41,7 +40,7 @@ body {
 }
 
 .search-section {
-    margin-bottom: 50px;
+    margin-bottom: 65px;
     padding: 38px 34px;
     background-color: $white-color;
     border-radius: 32px;
@@ -104,7 +103,16 @@ body {
 }
 
 .header {
-    &__navigation {
-        margin-bottom: 45px;
+    &__wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 50px 40px 57px 40px;
     }
+}
+
+.main {
+    background-color: $cultured-color;
+    padding: 20px 40px;
+    border-radius: 56px;
 }
