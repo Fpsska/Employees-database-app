@@ -50,6 +50,7 @@ const tableSlice = createSlice({
         },
         updateFilteredContactsData(state, action: PayloadAction<any[]>) {
             state.filteredContactsData = action.payload;
+            state.contactsData = action.payload;
         },
         setCurrentPageValue(state, action: PayloadAction<number>) {
             state.currentPage = action.payload;
