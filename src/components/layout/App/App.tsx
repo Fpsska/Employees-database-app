@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { fetchContactsData } from 'app/api/fetchContactsData';
 
@@ -15,6 +15,8 @@ import Table from 'components/layout/Table/Table';
 
 import Pagination from 'components/layout/Pagination/Pagination';
 
+import { declensionByQuantity } from 'utilts/helpers/declensionByQuantity';
+
 import './App.css';
 import 'assets/styles/style.scss';
 
@@ -28,6 +30,8 @@ const App: React.FC = () => {
         fetchContactsDataError,
         isEditingMode
     } = useAppSelector(state => state.tableSlice);
+
+    const [contactsTextValue, setContactsTextValue] = useState<string>('');
 
     const dispatch = useAppDispatch();
 
@@ -47,6 +51,15 @@ const App: React.FC = () => {
         }
     }, [fetchContactsDataStatus]);
 
+    useEffect(() => {
+        const textValue = declensionByQuantity(filteredContactsData.length, [
+            'контакт',
+            'контакта',
+            'контактов'
+        ]);
+        setContactsTextValue(textValue);
+    }, [filteredContactsData]);
+
     // /. effects
 
     return (
@@ -60,7 +73,7 @@ const App: React.FC = () => {
                                 {filteredContactsData.length}
                             </span>
                             <span className="search-section__text">
-                                Контактов
+                                {contactsTextValue}
                             </span>
                         </div>
                         <FindForm />
