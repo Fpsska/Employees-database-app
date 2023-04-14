@@ -9,11 +9,8 @@ import './find-form.scss';
 // /. imports
 
 const FindForm: React.FC = () => {
-    const {
-        filteredContactsData,
-        isContactsDataLoading,
-        fetchContactsDataError
-    } = useAppSelector(state => state.tableSlice);
+    const { contactsData, isContactsDataLoading, fetchContactsDataError } =
+        useAppSelector(state => state.tableSlice);
 
     const dispatch = useAppDispatch();
 
@@ -22,7 +19,7 @@ const FindForm: React.FC = () => {
     const isControlsAvailable =
         !isContactsDataLoading &&
         !fetchContactsDataError &&
-        filteredContactsData.length > 0;
+        contactsData.length > 0;
 
     // /. variables
 

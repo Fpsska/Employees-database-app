@@ -28,6 +28,7 @@ import 'assets/styles/style.scss';
 
 const App: React.FC = () => {
     const {
+        contactsData,
         filteredContactsData,
         fetchContactsDataStatus,
         isContactsDataLoading,
@@ -42,7 +43,7 @@ const App: React.FC = () => {
     const isBtnAvailable =
         !isContactsDataLoading &&
         !fetchContactsDataError &&
-        filteredContactsData.length > 0;
+        contactsData.length > 0;
 
     // /. hooks
 
