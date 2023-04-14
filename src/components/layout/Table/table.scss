@@ -83,6 +83,7 @@
 .cell-content {
     background-color: transparent;
     transition: all .25s ease-in-out;
+<<<<<<< HEAD
 }
 
 .cell-content.ok {
@@ -100,4 +101,13 @@
 .cell-content.cooming {
     color: $fieryRose-color;
     background-color: transparent;
+=======
+
+    &:hover {
+        background-color: $fieryRose-color;
+        color: $white-color;
+        border-radius: 4px;
+        padding: 5px;
+    }
+>>>>>>> bfca97099851b4a4643ef07d627e98e1b026f146
 }

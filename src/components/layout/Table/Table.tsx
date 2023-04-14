@@ -214,20 +214,7 @@ const Table: React.FC = () => {
                     dataIndex: 'validity',
                     key: 'validity',
                     width: 130,
-                    editable: true,
-                    render(text: string, record: Icontact) {
-                        return {
-                            children: (
-                                <span
-                                    className={`cell-content ${checkValidity(
-                                        record.validity
-                                    )}`}
-                                >
-                                    {text}
-                                </span>
-                            )
-                        };
-                    }
+                    editable: true
                 },
                 {
                     title: 'Место рождения',
