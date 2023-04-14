@@ -108,6 +108,17 @@ body {
         align-items: center;
         justify-content: space-between;
         padding: 50px 40px 57px 40px;
+        gap: 40px
+    }
+
+    &__navigation {
+        .nav-list {
+            max-width: calc(100vw - 700px);
+        }
+    }
+
+    &__profile {
+        flex: 0 0 360px;
     }
 }
 
@@ -115,4 +126,19 @@ body {
     background-color: $cultured-color;
     padding: 20px 40px;
     border-radius: 56px;
+}
+
+.scroll {
+    white-space: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    cursor: grab;
+
+    &::-webkit-scrollbar {
+        background-color: transparent;
+        height: 5px;
+        width: 0;
+    }
 }

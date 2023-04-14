@@ -97,7 +97,7 @@ const Navigation: React.FC<{ additionalClass: string }> = ({
                     </svg>
                 </button>
             </div>
-            <ul className="navigation__list nav-list">
+            <ul className="navigation__list nav-list scroll">
                 {navigationData.map((template: IheaderNavigation) => {
                     return (
                         <li

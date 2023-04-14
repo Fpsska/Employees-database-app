@@ -52,27 +52,33 @@
 
 .nav-list {
     display: flex;
-    border-bottom: 1.5px solid $lightGray-color;
 
     &__template {
-        padding-bottom: 20px;
+        padding: 0 40px 20px 0;
         cursor: pointer;
+        position: relative;
 
-        &:not(:last-child) {
-            margin-right: 40px;
+        &::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: auto;
+            bottom: 1.5px;
+            width: 100%;
+            height: 1.5px;
+            background-color: $lightGray-color;
         }
     }
 
     &__template.active {
-        position: relative;
-
         &::before {
             content: '';
             position: absolute;
-            bottom: -2.5px;
-            top: auto;
+            z-index: 2;
             left: 0;
-            width: 100%;
+            top: auto;
+            bottom: 0;
+            width: calc(100% - 40px);
             height: 4px;
             background-color: $turquoise-color;
             border-radius: 4px;

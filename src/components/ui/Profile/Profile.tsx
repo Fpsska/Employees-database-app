@@ -8,9 +8,11 @@ import './profile.scss';
 
 // /. imports
 
-const Profile: React.FC = () => {
+const Profile: React.FC<{ additionalClass: string }> = ({
+    additionalClass
+}) => {
     return (
-        <div className="profile">
+        <div className={`profile ${additionalClass ? additionalClass : ''}`}>
             <div className="profile__wrapper">
                 <div className="profile__preview">
                     <div className="profile__image">

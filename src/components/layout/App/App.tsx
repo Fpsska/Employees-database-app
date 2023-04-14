@@ -21,6 +21,7 @@ import Navigation from 'components/layout/Navigation/Navigation';
 import Profile from 'components/ui/Profile/Profile';
 
 import './App.css';
+import 'assets/styles/_media.scss';
 import 'assets/styles/style.scss';
 
 // /. imports
@@ -74,7 +75,7 @@ const App: React.FC = () => {
                 <header className="header">
                     <div className="header__wrapper">
                         <Navigation additionalClass="header__navigation" />
-                        <Profile />
+                        <Profile additionalClass="header__profile" />
                     </div>
                 </header>
                 <main className="main">

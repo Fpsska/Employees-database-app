@@ -4,8 +4,6 @@
 
 .profile {
 
-    flex: 0 auto 361px;
-
     &__preview {
         display: flex;
         align-items: center;
@@ -26,7 +24,7 @@
     &__image {
         width: 56px;
         height: 56px;
-        overflow: hidden;
+        // overflow: hidden;
         border-radius: 50%;
         margin-right: 23px;
     }

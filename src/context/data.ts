@@ -22,5 +22,25 @@ export const headerNavigationData: IheaderNavigation[] = [
         id: 4,
         text: 'Календарь сотрудников',
         isActive: false
+    },
+    {
+        id: 5,
+        text: 'Тестовый раздел',
+        isActive: false
+    },
+    {
+        id: 6,
+        text: 'Тестовый раздел',
+        isActive: false
+    },
+    {
+        id: 7,
+        text: 'Тестовый раздел',
+        isActive: false
+    },
+    {
+        id: 8,
+        text: 'Тестовый раздел',
+        isActive: false
     }
 ];
