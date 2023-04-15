@@ -12,7 +12,7 @@ export const headerNavigationData: IheaderNavigation[] = [
     {
         id: 2,
         text: 'Общая база сотрудников',
-        href: '/h2o-task',
+        href: '/',
         isActive: true
     },
     {

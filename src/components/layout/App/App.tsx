@@ -47,7 +47,7 @@ const App: React.FC = () => {
         <div className="App">
             <Routes>
                 <Route
-                    path="/h2o-task"
+                    path="/"
                     element={<Layout />}
                 >
                     <Route
