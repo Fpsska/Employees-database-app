@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/h2o-task/static/css/main.a719ca7a.css",
+    "main.js": "/h2o-task/static/js/main.a22e58b2.js",
+    "static/js/787.d20cf4da.chunk.js": "/h2o-task/static/js/787.d20cf4da.chunk.js",
+    "static/media/profile-image.png": "/h2o-task/static/media/profile-image.59ce03200532f861cc76.png",
+    "index.html": "/h2o-task/index.html",
+    "main.a719ca7a.css.map": "/h2o-task/static/css/main.a719ca7a.css.map",
+    "main.a22e58b2.js.map": "/h2o-task/static/js/main.a22e58b2.js.map",
+    "787.d20cf4da.chunk.js.map": "/h2o-task/static/js/787.d20cf4da.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.a719ca7a.css",
+    "static/js/main.a22e58b2.js"
+  ]
+}
