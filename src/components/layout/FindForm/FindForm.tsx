@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { useAppSelector, useAppDispatch } from 'app/hooks';
 
 import { filterContactsData } from 'app/slices/tableSlice';
+
+import useDebounce from 'utilts/hooks/useDebounce';
 
 import './find-form.scss';
 
@@ -12,7 +14,11 @@ const FindForm: React.FC = () => {
     const { contactsData, isContactsDataLoading, fetchContactsDataError } =
         useAppSelector(state => state.tableSlice);
 
+    const [inputValue, setInputValue] = useState<string>('');
+
     const dispatch = useAppDispatch();
+
+    const debouncedValue = useDebounce(inputValue, 500);
 
     // /. hooks
 
@@ -24,10 +30,14 @@ const FindForm: React.FC = () => {
     // /. variables
 
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        dispatch(filterContactsData({ enteredValue: e.target.value.trim() }));
+        setInputValue(e.target.value.trim());
     };
 
     // /. functions
+
+    useEffect(() => {
+        dispatch(filterContactsData({ enteredValue: debouncedValue }));
+    }, [debouncedValue]);
 
     return (
         <form
