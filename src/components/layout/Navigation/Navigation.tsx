@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 
+import { Link } from 'react-router-dom';
+
+import { useNavigate } from 'react-router';
+
 import { headerNavigationData } from 'context/data';
 
-import { IheaderNavigation } from 'types/data.Types';
+import { IheaderNavigation } from 'types/dataTypes';
 
 import './navigation.scss';
 
@@ -14,13 +18,14 @@ const Navigation: React.FC<{ additionalClass: string }> = ({
     const [navigationData, setNavigationData] =
         useState<IheaderNavigation[]>(headerNavigationData);
 
+    const navigate = useNavigate();
+
     // /. hooks
 
     const onNavLinkClick = (
         e: React.SyntheticEvent,
         payloadID: number
     ): void => {
-        e.preventDefault();
         e.stopPropagation();
         //
         const newNavArray = navigationData.map(link =>
@@ -41,6 +46,7 @@ const Navigation: React.FC<{ additionalClass: string }> = ({
                     dataCopy[activeIDX].isActive = false;
                     dataCopy[activeIDX - 1].isActive = true;
                     setNavigationData(dataCopy);
+                    navigate(dataCopy[activeIDX - 1].href);
                 }
                 break;
             case 'next':
@@ -48,6 +54,7 @@ const Navigation: React.FC<{ additionalClass: string }> = ({
                     dataCopy[activeIDX].isActive = false;
                     dataCopy[activeIDX + 1].isActive = true;
                     setNavigationData(dataCopy);
+                    navigate(dataCopy[activeIDX + 1].href);
                 }
                 break;
             default:
@@ -107,13 +114,14 @@ const Navigation: React.FC<{ additionalClass: string }> = ({
                             onClick={e => onNavLinkClick(e, template.id)}
                             key={template.id}
                         >
-                            <a
+                            <Link
                                 className="nav-list__link"
-                                href="#"
+                                to={template.href}
                                 onClick={e => onNavLinkClick(e, template.id)}
+                                state={template.text}
                             >
                                 {template.text}
-                            </a>
+                            </Link>
                         </li>
                     );
                 })}
