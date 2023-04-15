@@ -1,6 +1,8 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, current, PayloadAction } from '@reduxjs/toolkit';
 
 import { fetchContactsData } from 'app/api/fetchContactsData';
+
+import { makeMultipleContactsFiltering } from 'utilts/helpers/filterContacts';
 
 import { Icontact } from 'types/tableSliceTypes';
 
@@ -44,11 +46,12 @@ const tableSlice = createSlice({
             const { enteredValue } = action.payload;
             // /. payload
 
-            state.filteredContactsData = state.contactsData.filter(item =>
-                RegExp(enteredValue, 'gi').test(item.name)
+            state.filteredContactsData = state.contactsData.filter(
+                (contact: Icontact) =>
+                    makeMultipleContactsFiltering(contact, enteredValue)
             );
         },
-        updateFilteredContactsData(state, action: PayloadAction<any[]>) {
+        updateFilteredContactsData(state, action: PayloadAction<Icontact[]>) {
             state.filteredContactsData = action.payload;
             state.contactsData = action.payload;
         },

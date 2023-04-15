@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import { Table as AntTable, Empty, Typography, Popconfirm, Form } from 'antd';
 
@@ -41,7 +41,9 @@ const Table: React.FC = () => {
     // /. hooks
 
     const isTableDataEmpty =
-        filteredContactsData.length <= 0 || !fetchContactsDataError;
+        !filteredContactsData ||
+        filteredContactsData.length <= 0 ||
+        !fetchContactsDataError;
 
     const dataErrorMarkup: JSX.Element = (
         <Empty
@@ -215,18 +217,16 @@ const Table: React.FC = () => {
                     key: 'validity',
                     width: 130,
                     editable: true,
-                    render(text: string, record: any) {
-                        return {
-                            children: (
-                                <span
-                                    className={`cell-content ${checkValidity(
-                                        record.validity
-                                    )}`}
-                                >
-                                    {text}
-                                </span>
-                            )
-                        };
+                    render: (text: string, record: Icontact) => {
+                        return (
+                            <span
+                                className={`cell-content ${checkValidity(
+                                    record.validity
+                                )}`}
+                            >
+                                {text}
+                            </span>
+                        );
                     }
                 },
                 {
@@ -353,7 +353,7 @@ const Table: React.FC = () => {
         }
     });
 
-    const outputTableData: Icolumn[] = isEditingMode
+    const outputColumnsTableData: Icolumn[] = isEditingMode
         ? mergedColumns
         : mergedColumns.filter(col => !col.hidden);
 
@@ -408,7 +408,7 @@ const Table: React.FC = () => {
                         cell: EditableTableCell
                     }
                 }}
-                columns={outputTableData as any[]}
+                columns={outputColumnsTableData as any[]}
                 dataSource={formatDataToPreview(
                     currentPage,
                     itemPerPage,

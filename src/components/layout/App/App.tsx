@@ -43,7 +43,8 @@ const App: React.FC = () => {
     const isBtnAvailable =
         !isContactsDataLoading &&
         !fetchContactsDataError &&
-        contactsData.length > 0;
+        contactsData.length > 0 &&
+        filteredContactsData?.length;
 
     // /. hooks
 
@@ -60,7 +61,7 @@ const App: React.FC = () => {
     }, [fetchContactsDataStatus]);
 
     useEffect(() => {
-        const textValue = declensionByQuantity(filteredContactsData.length, [
+        const textValue = declensionByQuantity(filteredContactsData?.length, [
             'контакт',
             'контакта',
             'контактов'
@@ -85,7 +86,7 @@ const App: React.FC = () => {
                         <div className="search-section__group">
                             <div className="search-section__info">
                                 <span className="search-section__counter">
-                                    {filteredContactsData.length}
+                                    {filteredContactsData?.length || 0}
                                 </span>
                                 <span className="search-section__text">
                                     {contactsTextValue}
