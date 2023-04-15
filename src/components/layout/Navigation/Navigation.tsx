@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Link } from 'react-router-dom';
 
@@ -24,7 +24,8 @@ const Navigation: React.FC<{ additionalClass: string }> = ({
 
     const onNavLinkClick = (
         e: React.SyntheticEvent,
-        payloadID: number
+        payloadID: number,
+        href: string
     ): void => {
         e.stopPropagation();
         //
@@ -34,6 +35,7 @@ const Navigation: React.FC<{ additionalClass: string }> = ({
                 : { ...link, isActive: false }
         );
         setNavigationData(newNavArray);
+        navigate(href);
     };
 
     const onButtonNavClick = (direction: string): void => {
@@ -111,13 +113,21 @@ const Navigation: React.FC<{ additionalClass: string }> = ({
                             className={`nav-list__template ${
                                 template.isActive ? 'active' : ''
                             }`}
-                            onClick={e => onNavLinkClick(e, template.id)}
+                            onClick={e =>
+                                onNavLinkClick(e, template.id, template.href)
+                            }
                             key={template.id}
                         >
                             <Link
                                 className="nav-list__link"
                                 to={template.href}
-                                onClick={e => onNavLinkClick(e, template.id)}
+                                onClick={e =>
+                                    onNavLinkClick(
+                                        e,
+                                        template.id,
+                                        template.href
+                                    )
+                                }
                                 state={template.text}
                             >
                                 {template.text}

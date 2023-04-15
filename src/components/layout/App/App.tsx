@@ -4,9 +4,9 @@ import { Route, Routes } from 'react-router';
 
 import { fetchContactsData } from 'app/api/fetchContactsData';
 
-import { switchContactsDataLoadingStatus } from 'app/slices/tableSlice';
-
 import { useAppSelector, useAppDispatch } from 'app/hooks';
+
+import { switchContactsDataLoadingStatus } from 'app/slices/tableSlice';
 
 import GeneralBasePage from 'pages/GeneralBasePage/GeneralBasePage';
 import PlaceholderPage from 'pages/PlaceholderPage/PlaceholderPage';
