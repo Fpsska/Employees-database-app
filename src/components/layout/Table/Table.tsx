@@ -93,7 +93,7 @@ const Table: React.FC = () => {
                     <Typography.Link
                         disabled={!!editingKey}
                         onClick={() => {
-                            onEditClick(record, record.key);
+                            onEditCellClick(record, record.key);
                         }}
                     >
                         Edit
@@ -359,7 +359,10 @@ const Table: React.FC = () => {
 
     // /. variables
 
-    const onEditClick = (record: Partial<Icontact>, key: React.Key): void => {
+    const onEditCellClick = (
+        record: Partial<Icontact>,
+        key: React.Key
+    ): void => {
         form.setFieldsValue({
             ...record
         });
@@ -416,7 +419,7 @@ const Table: React.FC = () => {
                 )}
                 bordered
                 size="middle"
-                scroll={{ x: 'max-content', y: 'undefined' }}
+                scroll={{ x: 'max-content', y: '425px' }}
                 pagination={false}
                 loading={isContactsDataLoading}
                 locale={{
