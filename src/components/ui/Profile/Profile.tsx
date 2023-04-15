@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
+
+import { Skeleton, Space } from 'antd';
 
 import avatar from 'assets/images/profile-image.png';
 
@@ -9,22 +11,47 @@ import './profile.scss';
 const Profile: React.FC<{ additionalClass: string }> = ({
     additionalClass
 }) => {
+
+const [isLoading, setIsLoading] = useState<boolean>(true)
+
+// /. hooks
+
+useEffect(() => {
+    setTimeout(() => {
+        setIsLoading(false)
+    }, 3000);
+},[])
+
+// /. effects
+
     return (
         <div className={`profile ${additionalClass ? additionalClass : ''}`}>
             <div className="profile__wrapper">
                 <div className="profile__preview">
-                    <div className="profile__image">
-                        <img
+                    {isLoading ? 
+                        <Space align="start">   
+                          <Skeleton.Avatar active size={56}  />
+                            <Space direction="vertical">
+                                <Skeleton.Button active size="small" />
+                                <Skeleton.Input active size="small" />
+                            </Space>
+                        </Space>
+                    :
+                    <>
+                        <div className="profile__image">
+                            <img
                             src={avatar}
                             alt="profile image"
-                        />
-                    </div>
-                    <div className="profile__information">
-                        <span className="profile__nickname">Kristina 🐰</span>
-                        <span className="profile__position">
-                            менеджер продаж
-                        </span>
-                    </div>
+                            />
+                        </div>
+                        <div className="profile__information">
+                            <span className="profile__nickname">Kristina 🐰</span>
+                            <span className="profile__position">
+                                менеджер продаж
+                            </span>
+                        </div>
+                    </>
+                    }
                 </div>
                 <button
                     className="profile__button"
