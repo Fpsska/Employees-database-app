@@ -419,7 +419,7 @@ const Table: React.FC = () => {
                 )}
                 bordered
                 size="middle"
-                scroll={{ x: 'max-content', y: '425px' }}
+                scroll={{ x: 'max-content', y: '430px' }}
                 pagination={false}
                 loading={isContactsDataLoading}
                 locale={{
