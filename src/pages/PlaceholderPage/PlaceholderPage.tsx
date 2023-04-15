@@ -11,7 +11,7 @@ const PlaceholderPage: React.FC = () => {
 
     return (
         <div className="placeholder-page">
-            <h1 className="page__title">
+            <h1 className="page__title center">
                 {location?.state || 'PlaceholderPage'}
             </h1>
         </div>

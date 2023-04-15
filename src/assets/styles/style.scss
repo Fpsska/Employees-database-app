@@ -28,6 +28,9 @@ body {
 // /. general-styles
 
 .page {
+    display: flex;
+    flex-direction: column;
+
     background-color: $white-color;
     border-radius: 56px;
 
@@ -124,6 +127,7 @@ body {
 }
 
 .main {
+    flex: 1 1 auto;
     background-color: $cultured-color;
     padding: 20px 40px;
     border-radius: 56px;
@@ -142,4 +146,8 @@ body {
         height: 5px;
         width: 0;
     }
+}
+
+.center {
+    text-align: center;
 }

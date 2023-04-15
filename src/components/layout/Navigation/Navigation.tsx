@@ -15,8 +15,9 @@ import './navigation.scss';
 const Navigation: React.FC<{ additionalClass: string }> = ({
     additionalClass
 }) => {
-    const [navigationData, setNavigationData] =
-        useState<IheaderNavigation[]>(headerNavigationData);
+    const [navigationData, setNavigationData] = useState<IheaderNavigation[]>(
+        []
+    );
 
     const navigate = useNavigate();
 
@@ -24,18 +25,21 @@ const Navigation: React.FC<{ additionalClass: string }> = ({
 
     const onNavLinkClick = (
         e: React.SyntheticEvent,
-        payloadID: number,
-        href: string
+        template: IheaderNavigation
     ): void => {
         e.stopPropagation();
         //
+        const { id, href } = template;
+
         const newNavArray = navigationData.map(link =>
-            link.id === payloadID
+            link.id === id
                 ? { ...link, isActive: true }
                 : { ...link, isActive: false }
         );
         setNavigationData(newNavArray);
         navigate(href);
+
+        localStorage.setItem('navStorageData', JSON.stringify(newNavArray));
     };
 
     const onButtonNavClick = (direction: string): void => {
@@ -48,7 +52,14 @@ const Navigation: React.FC<{ additionalClass: string }> = ({
                     dataCopy[activeIDX].isActive = false;
                     dataCopy[activeIDX - 1].isActive = true;
                     setNavigationData(dataCopy);
-                    navigate(dataCopy[activeIDX - 1].href);
+                    localStorage.setItem(
+                        'navStorageData',
+                        JSON.stringify(dataCopy)
+                    );
+
+                    navigate(dataCopy[activeIDX - 1].href, {
+                        state: dataCopy[activeIDX - 1].text
+                    });
                 }
                 break;
             case 'next':
@@ -56,7 +67,14 @@ const Navigation: React.FC<{ additionalClass: string }> = ({
                     dataCopy[activeIDX].isActive = false;
                     dataCopy[activeIDX + 1].isActive = true;
                     setNavigationData(dataCopy);
-                    navigate(dataCopy[activeIDX + 1].href);
+                    localStorage.setItem(
+                        'navStorageData',
+                        JSON.stringify(dataCopy)
+                    );
+
+                    navigate(dataCopy[activeIDX + 1].href, {
+                        state: dataCopy[activeIDX + 1].text
+                    });
                 }
                 break;
             default:
@@ -65,6 +83,16 @@ const Navigation: React.FC<{ additionalClass: string }> = ({
     };
 
     // /. functions
+
+    useEffect(() => {
+        const navStorageData = localStorage.getItem('navStorageData');
+
+        if (navStorageData) {
+            setNavigationData(JSON.parse(navStorageData));
+        } else {
+            setNavigationData(headerNavigationData);
+        }
+    }, []);
 
     return (
         <div className={`navigation ${additionalClass ? additionalClass : ''}`}>
@@ -113,21 +141,13 @@ const Navigation: React.FC<{ additionalClass: string }> = ({
                             className={`nav-list__template ${
                                 template.isActive ? 'active' : ''
                             }`}
-                            onClick={e =>
-                                onNavLinkClick(e, template.id, template.href)
-                            }
+                            onClick={e => onNavLinkClick(e, template)}
                             key={template.id}
                         >
                             <Link
                                 className="nav-list__link"
                                 to={template.href}
-                                onClick={e =>
-                                    onNavLinkClick(
-                                        e,
-                                        template.id,
-                                        template.href
-                                    )
-                                }
+                                onClick={e => onNavLinkClick(e, template)}
                                 state={template.text}
                             >
                                 {template.text}
