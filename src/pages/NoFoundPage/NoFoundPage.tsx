@@ -5,7 +5,7 @@ import React from 'react';
 const NoFoundPage: React.FC = () => {
     return (
         <div className="nofound-page">
-            <h1 className="page__title center">PlaceholderPage</h1>
+            <h1 className="title center">PlaceholderPage</h1>
         </div>
     );
 };

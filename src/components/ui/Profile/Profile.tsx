@@ -66,6 +66,7 @@ const Profile: React.FC<{ additionalClass: string }> = ({
                 <button
                     className="profile__button"
                     aria-label="open dropdown menu"
+                    disabled={isLoading}
                 >
                     <svg
                         width="12"

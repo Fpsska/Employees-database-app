@@ -47,7 +47,7 @@ const GeneralBasePage: React.FC = () => {
 
     return (
         <div className="general-page">
-            <h1 className="page__title">Общая база сотрудников</h1>
+            <h1 className="title">Общая база сотрудников</h1>
             <div className="search-section">
                 <div className="search-section__group">
                     <div className="search-section__info">

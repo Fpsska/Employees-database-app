@@ -25,22 +25,15 @@ body {
     height: 100%;
 }
 
-// /. general-styles
-
-.page {
+.App {
     display: flex;
     flex-direction: column;
 
     background-color: $white-color;
     border-radius: 56px;
-
-    &__title {
-        font-size: 28px;
-        font-weight: 800;
-        color: $charcoal-color;
-        margin: 0 0 20px 0;
-    }
 }
+
+// /. general-styles
 
 .search-section {
     margin-bottom: 65px;
@@ -133,6 +126,7 @@ body {
     border-radius: 56px;
 }
 
+
 .scroll {
     white-space: nowrap;
     overflow-x: auto;
@@ -146,6 +140,13 @@ body {
         height: 5px;
         width: 0;
     }
+}
+
+.title {
+    font-size: 28px;
+    font-weight: 800;
+    color: $charcoal-color;
+    margin: 0 0 20px 0;
 }
 
 .center {

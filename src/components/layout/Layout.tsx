@@ -11,7 +11,7 @@ const Layout: React.FC = () => {
     // /. hooks
 
     return (
-        <div className="page">
+        <>
             <header className="header">
                 <div className="header__wrapper">
                     <Navigation additionalClass="header__navigation" />
@@ -22,7 +22,7 @@ const Layout: React.FC = () => {
                 <Outlet />
             </main>
             <footer className="footer"></footer>
-        </div>
+        </>
     );
 };
 
