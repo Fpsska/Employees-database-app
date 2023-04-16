@@ -138,17 +138,16 @@ const Navigation: React.FC<{ additionalClass: string }> = ({
                 {navigationData.map((template: IheaderNavigation) => {
                     return (
                         <li
+                            key={template.id}
                             className={`nav-list__template ${
                                 template.isActive ? 'active' : ''
                             }`}
-                            onClick={e => onNavLinkClick(e, template)}
-                            key={template.id}
                         >
                             <Link
                                 className="nav-list__link"
                                 to={template.href}
-                                onClick={e => onNavLinkClick(e, template)}
                                 state={template.text}
+                                onClick={e => onNavLinkClick(e, template)}
                             >
                                 {template.text}
                             </Link>
