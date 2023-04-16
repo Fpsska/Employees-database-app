@@ -31,7 +31,7 @@ const Pagination: React.FC = () => {
             pageSize={itemPerPage}
             pageSizeOptions={[8, 10, 20, 50, 100]}
             showTotal={(total, range) =>
-                `${range[0]}-${range[1]} of ${total} items`
+                `показано ${range[0]}-${range[1]} из ${total} результатов`
             }
             onChange={(value: number) => {
                 dispatch(setCurrentPageValue(value));
