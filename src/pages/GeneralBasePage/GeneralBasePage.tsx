@@ -10,6 +10,7 @@ import FindForm from 'components/layout/FindForm/FindForm';
 import Pagination from 'components/layout/Pagination/Pagination';
 
 import Table from 'components/layout/Table/Table';
+import { Preloader } from 'components/ui/Preloader/Preloader';
 
 // /. imports
 
@@ -23,6 +24,7 @@ const GeneralBasePage: React.FC = () => {
     } = useAppSelector(state => state.tableSlice);
 
     const [contactsTextValue, setContactsTextValue] = useState<string>('');
+    const [isPageLoading, setPageLoading] = useState<boolean>(true);
 
     const dispatch = useAppDispatch();
 
@@ -33,6 +35,13 @@ const GeneralBasePage: React.FC = () => {
         filteredContactsData?.length;
 
     // /. hooks
+
+    useEffect(() => {
+        !isContactsDataLoading &&
+            setTimeout(() => {
+                setPageLoading(false);
+            }, 1400);
+    }, [isContactsDataLoading]);
 
     useEffect(() => {
         const textValue = declensionByQuantity(filteredContactsData?.length, [
@@ -47,32 +56,42 @@ const GeneralBasePage: React.FC = () => {
 
     return (
         <div className="general-page">
-            <h1 className="title">Общая база сотрудников</h1>
-            <div className="search-section">
-                <div className="search-section__group">
-                    <div className="search-section__info">
-                        <span className="search-section__counter">
-                            {filteredContactsData?.length || 0}
-                        </span>
-                        <span className="search-section__text">
-                            {contactsTextValue}
-                        </span>
+            <>{isPageLoading && <Preloader />}</>
+
+            <div
+                className={`general-page__wrapper ${
+                    isPageLoading ? 'blur' : ''
+                }`}
+            >
+                <h1 className="title">Общая база сотрудников</h1>
+                <div className="search-section">
+                    <div className="search-section__group">
+                        <div className="search-section__info">
+                            <span className="search-section__counter">
+                                {filteredContactsData?.length || 0}
+                            </span>
+                            <span className="search-section__text">
+                                {contactsTextValue}
+                            </span>
+                        </div>
+                        <FindForm />
                     </div>
-                    <FindForm />
+                    <button
+                        className={`search-section__button ${
+                            isEditingMode ? 'active' : ''
+                        }`}
+                        type="button"
+                        disabled={!isBtnAvailable}
+                        onClick={() =>
+                            dispatch(switchEditingMode(!isEditingMode))
+                        }
+                    >
+                        Режим редактирования
+                    </button>
                 </div>
-                <button
-                    className={`search-section__button ${
-                        isEditingMode ? 'active' : ''
-                    }`}
-                    type="button"
-                    disabled={!isBtnAvailable}
-                    onClick={() => dispatch(switchEditingMode(!isEditingMode))}
-                >
-                    Режим редактирования
-                </button>
+                <Table />
+                <Pagination />
             </div>
-            <Table />
-            <Pagination />
         </div>
     );
 };

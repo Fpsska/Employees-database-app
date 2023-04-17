@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 
 import { Table as AntTable, Empty, Typography, Popconfirm, Form } from 'antd';
 
+import { LoadingOutlined } from '@ant-design/icons';
+
 import { useAppSelector, useAppDispatch } from 'app/hooks';
 
 import { updateFilteredContactsData } from 'app/slices/tableSlice';
@@ -421,7 +423,10 @@ const Table: React.FC = () => {
                 size="middle"
                 scroll={{ x: 'max-content', y: '430px' }}
                 pagination={false}
-                loading={isContactsDataLoading}
+                loading={{
+                    indicator: <LoadingOutlined />,
+                    spinning: isContactsDataLoading
+                }}
                 locale={{
                     emptyText: isTableDataEmpty
                         ? dataEmptyMarkup

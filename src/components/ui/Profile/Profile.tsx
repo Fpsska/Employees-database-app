@@ -18,7 +18,7 @@ const Profile: React.FC<{ additionalClass: string }> = ({
     useEffect(() => {
         setTimeout(() => {
             setIsLoading(false);
-        }, 3000);
+        }, 2000);
     }, []);
 
     // /. effects
