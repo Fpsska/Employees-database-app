@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import { Link } from 'react-router-dom';
 
 import { useNavigate } from 'react-router';
+
+import { scrollToActiveElement } from 'utilts/helpers/scrollToActiveElement';
 
 import { headerNavigationData } from 'context/data';
 
@@ -19,6 +21,7 @@ const Navigation: React.FC<{ additionalClass: string }> = ({
         []
     );
 
+    const navListRef = useRef<HTMLUListElement>(null!);
     const navigate = useNavigate();
 
     // /. hooks
@@ -27,7 +30,7 @@ const Navigation: React.FC<{ additionalClass: string }> = ({
         e: React.SyntheticEvent,
         template: IheaderNavigation
     ): void => {
-        e.stopPropagation();
+        // e.stopPropagation();
         //
         const { id, href } = template;
 
@@ -40,11 +43,13 @@ const Navigation: React.FC<{ additionalClass: string }> = ({
         navigate(href);
 
         localStorage.setItem('navStorageData', JSON.stringify(newNavArray));
+        scrollToActiveElement(navListRef);
     };
 
     const onButtonNavClick = (direction: string): void => {
         const activeIDX = navigationData.findIndex(link => link.isActive);
         const dataCopy = [...navigationData];
+        scrollToActiveElement(navListRef);
 
         switch (direction) {
             case 'prev':
@@ -134,7 +139,10 @@ const Navigation: React.FC<{ additionalClass: string }> = ({
                     </svg>
                 </button>
             </div>
-            <ul className="navigation__list nav-list scroll">
+            <ul
+                className="navigation__list nav-list scroll"
+                ref={navListRef}
+            >
                 {navigationData.map((template: IheaderNavigation) => {
                     return (
                         <li
