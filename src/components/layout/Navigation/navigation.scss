@@ -54,7 +54,6 @@
     display: flex;
 
     &__template {
-        padding: 0 40px 20px 0;
         cursor: pointer;
         position: relative;
 
@@ -67,6 +66,10 @@
             width: 100%;
             height: 1.5px;
             background-color: $lightGray-color;
+        }
+
+        &:not(:last-child) {
+            padding: 0 40px 20px 0;
         }
     }
 
@@ -82,6 +85,12 @@
             height: 4px;
             background-color: $turquoise-color;
             border-radius: 4px;
+        }
+
+        &:last-child {
+            &::before {
+                width: 100%;
+            }
         }
 
         .nav-list__link {
