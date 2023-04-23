@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Table as AntTable, Empty, Typography, Popconfirm, Form } from 'antd';
 
@@ -6,7 +6,10 @@ import { LoadingOutlined } from '@ant-design/icons';
 
 import { useAppSelector, useAppDispatch } from 'app/hooks';
 
-import { updateFilteredContactsData } from 'app/slices/tableSlice';
+import {
+    updateFilteredContactsData,
+    switchContactsDataLoadingStatus
+} from 'app/slices/tableSlice';
 
 import { Icontact, Icolumn } from 'types/tableSliceTypes';
 
@@ -400,6 +403,14 @@ const Table: React.FC = () => {
     };
 
     // /. functions
+
+    useEffect(() => {
+        // show loader on pagination actions
+        dispatch(switchContactsDataLoadingStatus(true));
+        setTimeout(() => {
+            dispatch(switchContactsDataLoadingStatus(false));
+        }, 600);
+    }, [itemPerPage, currentPage]);
 
     return (
         <Form
