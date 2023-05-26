@@ -1,28 +1,28 @@
-import { Icontact } from 'types/tableSliceTypes';
+import { Icontact, IcolumnChildren } from 'types/tableSliceTypes';
 
 import { checkEditingStatus } from './checkEditingStatus';
 
 // /. imports
 
 export function mergeNestedCol(
-    childrenData: any[],
+    childrenData: IcolumnChildren[],
     editingKey: string
-): Icontact[] {
-    const mergedColumns = childrenData.map(col => {
-        if (col.editable) {
+): IcolumnChildren[] {
+    const mergedChildColumns = childrenData.map((childCol: IcolumnChildren) => {
+        if (childCol.editable) {
             return {
-                ...col,
+                ...childCol,
                 onCell: (record: Icontact) => ({
                     record,
-                    dataIndex: col.dataIndex,
-                    title: col.title,
+                    dataIndex: childCol.dataIndex,
+                    title: childCol.title,
                     editing: checkEditingStatus(record, editingKey)
                 })
             };
         } else {
-            return childrenData;
+            return childCol;
         }
     });
 
-    return mergedColumns;
+    return mergedChildColumns;
 }

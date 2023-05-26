@@ -1,8 +1,8 @@
-export function formatDataToPreview(
+export function formatDataToPreview<T>(
     currentPage: number,
     itemPerPage: number,
-    data: any[]
-): any[] {
+    data: T[]
+): T[] {
     if (!data || data.length <= 0) return [];
 
     const startEl = (currentPage - 1) * itemPerPage; // (1 - 1) * 8 = 0

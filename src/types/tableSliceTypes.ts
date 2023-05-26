@@ -28,16 +28,24 @@ export interface Icontact {
     note: string;
 }
 
-export interface Icolumn {
+interface IgeneralColumnProps {
     title: string;
+    width?: number;
+    editable?: boolean;
+    render?: (arg1: any, arg2: Icontact) => void;
     sorter?: (arg1: any, arg2: any) => void;
+}
+
+export interface IcolumnChildren extends IgeneralColumnProps {
+    key: string;
+    dataIndex: string;
+}
+
+export interface Icolumn extends IgeneralColumnProps {
     key?: string;
     dataIndex?: string;
-    width?: string | number;
     hidden?: boolean;
     fixed?: string;
-    editable?: boolean;
     align?: string;
-    children?: any[];
-    render?: any;
+    children?: IcolumnChildren[];
 }

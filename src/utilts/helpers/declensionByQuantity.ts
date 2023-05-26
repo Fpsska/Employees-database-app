@@ -1,4 +1,7 @@
-export function declensionByQuantity(quantity: number, array: any[]): string {
+export function declensionByQuantity(
+    quantity: number,
+    array: string[]
+): string {
     quantity = Math.abs(quantity) % 100;
 
     const case_1 = quantity % 10;

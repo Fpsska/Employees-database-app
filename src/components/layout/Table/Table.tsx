@@ -11,7 +11,7 @@ import {
     switchContactsDataLoadingStatus
 } from 'app/slices/tableSlice';
 
-import { Icontact, Icolumn } from 'types/tableSliceTypes';
+import { Icontact, Icolumn, IcolumnChildren } from 'types/tableSliceTypes';
 
 import EditableTableCell from 'components/layout/EditableTableCell/EditableTableCell';
 
@@ -72,10 +72,11 @@ const Table: React.FC = () => {
     const columnsData: Icolumn[] = [
         {
             title: 'ACTION',
-            align: 'center',
+            key: 'action',
             dataIndex: 'action',
-            fixed: 'left',
             width: 120,
+            align: 'center',
+            fixed: 'left',
             hidden: true,
             render: (_: any, record: Icontact) => {
                 const editable = checkEditingStatus(record, editingKey);
@@ -110,6 +111,7 @@ const Table: React.FC = () => {
         {
             title: '№',
             dataIndex: 'serialNumber',
+            key: 'serialNumber',
             width: 50
         },
         {
