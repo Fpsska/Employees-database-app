@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { useAppSelector, useAppDispatch } from 'app/hooks';
 
-import { switchEditingMode } from 'app/slices/tableSlice';
+import { switchEditingMode, setTableEditingKey } from 'app/slices/tableSlice';
 
 import { declensionByQuantity } from 'utilts/helpers/declensionByQuantity';
 
@@ -35,6 +35,13 @@ const GeneralBasePage: React.FC = () => {
         filteredContactsData?.length;
 
     // /. hooks
+
+    const onEditButtonClick = (): void => {
+        dispatch(switchEditingMode(!isEditingMode));
+        dispatch(setTableEditingKey(''));
+    };
+
+    // /. functions
 
     useEffect(() => {
         !isContactsDataLoading &&
@@ -82,9 +89,7 @@ const GeneralBasePage: React.FC = () => {
                         }`}
                         type="button"
                         disabled={!isBtnAvailable}
-                        onClick={() =>
-                            dispatch(switchEditingMode(!isEditingMode))
-                        }
+                        onClick={onEditButtonClick}
                     >
                         Режим редактирования
                     </button>

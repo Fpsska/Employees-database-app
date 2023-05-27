@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 import { Table as AntTable, Empty, Typography, Popconfirm, Form } from 'antd';
 
@@ -8,10 +8,11 @@ import { useAppSelector, useAppDispatch } from 'app/hooks';
 
 import {
     updateFilteredContactsData,
-    switchContactsDataLoadingStatus
+    switchContactsDataLoadingStatus,
+    setTableEditingKey
 } from 'app/slices/tableSlice';
 
-import { Icontact, Icolumn, IcolumnChildren } from 'types/tableSliceTypes';
+import { Icontact, Icolumn } from 'types/tableSliceTypes';
 
 import EditableTableCell from 'components/layout/EditableTableCell/EditableTableCell';
 
@@ -34,10 +35,9 @@ const Table: React.FC = () => {
         fetchContactsDataError,
         itemPerPage,
         currentPage,
-        isEditingMode
+        isEditingMode,
+        tableEditingKey
     } = useAppSelector(state => state.tableSlice);
-
-    const [editingKey, setEditingKey] = useState<string>('');
 
     const [form] = Form.useForm();
 
@@ -79,7 +79,7 @@ const Table: React.FC = () => {
             fixed: 'left',
             hidden: true,
             render: (_: any, record: Icontact) => {
-                const editable = checkEditingStatus(record, editingKey);
+                const editable = checkEditingStatus(record, tableEditingKey);
                 return editable ? (
                     <span>
                         <Typography.Link
@@ -97,7 +97,7 @@ const Table: React.FC = () => {
                     </span>
                 ) : (
                     <Typography.Link
-                        disabled={!!editingKey}
+                        disabled={!!tableEditingKey}
                         onClick={() => {
                             onEditCellClick(record, record.key);
                         }}
@@ -120,7 +120,7 @@ const Table: React.FC = () => {
             key: 'name',
             width: 230,
             editable: true,
-            sorter: (a: any, b: any) => a.name.localeCompare(b.name)
+            sorter: (a, b) => a.name.localeCompare(b.name)
         },
         {
             title: 'Основная информация',
@@ -145,7 +145,7 @@ const Table: React.FC = () => {
                     key: 'gender',
                     width: 100,
                     editable: true,
-                    sorter: (a: any, b: any) => a.gender.localeCompare(b.gender)
+                    sorter: (a, b) => a.gender.localeCompare(b.gender)
                 },
                 {
                     title: 'Дата рождения',
@@ -160,7 +160,7 @@ const Table: React.FC = () => {
                     key: 'subway',
                     width: 100,
                     editable: true,
-                    sorter: (a: any, b: any) => a.subway.localeCompare(b.subway)
+                    sorter: (a, b) => a.subway.localeCompare(b.subway)
                 },
                 {
                     title: 'Адрес проживания',
@@ -201,8 +201,7 @@ const Table: React.FC = () => {
                     key: 'citizenship',
                     width: 130,
                     editable: true,
-                    sorter: (a: any, b: any) =>
-                        a.citizenship.localeCompare(b.citizenship)
+                    sorter: (a, b) => a.citizenship.localeCompare(b.citizenship)
                 },
                 {
                     title: 'Паспорт',
@@ -256,7 +255,7 @@ const Table: React.FC = () => {
                     key: 'patent',
                     width: 150,
                     editable: true,
-                    sorter: (a: any, b: any) => a.patent.localeCompare(b.patent)
+                    sorter: (a, b) => a.patent.localeCompare(b.patent)
                 },
                 {
                     title: 'СНИЛС',
@@ -291,8 +290,7 @@ const Table: React.FC = () => {
                     key: 'position',
                     width: 120,
                     editable: true,
-                    sorter: (a: any, b: any) =>
-                        a.position.localeCompare(b.position)
+                    sorter: (a, b) => a.position.localeCompare(b.position)
                 },
                 {
                     title: 'Подразделение',
@@ -300,8 +298,7 @@ const Table: React.FC = () => {
                     key: 'subdivision',
                     width: 150,
                     editable: true,
-                    sorter: (a: any, b: any) =>
-                        a.subdivision.localeCompare(b.subdivision)
+                    sorter: (a, b) => a.subdivision.localeCompare(b.subdivision)
                 },
                 {
                     title: 'Решение',
@@ -309,8 +306,7 @@ const Table: React.FC = () => {
                     key: 'decision',
                     width: 130,
                     editable: true,
-                    sorter: (a: any, b: any) =>
-                        a.decision.localeCompare(b.decision)
+                    sorter: (a, b) => a.decision.localeCompare(b.decision)
                 },
                 {
                     title: 'Источник',
@@ -342,7 +338,7 @@ const Table: React.FC = () => {
         if (col.children) {
             return {
                 ...col,
-                children: mergeNestedCol(col.children, editingKey)
+                children: mergeNestedCol(col.children, tableEditingKey)
             };
         }
         if (col.editable) {
@@ -352,7 +348,7 @@ const Table: React.FC = () => {
                     record,
                     dataIndex: col.dataIndex,
                     title: col.title,
-                    editing: checkEditingStatus(record, editingKey)
+                    editing: checkEditingStatus(record, tableEditingKey)
                 })
             };
         } else {
@@ -362,7 +358,7 @@ const Table: React.FC = () => {
 
     const outputColumnsTableData: Icolumn[] = isEditingMode
         ? mergedColumns
-        : mergedColumns.filter(col => !col.hidden);
+        : mergedColumns.filter((col: Icolumn) => !col.hidden);
 
     // /. variables
 
@@ -373,17 +369,17 @@ const Table: React.FC = () => {
         form.setFieldsValue({
             ...record
         });
-        setEditingKey(key.toString());
+        dispatch(setTableEditingKey(key.toString()));
     };
 
     const onButtonCancelClick = (): void => {
-        setEditingKey('');
+        dispatch(setTableEditingKey(''));
     };
 
     const onButtonSaveClick = async (key: React.Key): Promise<any> => {
         try {
             const row = (await form.validateFields()) as Icontact;
-            const newData = [...filteredContactsData];
+            const newData: Icontact[] = [...filteredContactsData];
             const index = newData.findIndex(item => key === item.key);
 
             if (index > -1) {
@@ -393,11 +389,11 @@ const Table: React.FC = () => {
                     ...row
                 });
                 dispatch(updateFilteredContactsData(newData));
-                setEditingKey('');
+                dispatch(setTableEditingKey(''));
             } else {
                 newData.push(row);
                 dispatch(updateFilteredContactsData(newData));
-                setEditingKey('');
+                dispatch(setTableEditingKey(''));
             }
         } catch (errInfo) {
             console.log('Validate Failed:', errInfo);
@@ -413,6 +409,21 @@ const Table: React.FC = () => {
             dispatch(switchContactsDataLoadingStatus(false));
         }, 600);
     }, [itemPerPage, currentPage]);
+
+    useEffect(() => {
+        if (!isEditingMode || !tableEditingKey) return;
+
+        const onDocumentKeyEvent = (e: KeyboardEvent): void => {
+            if (e.code === 'Escape') {
+                dispatch(setTableEditingKey(''));
+            }
+        };
+
+        document.addEventListener('keydown', onDocumentKeyEvent);
+
+        return () =>
+            document.removeEventListener('keydown', onDocumentKeyEvent);
+    }, [isEditingMode, tableEditingKey]);
 
     return (
         <Form

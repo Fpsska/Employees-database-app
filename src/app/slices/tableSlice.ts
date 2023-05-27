@@ -15,6 +15,7 @@ interface tableSliceTypes {
     fetchContactsDataError: null | string;
     itemPerPage: number;
     currentPage: number;
+    tableEditingKey: string;
 }
 
 // /. interfaces
@@ -24,6 +25,7 @@ const initialState: tableSliceTypes = {
     filteredContactsData: [],
     isContactsDataLoading: true,
     isEditingMode: false,
+    tableEditingKey: '',
     fetchContactsDataStatus: '',
     fetchContactsDataError: null,
     itemPerPage: 8,
@@ -63,6 +65,9 @@ const tableSlice = createSlice({
         },
         switchEditingMode(state, action: PayloadAction<boolean>) {
             state.isEditingMode = action.payload;
+        },
+        setTableEditingKey(state, action: PayloadAction<string>) {
+            state.tableEditingKey = action.payload;
         }
     },
     extraReducers: builder => {
@@ -114,7 +119,8 @@ export const {
     setCurrentPageValue,
     setItemsPerPage,
     updateFilteredContactsData,
-    switchEditingMode
+    switchEditingMode,
+    setTableEditingKey
 } = tableSlice.actions;
 
 export default tableSlice.reducer;
