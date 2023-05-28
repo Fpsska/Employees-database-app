@@ -438,7 +438,7 @@ const Table: React.FC = () => {
                     }
                 }}
                 columns={outputColumnsTableData as any[]}
-                dataSource={formatDataToPreview(
+                dataSource={formatDataToPreview<Icontact>(
                     currentPage,
                     itemPerPage,
                     filteredContactsData

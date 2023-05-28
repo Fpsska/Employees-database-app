@@ -1,16 +1,29 @@
+import { Icontact } from 'types/tableSliceTypes';
+
+// /. imports
+
+type IomitContact = Omit<Icontact, 'key' | 'serialNumber' | 'isEditable'>;
+
+// /. types
+
 export function makeMultipleContactsFiltering(
-    obj: any,
+    obj: Icontact,
     value: string
 ): boolean {
-    const objCopy: any = JSON.parse(JSON.stringify(obj));
-
     const wrongKeys: string[] = ['key', 'serialNumber', 'isEditable'];
 
     const validKeys: string[] = Object.keys(obj).filter(
         (key: string) => !wrongKeys.includes(key)
     );
 
-    return validKeys.some((key: string) =>
-        RegExp(value, 'gi').test(objCopy[key])
-    );
+    return validKeys.some((key: string) => {
+        const targetObjValue = obj[key as keyof IomitContact];
+
+        if (typeof targetObjValue === 'string') {
+            return RegExp(value, 'gi').test(targetObjValue);
+        }
+        if (typeof targetObjValue === 'number') {
+            return targetObjValue === parseFloat(value);
+        }
+    });
 }
