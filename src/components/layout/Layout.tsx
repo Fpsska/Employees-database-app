@@ -2,8 +2,9 @@ import React from 'react';
 
 import { Outlet } from 'react-router';
 
-import Navigation from 'components/layout/Navigation/Navigation';
-import Profile from 'components/ui/Profile/Profile';
+import Profile from '../ui/Profile/Profile';
+
+import Navigation from './Navigation/Navigation';
 
 // /. imports
 

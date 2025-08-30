@@ -1,6 +1,6 @@
-import { Icontact, IcolumnChildren } from 'types/tableSliceTypes';
-
 import { checkEditingStatus } from './checkEditingStatus';
+
+import type { IcolumnChildren, Icontact } from '../../types/tableSliceTypes';
 
 // /. imports
 

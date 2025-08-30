@@ -1,4 +1,4 @@
-import { Icontact } from 'types/tableSliceTypes';
+import type { Icontact } from '../../types/tableSliceTypes';
 
 // /. imports
 

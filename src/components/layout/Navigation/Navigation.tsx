@@ -4,13 +4,12 @@ import { Link } from 'react-router-dom';
 
 import { useNavigate } from 'react-router';
 
-import { scrollToActiveElement } from 'utilts/helpers/scrollToActiveElement';
-
-import { headerNavigationData } from 'context/data';
-
-import { IheaderNavigation } from 'types/dataTypes';
-
 import './navigation.scss';
+import { scrollToActiveElement } from '../../../utilts/helpers/scrollToActiveElement';
+
+import { headerNavigationData } from '../../../context/data';
+
+import type { IheaderNavigation } from '../../../types/dataTypes';
 
 // /. imports
 
@@ -34,7 +33,7 @@ const Navigation: React.FC<{ additionalClass: string }> = ({
         //
         const { id, href } = template;
 
-        const newNavArray = navigationData.map(link =>
+        const newNavArray = navigationData.map((link) =>
             link.id === id
                 ? { ...link, isActive: true }
                 : { ...link, isActive: false }
@@ -47,7 +46,7 @@ const Navigation: React.FC<{ additionalClass: string }> = ({
     };
 
     const onButtonNavClick = (direction: string): void => {
-        const activeIDX = navigationData.findIndex(link => link.isActive);
+        const activeIDX = navigationData.findIndex((link) => link.isActive);
         const dataCopy = [...navigationData];
         scrollToActiveElement(navListRef);
 
@@ -155,7 +154,7 @@ const Navigation: React.FC<{ additionalClass: string }> = ({
                                 className="nav-list__link"
                                 to={template.href}
                                 state={template.text}
-                                onClick={e => onNavLinkClick(e, template)}
+                                onClick={(e) => onNavLinkClick(e, template)}
                             >
                                 {template.text}
                             </Link>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { Skeleton, Space } from 'antd';
 
-import avatar from 'assets/images/profile-image.png';
+import avatar from '../../../assets/images/profile-image.png';
 
 import './profile.scss';
 

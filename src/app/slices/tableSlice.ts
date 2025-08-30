@@ -1,10 +1,9 @@
 import { createSlice, current, PayloadAction } from '@reduxjs/toolkit';
 
-import { fetchContactsData } from 'app/api/fetchContactsData';
+import { makeMultipleContactsFiltering } from '../../utilts/helpers/filterContacts';
+import { fetchContactsData } from '../api/fetchContactsData';
 
-import { makeMultipleContactsFiltering } from 'utilts/helpers/filterContacts';
-
-import { Icontact } from 'types/tableSliceTypes';
+import type { Icontact } from '../../types/tableSliceTypes';
 
 interface tableSliceTypes {
     contactsData: Icontact[];
@@ -70,9 +69,9 @@ const tableSlice = createSlice({
             state.tableEditingKey = action.payload;
         }
     },
-    extraReducers: builder => {
+    extraReducers: (builder) => {
         builder
-            .addCase(fetchContactsData.pending, state => {
+            .addCase(fetchContactsData.pending, (state) => {
                 state.fetchContactsDataStatus = 'loading';
                 state.fetchContactsDataError = null;
             })

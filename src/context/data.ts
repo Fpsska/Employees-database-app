@@ -1,4 +1,4 @@
-import { IheaderNavigation } from 'types/dataTypes';
+import type { IheaderNavigation } from '../types/dataTypes';
 
 // /. imports
 

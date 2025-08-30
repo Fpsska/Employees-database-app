@@ -2,27 +2,23 @@ import React, { useEffect } from 'react';
 
 import { Route, Routes } from 'react-router';
 
-import { fetchContactsData } from 'app/api/fetchContactsData';
-
-import { useAppSelector, useAppDispatch } from 'app/hooks';
-
-import { switchContactsDataLoadingStatus } from 'app/slices/tableSlice';
-
-import GeneralBasePage from 'pages/GeneralBasePage/GeneralBasePage';
-import PlaceholderPage from 'pages/PlaceholderPage/PlaceholderPage';
-import NoFoundPage from 'pages/NoFoundPage/NoFoundPage';
-
 import Layout from '../Layout';
 
 import './App.css';
-import 'assets/styles/_media.scss';
-import 'assets/styles/style.scss';
+import '../../../assets/styles/_media.scss';
+import '../../../assets/styles/style.scss';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { fetchContactsData } from '../../../app/api/fetchContactsData';
+import { switchContactsDataLoadingStatus } from '../../../app/slices/tableSlice';
+import GeneralBasePage from '../../../pages/GeneralBasePage/GeneralBasePage';
+import PlaceholderPage from '../../../pages/PlaceholderPage/PlaceholderPage';
+import NoFoundPage from '../../../pages/NoFoundPage/NoFoundPage';
 
 // /. imports
 
 const App: React.FC = () => {
     const { fetchContactsDataStatus } = useAppSelector(
-        state => state.tableSlice
+        (state) => state.tableSlice
     );
 
     const dispatch = useAppDispatch();

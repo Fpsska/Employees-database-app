@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
 
-import { useAppSelector, useAppDispatch } from 'app/hooks';
-
-import { switchEditingMode, setTableEditingKey } from 'app/slices/tableSlice';
-
-import { declensionByQuantity } from 'utilts/helpers/declensionByQuantity';
-
-import FindForm from 'components/layout/FindForm/FindForm';
-import Pagination from 'components/layout/Pagination/Pagination';
-
-import Table from 'components/layout/Table/Table';
-import { Preloader } from 'components/ui/Preloader/Preloader';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import {
+    setTableEditingKey,
+    switchEditingMode
+} from '../../app/slices/tableSlice';
+import { declensionByQuantity } from '../../utilts/helpers/declensionByQuantity';
+import { Preloader } from '../../components/ui/Preloader/Preloader';
+import FindForm from '../../components/layout/FindForm/FindForm';
+import Table from '../../components/layout/Table/Table';
+import Pagination from '../../components/layout/Pagination/Pagination';
 
 // /. imports
 
@@ -21,7 +20,7 @@ const GeneralBasePage: React.FC = () => {
         isContactsDataLoading,
         fetchContactsDataError,
         isEditingMode
-    } = useAppSelector(state => state.tableSlice);
+    } = useAppSelector((state) => state.tableSlice);
 
     const [contactsTextValue, setContactsTextValue] = useState<string>('');
     const [isPageLoading, setPageLoading] = useState<boolean>(true);

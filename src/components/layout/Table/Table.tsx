@@ -4,27 +4,21 @@ import { Table as AntTable, Empty, Typography, Popconfirm, Form } from 'antd';
 
 import { LoadingOutlined } from '@ant-design/icons';
 
-import { useAppSelector, useAppDispatch } from 'app/hooks';
-
-import {
-    updateFilteredContactsData,
-    switchContactsDataLoadingStatus,
-    setTableEditingKey
-} from 'app/slices/tableSlice';
-
-import { Icontact, Icolumn } from 'types/tableSliceTypes';
-
-import EditableTableCell from 'components/layout/EditableTableCell/EditableTableCell';
-
-import { mergeNestedCol } from 'utilts/helpers/mergeNestedCol';
-
-import { checkEditingStatus } from 'utilts/helpers/checkEditingStatus';
-
-import { formatDataToPreview } from 'utilts/helpers/formatDataToPreview';
-
-import { checkValidity } from 'utilts/helpers/checkValidity';
-
 import './table.scss';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+
+import { checkEditingStatus } from '../../../utilts/helpers/checkEditingStatus';
+import { checkValidity } from '../../../utilts/helpers/checkValidity';
+import { mergeNestedCol } from '../../../utilts/helpers/mergeNestedCol';
+import {
+    setTableEditingKey,
+    switchContactsDataLoadingStatus,
+    updateFilteredContactsData
+} from '../../../app/slices/tableSlice';
+import EditableTableCell from '../EditableTableCell/EditableTableCell';
+import { formatDataToPreview } from '../../../utilts/helpers/formatDataToPreview';
+
+import type { Icolumn, Icontact } from '../../../types/tableSliceTypes';
 
 // /. imports
 
@@ -37,7 +31,7 @@ const Table: React.FC = () => {
         currentPage,
         isEditingMode,
         tableEditingKey
-    } = useAppSelector(state => state.tableSlice);
+    } = useAppSelector((state) => state.tableSlice);
 
     const [form] = Form.useForm();
 
@@ -50,7 +44,7 @@ const Table: React.FC = () => {
         filteredContactsData.length <= 0 ||
         !fetchContactsDataError;
 
-    const dataErrorMarkup: JSX.Element = (
+    const dataErrorMarkup: React.ReactNode = (
         <Empty
             image={Empty.PRESENTED_IMAGE_DEFAULT}
             description={
@@ -62,7 +56,7 @@ const Table: React.FC = () => {
         />
     );
 
-    const dataEmptyMarkup: JSX.Element = (
+    const dataEmptyMarkup: React.ReactNode = (
         <Empty
             image={Empty.PRESENTED_IMAGE_SIMPLE}
             description={'no data'}
@@ -380,7 +374,7 @@ const Table: React.FC = () => {
         try {
             const row = (await form.validateFields()) as Icontact;
             const newData: Icontact[] = [...filteredContactsData];
-            const index = newData.findIndex(item => key === item.key);
+            const index = newData.findIndex((item) => key === item.key);
 
             if (index > -1) {
                 const item = newData[index];

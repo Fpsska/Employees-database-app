@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from 'react';
 
-import { useAppSelector, useAppDispatch } from 'app/hooks';
-
-import { filterContactsData } from 'app/slices/tableSlice';
-
-import useDebounce from 'utilts/hooks/useDebounce';
-
 import './find-form.scss';
+
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { filterContactsData } from '../../../app/slices/tableSlice';
+import useDebounce from '../../../utilts/hooks/useDebounce';
 
 // /. imports
 
 const FindForm: React.FC = () => {
     const { contactsData, isContactsDataLoading, fetchContactsDataError } =
-        useAppSelector(state => state.tableSlice);
+        useAppSelector((state) => state.tableSlice);
 
     const [inputValue, setInputValue] = useState<string>('');
 
@@ -43,14 +41,14 @@ const FindForm: React.FC = () => {
         <form
             className="find-form"
             action="#"
-            onSubmit={e => e.preventDefault()}
+            onSubmit={(e) => e.preventDefault()}
         >
             <input
                 className="find-form__input"
                 type="text"
                 placeholder="Поиск"
                 disabled={!isControlsAvailable}
-                onChange={e => onInputChange(e)}
+                onChange={(e) => onInputChange(e)}
             />
             <button
                 className="find-form__button"

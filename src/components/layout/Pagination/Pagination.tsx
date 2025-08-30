@@ -2,11 +2,12 @@ import React from 'react';
 
 import { Pagination as AntPagination } from 'antd';
 
-import { useAppSelector, useAppDispatch } from 'app/hooks';
-
-import { setCurrentPageValue, setItemsPerPage } from 'app/slices/tableSlice';
-
 import './pagination.scss';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import {
+    setCurrentPageValue,
+    setItemsPerPage
+} from '../../../app/slices/tableSlice';
 
 // /. imports
 
@@ -16,7 +17,7 @@ const Pagination: React.FC = () => {
         isContactsDataLoading,
         itemPerPage,
         currentPage
-    } = useAppSelector(state => state.tableSlice);
+    } = useAppSelector((state) => state.tableSlice);
 
     const dispatch = useAppDispatch();
 
