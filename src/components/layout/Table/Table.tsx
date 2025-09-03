@@ -1,62 +1,62 @@
-import React, { useEffect } from 'react';
+import { type FC, type Key, type ReactNode, useEffect } from 'react';
+
+import { observer } from 'mobx-react-lite';
 
 import { Table as AntTable, Empty, Typography, Popconfirm, Form } from 'antd';
 
 import { LoadingOutlined } from '@ant-design/icons';
 
 import './table.scss';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 
 import { checkEditingStatus } from '../../../utilts/helpers/checkEditingStatus';
 import { checkValidity } from '../../../utilts/helpers/checkValidity';
 import { mergeNestedCol } from '../../../utilts/helpers/mergeNestedCol';
-import {
-    setTableEditingKey,
-    switchContactsDataLoadingStatus,
-    updateFilteredContactsData
-} from '../../../app/slices/tableSlice';
+
 import EditableTableCell from '../EditableTableCell/EditableTableCell';
 import { formatDataToPreview } from '../../../utilts/helpers/formatDataToPreview';
+
+import { tableStore } from '../../../store/table.store';
 
 import type { Icolumn, Icontact } from '../../../types/tableSliceTypes';
 
 // /. imports
 
-const Table: React.FC = () => {
+const Table: FC = () => {
     const {
         filteredContactsData,
-        isContactsDataLoading,
-        fetchContactsDataError,
+        tableEditingKey,
         itemPerPage,
         currentPage,
+        fetchStatus,
+        isDataLoading,
         isEditingMode,
-        tableEditingKey
-    } = useAppSelector((state) => state.tableSlice);
+        // actions
+        setTableEditingKey,
+        updateFilteredContactsData
+    } = tableStore;
 
     const [form] = Form.useForm();
-
-    const dispatch = useAppDispatch();
 
     // /. hooks
 
     const isTableDataEmpty =
         !filteredContactsData ||
         filteredContactsData.length <= 0 ||
-        !fetchContactsDataError;
+        fetchStatus !== 'success';
 
-    const dataErrorMarkup: React.ReactNode = (
+    const dataErrorMarkup: ReactNode = (
         <Empty
             image={Empty.PRESENTED_IMAGE_DEFAULT}
             description={
                 <span style={{ color: 'red' }}>
                     Error of fetchContactsData promise:
-                    {fetchContactsDataError}
+                    {fetchStatus}
                 </span>
             }
         />
     );
 
-    const dataEmptyMarkup: React.ReactNode = (
+    const dataEmptyMarkup: ReactNode = (
         <Empty
             image={Empty.PRESENTED_IMAGE_SIMPLE}
             description={'no data'}
@@ -64,6 +64,7 @@ const Table: React.FC = () => {
     );
 
     const columnsData: Icolumn[] = [
+        // TODO
         {
             title: 'ACTION',
             key: 'action',
@@ -329,6 +330,7 @@ const Table: React.FC = () => {
     ];
 
     const mergedColumns: Icolumn[] = columnsData.map((col: Icolumn) => {
+        // TODO
         if (col.children) {
             return {
                 ...col,
@@ -356,21 +358,18 @@ const Table: React.FC = () => {
 
     // /. variables
 
-    const onEditCellClick = (
-        record: Partial<Icontact>,
-        key: React.Key
-    ): void => {
+    const onEditCellClick = (record: Partial<Icontact>, key: Key): void => {
         form.setFieldsValue({
             ...record
         });
-        dispatch(setTableEditingKey(key.toString()));
+        setTableEditingKey(key.toString());
     };
 
     const onButtonCancelClick = (): void => {
-        dispatch(setTableEditingKey(''));
+        setTableEditingKey('');
     };
 
-    const onButtonSaveClick = async (key: React.Key): Promise<any> => {
+    const onButtonSaveClick = async (key: Key): Promise<any> => {
         try {
             const row = (await form.validateFields()) as Icontact;
             const newData: Icontact[] = [...filteredContactsData];
@@ -382,12 +381,12 @@ const Table: React.FC = () => {
                     ...item,
                     ...row
                 });
-                dispatch(updateFilteredContactsData(newData));
-                dispatch(setTableEditingKey(''));
+                updateFilteredContactsData(newData);
+                setTableEditingKey('');
             } else {
                 newData.push(row);
-                dispatch(updateFilteredContactsData(newData));
-                dispatch(setTableEditingKey(''));
+                updateFilteredContactsData(newData);
+                setTableEditingKey('');
             }
         } catch (errInfo) {
             console.log('Validate Failed:', errInfo);
@@ -396,20 +395,21 @@ const Table: React.FC = () => {
 
     // /. functions
 
-    useEffect(() => {
-        // show loader on pagination actions
-        dispatch(switchContactsDataLoadingStatus(true));
-        setTimeout(() => {
-            dispatch(switchContactsDataLoadingStatus(false));
-        }, 600);
-    }, [itemPerPage, currentPage]);
+    // TODO
+    // useEffect(() => {
+    //     // show loader on pagination actions
+    //     switchContactsDataLoadingStatus(true);
+    //     setTimeout(() => {
+    //         switchContactsDataLoadingStatus(false);
+    //     }, 600);
+    // }, [itemPerPage, currentPage]);
 
     useEffect(() => {
         if (!isEditingMode || !tableEditingKey) return;
 
         const onDocumentKeyEvent = (e: KeyboardEvent): void => {
             if (e.code === 'Escape') {
-                dispatch(setTableEditingKey(''));
+                setTableEditingKey('');
             }
         };
 
@@ -443,7 +443,7 @@ const Table: React.FC = () => {
                 pagination={false}
                 loading={{
                     indicator: <LoadingOutlined />,
-                    spinning: isContactsDataLoading
+                    spinning: isDataLoading
                 }}
                 locale={{
                     emptyText: isTableDataEmpty
@@ -455,4 +455,4 @@ const Table: React.FC = () => {
     );
 };
 
-export default Table;
+export default observer(Table);

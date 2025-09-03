@@ -1,40 +1,43 @@
-import React, { useState, useEffect } from 'react';
+import { type FC, type ChangeEvent, useState, useEffect } from 'react';
 
 import './find-form.scss';
 
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { filterContactsData } from '../../../app/slices/tableSlice';
+import { observer } from 'mobx-react-lite';
+
+import { tableStore } from '../../../store/table.store';
+
 import useDebounce from '../../../utilts/hooks/useDebounce';
 
 // /. imports
 
-const FindForm: React.FC = () => {
-    const { contactsData, isContactsDataLoading, fetchContactsDataError } =
-        useAppSelector((state) => state.tableSlice);
+const FindForm: FC = () => {
+    const {
+        contactsData,
+        isDataLoading,
+        fetchStatus,
+        // actions
+        filterContactsData
+    } = tableStore;
 
     const [inputValue, setInputValue] = useState<string>('');
-
-    const dispatch = useAppDispatch();
-
     const debouncedValue = useDebounce(inputValue, 500);
 
     // /. hooks
 
     const isControlsAvailable =
-        !isContactsDataLoading &&
-        !fetchContactsDataError &&
-        contactsData.length > 0;
+        !isDataLoading && fetchStatus === 'success' && contactsData.length > 0;
 
     // /. variables
 
-    const onInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const onInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
         setInputValue(e.target.value.trim());
     };
 
     // /. functions
 
     useEffect(() => {
-        dispatch(filterContactsData({ enteredValue: debouncedValue }));
+        // TODO
+        filterContactsData(debouncedValue);
     }, [debouncedValue]);
 
     return (
@@ -73,4 +76,4 @@ const FindForm: React.FC = () => {
     );
 };
 
-export default FindForm;
+export default observer(FindForm);

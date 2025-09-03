@@ -1,4 +1,4 @@
-import React from 'react';
+import { type FC } from 'react';
 
 import { LoadingOutlined } from '@ant-design/icons';
 import { Spin } from 'antd';
@@ -7,7 +7,7 @@ import './preloader.scss';
 
 // /. imports
 
-export const Preloader: React.FC = () => {
+export const Preloader: FC = () => {
     return (
         <div className="preloader">
             <Spin

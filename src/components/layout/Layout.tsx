@@ -1,4 +1,4 @@
-import React from 'react';
+import { type FC } from 'react';
 
 import { Outlet } from 'react-router';
 
@@ -8,7 +8,7 @@ import Navigation from './Navigation/Navigation';
 
 // /. imports
 
-const Layout: React.FC = () => {
+const Layout: FC = () => {
     // /. hooks
 
     return (

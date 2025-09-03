@@ -1,17 +1,17 @@
-import React from 'react';
+import { type FC, type ReactNode } from 'react';
 
 import { Form, Input } from 'antd';
 
 // /. imports
 
-interface propTypes {
+interface IEditableTableCell {
     editing: boolean;
     dataIndex: string;
     title: string;
-    children: React.ReactNode;
+    children: ReactNode;
 }
 
-const EditableTableCell: React.FC<propTypes> = ({
+const EditableTableCell: FC<IEditableTableCell> = ({
     editing,
     dataIndex,
     children,

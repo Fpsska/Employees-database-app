@@ -1,8 +1,8 @@
-import React from 'react';
+import { type FC } from 'react';
 
 // /. imports
 
-const NoFoundPage: React.FC = () => {
+const NoFoundPage: FC = () => {
     return (
         <div className="nofound-page">
             <h1 className="title center">PlaceholderPage</h1>

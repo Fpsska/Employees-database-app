@@ -1,53 +1,55 @@
-import React, { useEffect, useState } from 'react';
+import { type FC, useEffect, useState } from 'react';
 
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import {
-    setTableEditingKey,
-    switchEditingMode
-} from '../../app/slices/tableSlice';
+import { observer } from 'mobx-react-lite';
+
 import { declensionByQuantity } from '../../utilts/helpers/declensionByQuantity';
 import { Preloader } from '../../components/ui/Preloader/Preloader';
 import FindForm from '../../components/layout/FindForm/FindForm';
 import Table from '../../components/layout/Table/Table';
 import Pagination from '../../components/layout/Pagination/Pagination';
+import { tableStore } from '../../store/table.store';
 
 // /. imports
 
-const GeneralBasePage: React.FC = () => {
+const GeneralBasePage: FC = () => {
     const {
         contactsData,
         filteredContactsData,
-        isContactsDataLoading,
-        fetchContactsDataError,
-        isEditingMode
-    } = useAppSelector((state) => state.tableSlice);
+        isDataLoading,
+        fetchStatus,
+        isEditingMode,
+        // actions
+        setTableEditingKey,
+        switchEditingMode
+    } = tableStore;
 
     const [contactsTextValue, setContactsTextValue] = useState<string>('');
     const [isPageLoading, setPageLoading] = useState<boolean>(true);
 
-    const dispatch = useAppDispatch();
+    console.log('isDataLoading>', isDataLoading);
+    console.log('fetchStatus>', fetchStatus);
 
     const isBtnAvailable =
-        !isContactsDataLoading &&
-        !fetchContactsDataError &&
+        !isDataLoading &&
+        fetchStatus === 'success' &&
         contactsData.length > 0 &&
         filteredContactsData?.length;
 
     // /. hooks
 
     const onEditButtonClick = (): void => {
-        dispatch(switchEditingMode(!isEditingMode));
-        dispatch(setTableEditingKey(''));
+        switchEditingMode(!isEditingMode);
+        setTableEditingKey('');
     };
 
     // /. functions
 
     useEffect(() => {
-        !isContactsDataLoading &&
+        !isDataLoading &&
             setTimeout(() => {
                 setPageLoading(false);
             }, 1400);
-    }, [isContactsDataLoading]);
+    }, [isDataLoading]);
 
     useEffect(() => {
         const textValue = declensionByQuantity(filteredContactsData?.length, [
@@ -100,4 +102,4 @@ const GeneralBasePage: React.FC = () => {
     );
 };
 
-export default GeneralBasePage;
+export default observer(GeneralBasePage);

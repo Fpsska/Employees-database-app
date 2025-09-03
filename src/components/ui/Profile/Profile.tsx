@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { type FC, useState, useEffect } from 'react';
 
 import { Skeleton, Space } from 'antd';
 
@@ -8,9 +8,7 @@ import './profile.scss';
 
 // /. imports
 
-const Profile: React.FC<{ additionalClass: string }> = ({
-    additionalClass
-}) => {
+const Profile: FC<{ additionalClass: string }> = ({ additionalClass }) => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     // /. hooks

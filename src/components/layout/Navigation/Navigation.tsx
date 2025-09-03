@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import {
+    type FC,
+    type SyntheticEvent,
+    useState,
+    useEffect,
+    useRef
+} from 'react';
 
 import { Link } from 'react-router-dom';
 
@@ -13,9 +19,7 @@ import type { IheaderNavigation } from '../../../types/dataTypes';
 
 // /. imports
 
-const Navigation: React.FC<{ additionalClass: string }> = ({
-    additionalClass
-}) => {
+const Navigation: FC<{ additionalClass: string }> = ({ additionalClass }) => {
     const [navigationData, setNavigationData] = useState<IheaderNavigation[]>(
         []
     );
@@ -26,7 +30,7 @@ const Navigation: React.FC<{ additionalClass: string }> = ({
     // /. hooks
 
     const onNavLinkClick = (
-        e: React.SyntheticEvent,
+        e: SyntheticEvent,
         template: IheaderNavigation
     ): void => {
         // e.stopPropagation();
@@ -89,6 +93,7 @@ const Navigation: React.FC<{ additionalClass: string }> = ({
     // /. functions
 
     useEffect(() => {
+        // TODO
         const navStorageData = localStorage.getItem('navStorageData');
 
         if (navStorageData) {
