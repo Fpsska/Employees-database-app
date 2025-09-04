@@ -8,15 +8,21 @@ import './profile.scss';
 
 // /. imports
 
-const Profile: FC<{ additionalClass: string }> = ({ additionalClass }) => {
+interface IProfile {
+    additionalClass: string;
+}
+
+const Profile: FC<IProfile> = ({ additionalClass }) => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     // /. hooks
 
     useEffect(() => {
-        setTimeout(() => {
+        const timeoutId = setTimeout(() => {
             setIsLoading(false);
         }, 2000);
+
+        return () => clearTimeout(timeoutId);
     }, []);
 
     // /. effects

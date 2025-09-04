@@ -12,7 +12,7 @@ const PlaceholderPage: FC = () => {
     return (
         <div className="placeholder-page">
             <h1 className="title center">
-                {location.state ? location.state : 'Placeholder title'}
+                {location.state || 'Placeholder title'}
             </h1>
         </div>
     );

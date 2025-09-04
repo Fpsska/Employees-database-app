@@ -24,6 +24,7 @@ const App: FC = () => {
 
     useEffect(() => {
         fetchContactsData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // /. effects
@@ -40,7 +41,7 @@ const App: FC = () => {
                         element={<GeneralBasePage />}
                     />
                     <Route
-                        path="placeholder"
+                        path="testing"
                         element={<PlaceholderPage />}
                     />
                     <Route

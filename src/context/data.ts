@@ -1,12 +1,12 @@
-import type { IheaderNavigation } from '../types/dataTypes';
+import type { HeaderNavigation } from '../types/dataTypes';
 
 // /. imports
 
-export const headerNavigationData: IheaderNavigation[] = [
+export const navigationData: HeaderNavigation[] = [
     {
         id: 1,
         text: 'База анкет сотрудников',
-        href: 'placeholder',
+        href: 'employees-info-database',
         isActive: false
     },
     {
@@ -18,37 +18,37 @@ export const headerNavigationData: IheaderNavigation[] = [
     {
         id: 3,
         text: 'База сотрудников',
-        href: 'placeholder',
+        href: 'employees-database',
         isActive: false
     },
     {
         id: 4,
         text: 'Календарь сотрудников',
-        href: 'placeholder',
+        href: 'calendar',
         isActive: false
     },
     {
         id: 5,
         text: 'Тестовый раздел',
-        href: 'placeholder',
+        href: 'testing',
         isActive: false
     },
     {
         id: 6,
         text: 'Тестовый раздел',
-        href: 'placeholder',
+        href: 'testing',
         isActive: false
     },
     {
         id: 7,
         text: 'Тестовый раздел',
-        href: 'placeholder',
+        href: 'testing',
         isActive: false
     },
     {
         id: 8,
         text: 'Тестовый раздел',
-        href: 'placeholder',
+        href: 'testing',
         isActive: false
     }
 ];

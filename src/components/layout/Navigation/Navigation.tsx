@@ -1,10 +1,4 @@
-import {
-    type FC,
-    type SyntheticEvent,
-    useState,
-    useEffect,
-    useRef
-} from 'react';
+import { type FC, type SyntheticEvent, useState, useRef } from 'react';
 
 import { Link } from 'react-router-dom';
 
@@ -13,95 +7,77 @@ import { useNavigate } from 'react-router';
 import './navigation.scss';
 import { scrollToActiveElement } from '../../../utilts/helpers/scrollToActiveElement';
 
-import { headerNavigationData } from '../../../context/data';
+import { navigationData } from '../../../context/data';
 
-import type { IheaderNavigation } from '../../../types/dataTypes';
+import type { HeaderNavigation } from '../../../types/dataTypes';
 
 // /. imports
 
-const Navigation: FC<{ additionalClass: string }> = ({ additionalClass }) => {
-    const [navigationData, setNavigationData] = useState<IheaderNavigation[]>(
-        []
-    );
+interface INavigation {
+    additionalClass: string;
+}
+
+const Navigation: FC<INavigation> = ({ additionalClass }) => {
+    const [navigation, setNavigation] =
+        useState<HeaderNavigation[]>(navigationData);
 
     const navListRef = useRef<HTMLUListElement>(null!);
     const navigate = useNavigate();
 
     // /. hooks
 
-    const onNavLinkClick = (
-        e: SyntheticEvent,
-        template: IheaderNavigation
-    ): void => {
-        // e.stopPropagation();
-        //
-        const { id, href } = template;
+    const onNavLinkClick = (e: SyntheticEvent, nav: HeaderNavigation): void => {
+        e.stopPropagation();
+        if (nav.isActive) return;
 
-        const newNavArray = navigationData.map((link) =>
-            link.id === id
-                ? { ...link, isActive: true }
-                : { ...link, isActive: false }
-        );
-        setNavigationData(newNavArray);
-        navigate(href);
-
-        localStorage.setItem('navStorageData', JSON.stringify(newNavArray));
+        setNavigation((data) => {
+            return data.map((link) => ({
+                ...link,
+                isActive: link.id == nav.id
+            }));
+        });
         scrollToActiveElement(navListRef);
+        navigate(nav.href, {
+            state: `Страница №${nav.id}`
+        });
     };
 
-    const onButtonNavClick = (direction: string): void => {
-        const activeIDX = navigationData.findIndex((link) => link.isActive);
-        const dataCopy = [...navigationData];
+    const onButtonPrevClick = (): void => {
+        const activeNavIdx = navigation.findIndex((link) => link.isActive);
+        if (activeNavIdx <= 0) return;
+
+        const prevNavIdx = activeNavIdx - 1;
+        const newNavigation = structuredClone(navigation);
+
+        newNavigation[activeNavIdx].isActive = false;
+        newNavigation[prevNavIdx].isActive = true;
+
+        setNavigation(newNavigation);
+        scrollToActiveElement(navListRef);
+        navigate(newNavigation[prevNavIdx].href, {
+            state: `Страница №${prevNavIdx + 1}`
+        });
+    };
+
+    const onButtonNextClick = (): void => {
+        const activeNavIdx = navigation.findIndex((link) => link.isActive);
+        if (activeNavIdx >= navigation.length - 1) return;
+
+        const nextNavIdx = activeNavIdx + 1;
+        const newNavigation = structuredClone(navigation);
+
+        newNavigation[activeNavIdx].isActive = false;
+        newNavigation[nextNavIdx].isActive = true;
+
+        setNavigation(newNavigation);
         scrollToActiveElement(navListRef);
 
-        switch (direction) {
-            case 'prev':
-                if (activeIDX > 0) {
-                    dataCopy[activeIDX].isActive = false;
-                    dataCopy[activeIDX - 1].isActive = true;
-                    setNavigationData(dataCopy);
-                    localStorage.setItem(
-                        'navStorageData',
-                        JSON.stringify(dataCopy)
-                    );
-
-                    navigate(dataCopy[activeIDX - 1].href, {
-                        state: dataCopy[activeIDX - 1].text
-                    });
-                }
-                break;
-            case 'next':
-                if (activeIDX < navigationData.length - 1) {
-                    dataCopy[activeIDX].isActive = false;
-                    dataCopy[activeIDX + 1].isActive = true;
-                    setNavigationData(dataCopy);
-                    localStorage.setItem(
-                        'navStorageData',
-                        JSON.stringify(dataCopy)
-                    );
-
-                    navigate(dataCopy[activeIDX + 1].href, {
-                        state: dataCopy[activeIDX + 1].text
-                    });
-                }
-                break;
-            default:
-                return;
-        }
+        navigate(newNavigation[nextNavIdx].href, {
+            state: `Страница №${nextNavIdx + 1}`
+        });
     };
 
     // /. functions
-
-    useEffect(() => {
-        // TODO
-        const navStorageData = localStorage.getItem('navStorageData');
-
-        if (navStorageData) {
-            setNavigationData(JSON.parse(navStorageData));
-        } else {
-            setNavigationData(headerNavigationData);
-        }
-    }, []);
 
     return (
         <div className={`navigation ${additionalClass ? additionalClass : ''}`}>
@@ -109,7 +85,7 @@ const Navigation: FC<{ additionalClass: string }> = ({ additionalClass }) => {
                 <button
                     className="nav-controls__button prev"
                     aria-label="switch to prev tab"
-                    onClick={() => onButtonNavClick('prev')}
+                    onClick={onButtonPrevClick}
                 >
                     <svg
                         width="10"
@@ -127,7 +103,7 @@ const Navigation: FC<{ additionalClass: string }> = ({ additionalClass }) => {
                 <button
                     className="nav-controls__button next"
                     aria-label="switch to next tab"
-                    onClick={() => onButtonNavClick('next')}
+                    onClick={onButtonNextClick}
                 >
                     <svg
                         width="10"
@@ -147,21 +123,21 @@ const Navigation: FC<{ additionalClass: string }> = ({ additionalClass }) => {
                 className="navigation__list nav-list scroll"
                 ref={navListRef}
             >
-                {navigationData.map((template: IheaderNavigation) => {
+                {navigation.map((nav) => {
                     return (
                         <li
-                            key={template.id}
+                            key={nav.id}
                             className={`nav-list__template ${
-                                template.isActive ? 'active' : ''
+                                nav.isActive ? 'active' : ''
                             }`}
+                            onClick={(e) => onNavLinkClick(e, nav)}
                         >
                             <Link
                                 className="nav-list__link"
-                                to={template.href}
-                                state={template.text}
-                                onClick={(e) => onNavLinkClick(e, template)}
+                                to={nav.href}
+                                state={nav.text}
                             >
-                                {template.text}
+                                {nav.text}
                             </Link>
                         </li>
                     );
