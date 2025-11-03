@@ -11,6 +11,8 @@ import { tableStore } from '../../store/table.store';
 
 // /. imports
 
+const contactTranslates = ['контакт', 'контакта', 'контактов'];
+
 const GeneralBasePage: FC = () => {
     const {
         contactsData,
@@ -23,13 +25,17 @@ const GeneralBasePage: FC = () => {
         switchEditingMode
     } = tableStore;
 
-    const [contactsTextValue, setContactsTextValue] = useState<string>('');
     const [isPageLoading, setPageLoading] = useState<boolean>(true);
 
-    console.log('isDataLoading>', isDataLoading);
-    console.log('fetchStatus>', fetchStatus);
+    // console.log('isDataLoading>', isDataLoading);
+    // console.log('fetchStatus>', fetchStatus);
 
-    const isBtnAvailable =
+    const contactsTextValue = declensionByQuantity(
+        filteredContactsData?.length,
+        contactTranslates
+    );
+
+    const isBtnSearchAvailable =
         !isDataLoading &&
         fetchStatus === 'success' &&
         contactsData.length > 0 &&
@@ -45,20 +51,16 @@ const GeneralBasePage: FC = () => {
     // /. functions
 
     useEffect(() => {
-        !isDataLoading &&
-            setTimeout(() => {
+        let timeoutId: number | undefined;
+
+        if (!isDataLoading) {
+            timeoutId = setTimeout(() => {
                 setPageLoading(false);
             }, 1400);
-    }, [isDataLoading]);
+        }
 
-    useEffect(() => {
-        const textValue = declensionByQuantity(filteredContactsData?.length, [
-            'контакт',
-            'контакта',
-            'контактов'
-        ]);
-        setContactsTextValue(textValue);
-    }, [filteredContactsData]);
+        return () => clearTimeout(timeoutId);
+    }, [isDataLoading]);
 
     // /. effects
 
@@ -89,7 +91,7 @@ const GeneralBasePage: FC = () => {
                             isEditingMode ? 'active' : ''
                         }`}
                         type="button"
-                        disabled={!isBtnAvailable}
+                        disabled={!isBtnSearchAvailable}
                         onClick={onEditButtonClick}
                     >
                         Режим редактирования

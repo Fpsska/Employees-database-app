@@ -1,13 +1,13 @@
-import type { Icontact } from '../../types/tableSliceTypes';
+import type { Contact } from '../../types/tableTypes';
 
 // /. imports
 
-type IomitContact = Omit<Icontact, 'key' | 'serialNumber' | 'isEditable'>;
+type IomitContact = Omit<Contact, 'key' | 'serialNumber' | 'isEditable'>;
 
 // /. types
 
 export function makeMultipleContactsFiltering(
-    obj: Icontact,
+    obj: Contact,
     value: string
 ): boolean {
     const wrongKeys: string[] = ['key', 'serialNumber', 'isEditable'];

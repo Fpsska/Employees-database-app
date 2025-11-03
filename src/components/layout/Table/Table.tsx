@@ -10,16 +10,34 @@ import './table.scss';
 
 import { checkEditingStatus } from '../../../utilts/helpers/checkEditingStatus';
 import { checkValidity } from '../../../utilts/helpers/checkValidity';
-import { mergeNestedCol } from '../../../utilts/helpers/mergeNestedCol';
+// import { getUpdatedColumns } from '../../../utilts/helpers/mergeNestedCol';
 
 import EditableTableCell from '../EditableTableCell/EditableTableCell';
 import { formatDataToPreview } from '../../../utilts/helpers/formatDataToPreview';
 
 import { tableStore } from '../../../store/table.store';
 
-import type { Icolumn, Icontact } from '../../../types/tableSliceTypes';
+import type { Contact, ColumnsType } from '../../../types/tableTypes';
 
 // /. imports
+
+const dataEmptyMarkup: ReactNode = (
+    <Empty
+        image={Empty.PRESENTED_IMAGE_SIMPLE}
+        description={'no data'}
+    />
+);
+
+const dataErrorMarkup: ReactNode = (
+    <Empty
+        image={Empty.PRESENTED_IMAGE_DEFAULT}
+        description={
+            <span style={{ color: 'red' }}>
+                Error of fetchContactsData promise
+            </span>
+        }
+    />
+);
 
 const Table: FC = () => {
     const {
@@ -40,31 +58,9 @@ const Table: FC = () => {
     // /. hooks
 
     const isTableDataEmpty =
-        !filteredContactsData ||
-        filteredContactsData.length <= 0 ||
-        fetchStatus !== 'success';
+        !filteredContactsData.length || fetchStatus !== 'success';
 
-    const dataErrorMarkup: ReactNode = (
-        <Empty
-            image={Empty.PRESENTED_IMAGE_DEFAULT}
-            description={
-                <span style={{ color: 'red' }}>
-                    Error of fetchContactsData promise:
-                    {fetchStatus}
-                </span>
-            }
-        />
-    );
-
-    const dataEmptyMarkup: ReactNode = (
-        <Empty
-            image={Empty.PRESENTED_IMAGE_SIMPLE}
-            description={'no data'}
-        />
-    );
-
-    const columnsData: Icolumn[] = [
-        // TODO
+    const columns: ColumnsType = [
         {
             title: 'ACTION',
             key: 'action',
@@ -72,10 +68,14 @@ const Table: FC = () => {
             width: 120,
             align: 'center',
             fixed: 'left',
-            hidden: true,
-            render: (_: any, record: Icontact) => {
-                const editable = checkEditingStatus(record, tableEditingKey);
-                return editable ? (
+            editable: false,
+            hidden: !isEditingMode,
+            render: (_, record) => {
+                const isEditable = checkEditingStatus(
+                    record.key,
+                    tableEditingKey
+                );
+                return isEditable ? (
                     <span>
                         <Typography.Link
                             onClick={() => onButtonSaveClick(record.key)}
@@ -92,10 +92,8 @@ const Table: FC = () => {
                     </span>
                 ) : (
                     <Typography.Link
-                        disabled={!!tableEditingKey}
-                        onClick={() => {
-                            onEditCellClick(record, record.key);
-                        }}
+                        // disabled={tableEditingKey === null}
+                        onClick={() => onEditCellClick(record)}
                     >
                         Edit
                     </Typography.Link>
@@ -107,118 +105,110 @@ const Table: FC = () => {
             title: '№',
             dataIndex: 'serialNumber',
             key: 'serialNumber',
-            width: 50
+            width: 50,
+            fixed: 'left',
+            editable: false
         },
         {
             title: 'Имя сотрудника',
             dataIndex: 'name',
             key: 'name',
             width: 230,
-            editable: true,
             sorter: (a, b) => a.name.localeCompare(b.name)
         },
         {
             title: 'Основная информация',
+            editable: false,
             children: [
                 {
                     title: 'ID номер',
                     dataIndex: 'id',
                     key: 'id',
-                    width: 150,
-                    editable: true
+                    width: 150
                 },
                 {
                     title: 'Телефона',
                     dataIndex: 'phone',
                     key: 'phone',
-                    width: 120,
-                    editable: true
+                    width: 120
                 },
                 {
                     title: 'Пол',
                     dataIndex: 'gender',
                     key: 'gender',
                     width: 100,
-                    editable: true,
                     sorter: (a, b) => a.gender.localeCompare(b.gender)
                 },
                 {
                     title: 'Дата рождения',
                     dataIndex: 'birthday',
                     key: 'birthday',
-                    width: 140,
-                    editable: true
+                    width: 140
                 },
                 {
                     title: 'Метро',
                     dataIndex: 'subway',
                     key: 'subway',
                     width: 100,
-                    editable: true,
                     sorter: (a, b) => a.subway.localeCompare(b.subway)
                 },
                 {
                     title: 'Адрес проживания',
                     dataIndex: 'address',
                     key: 'address',
-                    width: 180,
-                    editable: true
+                    width: 180
                 }
             ]
         },
         // /. Основная информация
         {
             title: 'Банковская информация',
+            editable: false,
             children: [
                 {
                     title: 'Банк',
                     dataIndex: 'bank',
                     key: 'bank',
-                    width: 100,
-                    editable: true
+                    width: 100
                 },
                 {
                     title: 'Номер карты',
                     dataIndex: 'cardNum',
                     key: 'cardNum',
-                    width: 170,
-                    editable: true
+                    width: 170
                 }
             ]
         },
         // /. Банковская информация
         {
             title: 'Документы сотрудника',
+            editable: false,
             children: [
                 {
                     title: 'Гражданство',
                     dataIndex: 'citizenship',
                     key: 'citizenship',
                     width: 130,
-                    editable: true,
                     sorter: (a, b) => a.citizenship.localeCompare(b.citizenship)
                 },
                 {
                     title: 'Паспорт',
                     dataIndex: 'passport',
                     key: 'passport',
-                    width: 120,
-                    editable: true
+                    width: 120
                 },
                 {
                     title: 'Кем выдан',
                     dataIndex: 'passportProvider',
                     key: 'passportProvider',
-                    width: 190,
-                    editable: true
+                    width: 190
                 },
                 {
                     title: 'Срок действия',
                     dataIndex: 'validity',
                     key: 'validity',
                     width: 130,
-                    editable: true,
-                    render: (text: string, record: Icontact) => {
+                    render: (text: string, record: Contact) => {
                         return (
                             <span
                                 className={`cell-content ${checkValidity(
@@ -234,57 +224,51 @@ const Table: FC = () => {
                     title: 'Место рождения',
                     dataIndex: 'birthplace',
                     key: 'birthplace',
-                    width: 160,
-                    editable: true
+                    width: 160
                 },
                 {
                     title: 'Адрес прописки',
                     dataIndex: 'residencePlace',
                     key: 'residencePlace',
-                    width: 190,
-                    editable: true
+                    width: 190
                 },
                 {
                     title: 'Патент',
                     dataIndex: 'patent',
                     key: 'patent',
                     width: 150,
-                    editable: true,
                     sorter: (a, b) => a.patent.localeCompare(b.patent)
                 },
                 {
                     title: 'СНИЛС',
                     dataIndex: 'SNILS',
                     key: 'SNILS',
-                    width: 160,
-                    editable: true
+                    width: 160
                 },
                 {
                     title: 'ИНН',
                     dataIndex: 'TIL',
                     key: 'TIL',
-                    width: 150,
-                    editable: true
+                    width: 150
                 },
                 {
                     title: 'Мед.книжка',
                     dataIndex: 'medicalBook',
                     key: 'medicalBook',
-                    width: 120,
-                    editable: true
+                    width: 120
                 }
             ]
         },
         // /. Документы сотрудника
         {
             title: 'Информация от HR',
+            editable: false,
             children: [
                 {
                     title: 'Должность',
                     dataIndex: 'position',
                     key: 'position',
                     width: 120,
-                    editable: true,
                     sorter: (a, b) => a.position.localeCompare(b.position)
                 },
                 {
@@ -292,7 +276,6 @@ const Table: FC = () => {
                     dataIndex: 'subdivision',
                     key: 'subdivision',
                     width: 150,
-                    editable: true,
                     sorter: (a, b) => a.subdivision.localeCompare(b.subdivision)
                 },
                 {
@@ -300,97 +283,70 @@ const Table: FC = () => {
                     dataIndex: 'decision',
                     key: 'decision',
                     width: 130,
-                    editable: true,
                     sorter: (a, b) => a.decision.localeCompare(b.decision)
                 },
                 {
                     title: 'Источник',
                     dataIndex: 'sourse',
                     key: 'sourse',
-                    width: 130,
-                    editable: true
+                    width: 130
                 },
                 {
                     title: 'Дата',
                     dataIndex: 'date',
                     key: 'date',
-                    width: 130,
-                    editable: true
+                    width: 130
                 },
                 {
                     title: 'Примечание',
                     dataIndex: 'note',
                     key: 'note',
-                    width: 220,
-                    editable: true
+                    width: 220
                 }
             ]
         }
         // /. Информация от HR
     ];
 
-    const mergedColumns: Icolumn[] = columnsData.map((col: Icolumn) => {
-        // TODO
-        if (col.children) {
-            return {
-                ...col,
-                children: mergeNestedCol(col.children, tableEditingKey)
-            };
-        }
-        if (col.editable) {
-            return {
-                ...col,
-                onCell: (record: Icontact) => ({
-                    record,
-                    dataIndex: col.dataIndex,
-                    title: col.title,
-                    editing: checkEditingStatus(record, tableEditingKey)
-                })
-            };
-        } else {
-            return col;
-        }
-    });
-
-    const outputColumnsTableData: Icolumn[] = isEditingMode
-        ? mergedColumns
-        : mergedColumns.filter((col: Icolumn) => !col.hidden);
+    // const updatedColumns = getUpdatedColumns(columns, tableEditingKey);
+    // console.log('updatedColumns>', updatedColumns);
+    // const filteredColumns = updatedColumns?.filter((col) => !col.hidden);
 
     // /. variables
 
-    const onEditCellClick = (record: Partial<Icontact>, key: Key): void => {
-        form.setFieldsValue({
-            ...record
-        });
-        setTableEditingKey(key.toString());
+    const onEditCellClick = (record: Contact): void => {
+        console.log('new KEY>', record.key);
+        form.setFieldsValue(record);
+        setTableEditingKey(record.key);
     };
 
     const onButtonCancelClick = (): void => {
         setTableEditingKey('');
     };
 
-    const onButtonSaveClick = async (key: Key): Promise<any> => {
-        try {
-            const row = (await form.validateFields()) as Icontact;
-            const newData: Icontact[] = [...filteredContactsData];
-            const index = newData.findIndex((item) => key === item.key);
+    const onButtonSaveClick = async (key: Key): Promise<void> => {
+        // try {
+        //     const row = await form.validateFields();
+        //     const newData: Contact[] = [...filteredContactsData];
+        //     const index = newData.findIndex((item) => key === item.key);
 
-            if (index > -1) {
-                const item = newData[index];
-                newData.splice(index, 1, {
-                    ...item,
-                    ...row
-                });
-                updateFilteredContactsData(newData);
-                setTableEditingKey('');
-            } else {
-                newData.push(row);
-                updateFilteredContactsData(newData);
-                setTableEditingKey('');
-            }
-        } catch (errInfo) {
-            console.log('Validate Failed:', errInfo);
-        }
+        //     if (index > -1) {
+        //         const item = newData[index];
+        //         newData.splice(index, 1, {
+        //             ...item,
+        //             ...row
+        //         });
+        //         updateFilteredContactsData(newData);
+        //         setTableEditingKey('');
+        //     } else {
+        //         newData.push(row);
+        //         updateFilteredContactsData(newData);
+        //         setTableEditingKey('');
+        //     }
+        // } catch (error) {
+        //     console.error('Validate Failed:', error);
+        // }
+        console.log('onButtonSaveClick');
     };
 
     // /. functions
@@ -407,17 +363,18 @@ const Table: FC = () => {
     useEffect(() => {
         if (!isEditingMode || !tableEditingKey) return;
 
+        const controller = new AbortController();
+
         const onDocumentKeyEvent = (e: KeyboardEvent): void => {
-            if (e.code === 'Escape') {
-                setTableEditingKey('');
-            }
+            if (e.code === 'Escape') setTableEditingKey('');
         };
 
-        document.addEventListener('keydown', onDocumentKeyEvent);
+        document.addEventListener('keydown', onDocumentKeyEvent, {
+            signal: controller.signal
+        });
 
-        return () =>
-            document.removeEventListener('keydown', onDocumentKeyEvent);
-    }, [isEditingMode, tableEditingKey]);
+        return () => controller.abort();
+    }, [isEditingMode, tableEditingKey, setTableEditingKey]);
 
     return (
         <Form
@@ -431,8 +388,8 @@ const Table: FC = () => {
                         cell: EditableTableCell
                     }
                 }}
-                columns={outputColumnsTableData as any[]}
-                dataSource={formatDataToPreview<Icontact>(
+                columns={columns}
+                dataSource={formatDataToPreview<Contact>(
                     currentPage,
                     itemPerPage,
                     filteredContactsData

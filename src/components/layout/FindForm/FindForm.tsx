@@ -20,24 +20,24 @@ const FindForm: FC = () => {
     } = tableStore;
 
     const [inputValue, setInputValue] = useState<string>('');
-    const debouncedValue = useDebounce(inputValue, 500);
+    const debouncedValue = useDebounce(inputValue, 300);
 
     // /. hooks
 
     const isControlsAvailable =
-        !isDataLoading && fetchStatus === 'success' && contactsData.length > 0;
+        !isDataLoading && fetchStatus === 'success' && contactsData.length;
 
     // /. variables
 
     const onInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
-        setInputValue(e.target.value.trim());
+        setInputValue(e.target.value);
     };
 
     // /. functions
 
     useEffect(() => {
-        // TODO
         filterContactsData(debouncedValue);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [debouncedValue]);
 
     return (
@@ -51,6 +51,7 @@ const FindForm: FC = () => {
                 type="text"
                 placeholder="Поиск"
                 disabled={!isControlsAvailable}
+                value={inputValue}
                 onChange={(e) => onInputChange(e)}
             />
             <button

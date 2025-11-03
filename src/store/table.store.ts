@@ -1,16 +1,18 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 
+import { type Key } from 'react';
+
 import { makeMultipleContactsFiltering } from '../utilts/helpers/filterContacts';
 
-import type { Icontact } from '../types/tableSliceTypes';
+import type { Contact } from '../types/tableTypes';
 
 class TableStore {
-    contactsData: Icontact[] = [];
-    filteredContactsData: Icontact[] = [];
+    contactsData: Contact[] = [];
+    filteredContactsData: Contact[] = [];
     fetchStatus: 'pending' | 'success' | 'failed' | null = null;
     isDataLoading = true;
     isEditingMode = false;
-    tableEditingKey = '';
+    tableEditingKey: Key = ''; // TODO: relocate to local state?
     itemPerPage = 8;
     currentPage = 1;
 
@@ -23,16 +25,15 @@ class TableStore {
         this.isDataLoading = status;
     };
     filterContactsData = (value: string) => {
-        this.filteredContactsData = this.contactsData.filter(
-            (contact: Icontact) => makeMultipleContactsFiltering(contact, value)
+        this.filteredContactsData = this.contactsData.filter((contact) =>
+            makeMultipleContactsFiltering(contact, value)
         );
     };
-    updateFilteredContactsData = (data: Icontact[]) => {
+    updateFilteredContactsData = (data: Contact[]) => {
         this.filteredContactsData = data;
         this.contactsData = data;
     };
     setCurrentPageValue = (value: number) => {
-        console.log(this);
         this.currentPage = value;
     };
     setItemsPerPage = (value: number) => {
@@ -41,12 +42,13 @@ class TableStore {
     switchEditingMode = (status: boolean) => {
         this.isEditingMode = status;
     };
-    setTableEditingKey = (value: string) => {
+    setTableEditingKey = (value: Key) => {
         this.tableEditingKey = value;
     };
     // ASYNC ACTIONS
     fetchContactsData = async () => {
-        const URL = 'https://h2o-backend.vercel.app/api/data';
+        const URL =
+            'https://employees-database-app-backend.vercel.app/api/data/';
         this.fetchStatus = 'pending';
         this.isDataLoading = true;
 
@@ -59,7 +61,7 @@ class TableStore {
                 );
             }
 
-            const { contactsData }: Record<'contactsData', Icontact[]> =
+            const { contactsData }: Record<'contactsData', Contact[]> =
                 await response.json();
 
             const result = contactsData.map((contact) => ({

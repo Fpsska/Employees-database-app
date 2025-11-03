@@ -13,7 +13,6 @@
         }
 
         .ant-table-body {
-
             table {
                 height: 100%;
             }
@@ -30,7 +29,6 @@
     }
 
     .ant-table-body {
-
         height: 430px;
 
         &::-webkit-scrollbar {
@@ -48,7 +46,7 @@
         }
     }
 
-    tr>th.ant-table-cell {
+    tr > th.ant-table-cell {
         color: $turquoise-color;
         border-bottom: 2px solid $cultured-color !important;
         border-inline-end: 2px solid $cultured-color !important;
@@ -57,7 +55,7 @@
     tr {
         &:nth-child(odd) {
             td {
-                &:nth-child(n+3) {
+                &:nth-child(n + 3) {
                     background-color: $bubbles-color;
                 }
             }
@@ -85,7 +83,7 @@
 
 .cell-content {
     background-color: transparent;
-    transition: all .25s ease-in-out;
+    transition: all 0.25s ease-in-out;
 }
 
 .cell-content.ok {

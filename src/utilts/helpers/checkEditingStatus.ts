@@ -1,10 +1,7 @@
-import type { Icontact } from '../../types/tableSliceTypes';
+import { type Key } from 'react';
 
 // /. imports
 
-export function checkEditingStatus(
-    record: Icontact,
-    editingKey: string
-): boolean {
-    return record.key.toString() === editingKey;
+export function checkEditingStatus(recordKey: Key, editingKey: Key): boolean {
+    return recordKey === editingKey;
 }

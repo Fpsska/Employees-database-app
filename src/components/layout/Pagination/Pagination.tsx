@@ -2,10 +2,11 @@ import { type FC } from 'react';
 
 import { Pagination as AntPagination } from 'antd';
 
+import { observer } from 'mobx-react-lite';
+
 import { tableStore } from '../../../store/table.store';
 
 import './pagination.scss';
-import { observer } from 'mobx-react-lite';
 
 // /. imports
 

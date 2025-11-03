@@ -5,21 +5,21 @@ import { Form, Input } from 'antd';
 // /. imports
 
 interface IEditableTableCell {
-    editing: boolean;
+    editable?: boolean;
     dataIndex: string;
     title: string;
     children: ReactNode;
 }
 
 const EditableTableCell: FC<IEditableTableCell> = ({
-    editing,
+    editable,
     dataIndex,
     children,
     ...restProps
 }) => {
     return (
         <td {...restProps}>
-            {editing ? (
+            {editable ? (
                 <Form.Item
                     name={dataIndex}
                     style={{ margin: 0, padding: '10px 5px' }}
