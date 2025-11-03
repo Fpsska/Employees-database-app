@@ -15,8 +15,7 @@ const contactTranslates = ['контакт', 'контакта', 'контакт
 
 const GeneralBasePage: FC = () => {
     const {
-        contactsData,
-        filteredContactsData,
+        filteredContacts,
         isDataLoading,
         fetchStatus,
         isEditingMode,
@@ -31,15 +30,12 @@ const GeneralBasePage: FC = () => {
     // console.log('fetchStatus>', fetchStatus);
 
     const contactsTextValue = declensionByQuantity(
-        filteredContactsData?.length,
+        filteredContacts.length,
         contactTranslates
     );
 
     const isBtnSearchAvailable =
-        !isDataLoading &&
-        fetchStatus === 'success' &&
-        contactsData.length > 0 &&
-        filteredContactsData?.length;
+        !isDataLoading && fetchStatus === 'success' && filteredContacts.length;
 
     // /. hooks
 
@@ -78,7 +74,7 @@ const GeneralBasePage: FC = () => {
                     <div className="search-section__group">
                         <div className="search-section__info">
                             <span className="search-section__counter">
-                                {filteredContactsData?.length || 0}
+                                {filteredContacts.length || 0}
                             </span>
                             <span className="search-section__text">
                                 {contactsTextValue}

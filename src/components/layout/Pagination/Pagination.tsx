@@ -15,7 +15,7 @@ const pageSizeOptions = [8, 10, 20, 50, 100];
 const Pagination: FC = () => {
     const {
         isDataLoading,
-        filteredContactsData,
+        filteredContacts,
         currentPage,
         itemPerPage,
         // actions
@@ -27,7 +27,7 @@ const Pagination: FC = () => {
         <AntPagination
             className="pagination"
             disabled={isDataLoading}
-            total={filteredContactsData?.length || 0}
+            total={filteredContacts.length || 0}
             current={currentPage}
             pageSize={itemPerPage}
             pageSizeOptions={pageSizeOptions}

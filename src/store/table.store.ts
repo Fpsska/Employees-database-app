@@ -7,8 +7,8 @@ import { makeMultipleContactsFiltering } from '../utilts/helpers/filterContacts'
 import type { Contact } from '../types/tableTypes';
 
 class TableStore {
-    contactsData: Contact[] = [];
-    filteredContactsData: Contact[] = [];
+    contacts: Contact[] = [];
+    inputSearchValue = '';
     fetchStatus: 'pending' | 'success' | 'failed' | null = null;
     isDataLoading = true;
     isEditingMode = false;
@@ -20,18 +20,22 @@ class TableStore {
         makeAutoObservable(this);
     }
 
+    // COMPUTED VALUES
+    get filteredContacts() {
+        return this.contacts.filter((contact) =>
+            makeMultipleContactsFiltering(contact, this.inputSearchValue)
+        );
+    }
+
     // ACTIONS
-    switchContactsDataLoadingStatus = (status: boolean) => {
+    switchContactsLoadingStatus = (status: boolean) => {
         this.isDataLoading = status;
     };
-    filterContactsData = (value: string) => {
-        this.filteredContactsData = this.contactsData.filter((contact) =>
-            makeMultipleContactsFiltering(contact, value)
-        );
+    updateContacts = (data: Contact[]) => {
+        this.contacts = data;
     };
-    updateFilteredContactsData = (data: Contact[]) => {
-        this.filteredContactsData = data;
-        this.contactsData = data;
+    setInputSearchValue = (value: string) => {
+        this.inputSearchValue = value;
     };
     setCurrentPageValue = (value: number) => {
         this.currentPage = value;
@@ -71,8 +75,7 @@ class TableStore {
             }));
 
             runInAction(() => {
-                this.contactsData = result;
-                this.filteredContactsData = result;
+                this.contacts = result;
                 this.fetchStatus = 'success';
             });
         } catch (err: any) {

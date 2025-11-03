@@ -1,4 +1,4 @@
-import { type FC, type Key, type ReactNode, useEffect } from 'react';
+import { type FC, type Key, type ReactNode, useEffect, useMemo } from 'react';
 
 import { observer } from 'mobx-react-lite';
 
@@ -12,7 +12,7 @@ import { checkEditingStatus } from '../../../utilts/helpers/checkEditingStatus';
 import { checkValidity } from '../../../utilts/helpers/checkValidity';
 // import { getUpdatedColumns } from '../../../utilts/helpers/mergeNestedCol';
 
-import EditableTableCell from '../EditableTableCell/EditableTableCell';
+import EditableTableCell from '../../ui/EditableTableCell/EditableTableCell';
 import { formatDataToPreview } from '../../../utilts/helpers/formatDataToPreview';
 
 import { tableStore } from '../../../store/table.store';
@@ -41,7 +41,7 @@ const dataErrorMarkup: ReactNode = (
 
 const Table: FC = () => {
     const {
-        filteredContactsData,
+        filteredContacts,
         tableEditingKey,
         itemPerPage,
         currentPage,
@@ -49,8 +49,7 @@ const Table: FC = () => {
         isDataLoading,
         isEditingMode,
         // actions
-        setTableEditingKey,
-        updateFilteredContactsData
+        setTableEditingKey
     } = tableStore;
 
     const [form] = Form.useForm();
@@ -58,7 +57,7 @@ const Table: FC = () => {
     // /. hooks
 
     const isTableDataEmpty =
-        !filteredContactsData.length || fetchStatus !== 'success';
+        !filteredContacts.length || fetchStatus !== 'success';
 
     const columns: ColumnsType = [
         {
@@ -312,6 +311,14 @@ const Table: FC = () => {
     // console.log('updatedColumns>', updatedColumns);
     // const filteredColumns = updatedColumns?.filter((col) => !col.hidden);
 
+    const dataSource = useMemo(() => {
+        return formatDataToPreview<Contact>(
+            currentPage,
+            itemPerPage,
+            filteredContacts
+        );
+    }, [filteredContacts, currentPage, itemPerPage]);
+
     // /. variables
 
     const onEditCellClick = (record: Contact): void => {
@@ -353,11 +360,7 @@ const Table: FC = () => {
 
     // TODO
     // useEffect(() => {
-    //     // show loader on pagination actions
-    //     switchContactsDataLoadingStatus(true);
-    //     setTimeout(() => {
-    //         switchContactsDataLoadingStatus(false);
-    //     }, 600);
+    // show loader on pagination actions
     // }, [itemPerPage, currentPage]);
 
     useEffect(() => {
@@ -389,11 +392,7 @@ const Table: FC = () => {
                     }
                 }}
                 columns={columns}
-                dataSource={formatDataToPreview<Contact>(
-                    currentPage,
-                    itemPerPage,
-                    filteredContactsData
-                )}
+                dataSource={dataSource}
                 bordered
                 size="middle"
                 scroll={{ x: 'max-content', y: '430px' }}

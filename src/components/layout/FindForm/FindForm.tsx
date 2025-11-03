@@ -1,4 +1,4 @@
-import { type FC, type ChangeEvent, useState, useEffect } from 'react';
+import { type FC, useState, useEffect } from 'react';
 
 import './find-form.scss';
 
@@ -12,11 +12,10 @@ import useDebounce from '../../../utilts/hooks/useDebounce';
 
 const FindForm: FC = () => {
     const {
-        contactsData,
         isDataLoading,
         fetchStatus,
         // actions
-        filterContactsData
+        setInputSearchValue
     } = tableStore;
 
     const [inputValue, setInputValue] = useState<string>('');
@@ -24,21 +23,16 @@ const FindForm: FC = () => {
 
     // /. hooks
 
-    const isControlsAvailable =
-        !isDataLoading && fetchStatus === 'success' && contactsData.length;
+    const isControlsAvailable = !isDataLoading && fetchStatus === 'success';
 
     // /. variables
 
-    const onInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
-        setInputValue(e.target.value);
-    };
-
-    // /. functions
-
     useEffect(() => {
-        filterContactsData(debouncedValue);
+        setInputSearchValue(debouncedValue);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [debouncedValue]);
+
+    // /. effects
 
     return (
         <form
@@ -52,7 +46,7 @@ const FindForm: FC = () => {
                 placeholder="Поиск"
                 disabled={!isControlsAvailable}
                 value={inputValue}
-                onChange={(e) => onInputChange(e)}
+                onChange={(e) => setInputValue(e.target.value)}
             />
             <button
                 className="find-form__button"
@@ -60,6 +54,7 @@ const FindForm: FC = () => {
                 aria-label="find contact"
                 disabled={!isControlsAvailable}
             >
+                {/* TODO: CHANGE SVG */}
                 <svg
                     width="17"
                     height="17"

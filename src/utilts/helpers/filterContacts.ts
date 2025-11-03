@@ -2,22 +2,23 @@ import type { Contact } from '../../types/tableTypes';
 
 // /. imports
 
-type IomitContact = Omit<Contact, 'key' | 'serialNumber' | 'isEditable'>;
+type FilteredContact = Omit<Contact, 'key' | 'serialNumber' | 'isEditable'>;
 
 // /. types
 
+const wrongKeys: string[] = ['key', 'serialNumber', 'isEditable'];
+
 export function makeMultipleContactsFiltering(
-    obj: Contact,
+    contact: Contact,
     value: string
 ): boolean {
-    const wrongKeys: string[] = ['key', 'serialNumber', 'isEditable'];
-
-    const validKeys: string[] = Object.keys(obj).filter(
+    console.log(value);
+    const validKeys: string[] = Object.keys(contact).filter(
         (key: string) => !wrongKeys.includes(key)
     );
 
     return validKeys.some((key: string) => {
-        const targetObjValue = obj[key as keyof IomitContact];
+        const targetObjValue = contact[key as keyof FilteredContact];
 
         if (typeof targetObjValue === 'string') {
             return RegExp(value, 'gi').test(targetObjValue);
