@@ -4,9 +4,7 @@ import { Pagination as AntPagination } from 'antd';
 
 import { observer } from 'mobx-react-lite';
 
-import { tableStore } from '../../../store/table.store';
-
-import './pagination.scss';
+import { tableStore } from '../../../../store/table.store';
 
 // /. imports
 

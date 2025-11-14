@@ -1,34 +1,33 @@
-import { type FC, type ReactNode } from 'react';
+import { type FC, type ReactNode, memo } from 'react';
 
 import { Form, Input } from 'antd';
 
 // /. imports
 
-interface IEditableTableCell {
+interface IEditableCell {
     editable?: boolean;
     dataIndex: string;
     title: string;
     children: ReactNode;
 }
 
-const EditableTableCell: FC<IEditableTableCell> = ({
-    editable,
-    dataIndex,
-    children,
-    ...restProps
-}) => {
+const rules = [
+    {
+        required: true,
+        message: 'Поле не может быть пустым!'
+    }
+];
+
+const EditableCell: FC<IEditableCell> = (props) => {
+    const { editable, dataIndex, children, ...restProps } = props;
+
     return (
         <td {...restProps}>
             {editable ? (
                 <Form.Item
                     name={dataIndex}
                     style={{ margin: 0, padding: '10px 5px' }}
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Поле не может быть пустым!'
-                        }
-                    ]}
+                    rules={rules}
                 >
                     <Input />
                 </Form.Item>
@@ -39,4 +38,5 @@ const EditableTableCell: FC<IEditableTableCell> = ({
     );
 };
 
-export default EditableTableCell;
+const EditableCellMemo = memo(EditableCell);
+export default EditableCellMemo;
