@@ -1,7 +1,6 @@
 {
     "name": "employees-database-app",
     "version": "0.1.0",
-    "homepage": "https://Fpsska.github.io/Employees-database-app",
     "private": true,
     "author": "Fpsska",
     "type": "module",
@@ -17,7 +16,8 @@
     },
     "scripts": {
         "start": "vite --mode development",
-        "build": "vite build --mode production",
+        "build": "vite build --mode development",
+        "build:prod": "vite build --mode production",
         "lint": "eslint -c .eslintrc --ext .ts,.tsx .",
         "lint:fix": "npm run lint -- --fix",
         "prettier": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\"",
