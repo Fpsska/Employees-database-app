@@ -1,57 +1,57 @@
 {
-  "name": "employees-database-app",
-  "version": "0.1.0",
-  "homepage": "https://Fpsska.github.io/Employees-database-app",
-  "private": true,
-  "author": "Fpsska",
-  "type": "module",
-  "dependencies": {
-    "antd": "^5.4.0",
-    "mobx": "^6.13.7",
-    "mobx-react-lite": "^4.1.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router": "^6.10.0",
-    "react-router-dom": "^6.10.0",
-    "typescript": "^4.9.5"
-  },
-  "scripts": {
-    "start": "vite --mode development",
-    "build": "vite build --mode production",
-    "lint": "eslint -c .eslintrc --ext .ts,.tsx .",
-    "lint:fix": "npm run lint -- --fix",
-    "prettier": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\"",
-    "prettier:fix": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
-    "deploy": "gh-pages -d build"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "@types/node": "^24.1.0",
-    "@types/react": "^19.1.9",
-    "@types/react-dom": "^19.1.7",
-    "@typescript-eslint/eslint-plugin": "^5.57.1",
-    "@typescript-eslint/parser": "^5.57.1",
-    "@vitejs/plugin-react": "^4.7.0",
-    "eslint-config-prettier": "^8.8.0",
-    "eslint-plugin-import": "^2.32.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "eslint-plugin-react": "^7.32.2",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "gh-pages": "^6.3.0",
-    "prettier": "^2.8.7",
-    "sass": "^1.89.2",
-    "vite": "^7.0.6",
-    "vite-plugin-minify": "^2.1.0"
-  }
+    "name": "employees-database-app",
+    "version": "0.1.0",
+    "homepage": "https://Fpsska.github.io/Employees-database-app",
+    "private": true,
+    "author": "Fpsska",
+    "type": "module",
+    "dependencies": {
+        "antd": "^5.4.0",
+        "mobx": "^6.13.7",
+        "mobx-react-lite": "^4.1.0",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "react-router": "^6.10.0",
+        "react-router-dom": "^6.10.0",
+        "typescript": "^4.9.5"
+    },
+    "scripts": {
+        "start": "vite --mode development",
+        "build": "vite build --mode production",
+        "lint": "eslint -c .eslintrc --ext .ts,.tsx .",
+        "lint:fix": "npm run lint -- --fix",
+        "prettier": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\"",
+        "prettier:fix": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
+        "deploy": "gh-pages -d build"
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "devDependencies": {
+        "@types/node": "^24.1.0",
+        "@types/react": "^19.1.9",
+        "@types/react-dom": "^19.1.7",
+        "@typescript-eslint/eslint-plugin": "^5.57.1",
+        "@typescript-eslint/parser": "^5.57.1",
+        "@vitejs/plugin-react": "^4.7.0",
+        "eslint-config-prettier": "^8.8.0",
+        "eslint-plugin-import": "^2.32.0",
+        "eslint-plugin-prettier": "^4.2.1",
+        "eslint-plugin-react": "^7.32.2",
+        "eslint-plugin-react-hooks": "^4.6.0",
+        "gh-pages": "^6.3.0",
+        "prettier": "^2.8.7",
+        "sass": "^1.89.2",
+        "vite": "^7.0.6",
+        "vite-plugin-minify": "^2.1.0"
+    }
 }

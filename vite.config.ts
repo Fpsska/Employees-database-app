@@ -33,6 +33,7 @@ export default defineConfig(({ mode }): UserConfig => {
             port: 3000,
             open: true
         },
+        base: mode === 'production' ? '/Employees-database-app/' : '/',
         build: {
             outDir: 'build',
             emptyOutDir: true,
