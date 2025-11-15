@@ -1,7 +1,6 @@
 import { type Key } from 'react';
 
-import { type ColumnsType as AntColumnsType } from 'antd/es/table';
-import { type TableColumnsType, TableProps } from 'antd';
+import { type ColumnType, type ColumnGroupType } from 'antd/es/table';
 
 // /. imports
 
@@ -35,29 +34,24 @@ export type Contact = {
     note: string;
 };
 
-// export type ColumnType = TableColumnsType<Contact> & {
-//     isEditable?: boolean;
-//     isHidden?: boolean;
-// };
+type ExtendedContact = Contact & {
+    editable?: boolean;
+    hidden?: boolean;
+};
 
-// export type ColumnsType = AntColumnsType<Contact> & {
-//     isEditable?: boolean;
-//     isHidden?: boolean;
-// };
+type CustomColumnType = ColumnType<ExtendedContact> & {
+    editable?: boolean;
+    hidden?: boolean;
+};
+type CustomColumnGroupType = Omit<
+    ColumnGroupType<ExtendedContact>,
+    'children'
+> & {
+    editable?: boolean;
+    hidden?: boolean;
+    children?: CustomColumns[];
+};
 
-// export type ColumnsType = TableProps<Contact>['columns'];
-export type ColumnsType = TableColumnsType<Contact> & { hidden?: boolean };
-
-// export interface IcolumnChildren extends GeneralColumnProps {
-//     key: string;
-//     dataIndex: string;
-// }
-
-// export interface Icolumn extends GeneralColumnProps {
-//     key?: string;
-//     dataIndex?: string;
-//     hidden?: boolean;
-//     fixed?: string;
-//     align?: string;
-//     children?: IcolumnChildren[];
-// }
+// Объединенный тип для колонок
+export type CustomColumns = CustomColumnType | CustomColumnGroupType;
+export type Columns = CustomColumns[];

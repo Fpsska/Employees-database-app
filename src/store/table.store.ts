@@ -12,7 +12,7 @@ class TableStore {
     fetchStatus: 'pending' | 'success' | 'failed' | null = null;
     isDataLoading = true;
     isEditingMode = false;
-    tableEditingKey: Key = ''; // TODO: relocate to local state?
+    tableEditingKey: Key | null = null;
     itemPerPage = 8;
     currentPage = 1;
 
@@ -46,7 +46,7 @@ class TableStore {
     switchEditingMode = (status: boolean) => {
         this.isEditingMode = status;
     };
-    setTableEditingKey = (value: Key) => {
+    setTableEditingKey = (value: Key | null) => {
         this.tableEditingKey = value;
     };
     // ASYNC ACTIONS
@@ -65,17 +65,12 @@ class TableStore {
                 );
             }
 
-            const { contactsData }: Record<'contactsData', Contact[]> =
-                await response.json();
-
-            const result = contactsData.map((contact) => ({
-                ...contact,
-                serialNumber: contact.id,
-                isEditable: false
-            }));
+            const data = await response.json();
+            if (!data?.contactsData)
+                throw new Error('contactsData key is missing in response');
 
             runInAction(() => {
-                this.contacts = result;
+                this.contacts = data.contactsData;
                 this.fetchStatus = 'success';
             });
         } catch (err: any) {

@@ -1,10 +1,12 @@
 import { type Key, useMemo } from 'react';
 import { formatDataToPreview } from '../../../../utilts/helpers/formatDataToPreview';
-import type { ColumnsType, Contact } from '../../../../types/tableTypes';
+import type { Columns, Contact } from '../../../../types/tableTypes';
 import { checkValidity } from '../../../../utilts/helpers/checkValidity';
 import { Form, Popconfirm, Typography } from 'antd';
 import { tableStore } from '../../../../store/table.store';
 import { checkEditingStatus } from '../../../../utilts/helpers/checkEditingStatus';
+import { toJS } from 'mobx';
+import { getUpdatedColumns } from '../../../../utilts/helpers/getUpdatedColumns';
 
 export const useTableData = () => {
     const {
@@ -17,10 +19,10 @@ export const useTableData = () => {
         setTableEditingKey
     } = tableStore;
 
-    const [form] = Form.useForm();
+    // const [form] = Form.useForm();
 
-    const columns = useMemo<ColumnsType>(
-        () => [
+    const tempColumns = useMemo(() => {
+        const result: Columns = [
             {
                 title: 'ACTION',
                 key: 'action',
@@ -28,7 +30,6 @@ export const useTableData = () => {
                 width: 120,
                 align: 'center',
                 fixed: 'left',
-                editable: false,
                 hidden: !isEditingMode,
                 render: (_, record) => {
                     const isEditable = checkEditingStatus(
@@ -52,7 +53,6 @@ export const useTableData = () => {
                         </span>
                     ) : (
                         <Typography.Link
-                            // disabled={tableEditingKey === null}
                             onClick={() => onEditCellClick(record)}
                         >
                             Edit
@@ -60,25 +60,25 @@ export const useTableData = () => {
                     );
                 }
             },
-            // /. action col
             {
                 title: '№',
                 dataIndex: 'serialNumber',
                 key: 'serialNumber',
                 width: 50,
-                fixed: 'left',
-                editable: false
+                fixed: 'left'
             },
             {
                 title: 'Имя сотрудника',
                 dataIndex: 'name',
                 key: 'name',
                 width: 230,
+                editable: true,
                 sorter: (a, b) => a.name.localeCompare(b.name)
             },
+            // /. general
             {
                 title: 'Основная информация',
-                editable: false,
+                editable: true,
                 children: [
                     {
                         title: 'ID номер',
@@ -87,9 +87,10 @@ export const useTableData = () => {
                         width: 150
                     },
                     {
-                        title: 'Телефона',
+                        title: 'Телефон',
                         dataIndex: 'phone',
                         key: 'phone',
+                        editable: true,
                         width: 120
                     },
                     {
@@ -103,6 +104,7 @@ export const useTableData = () => {
                         title: 'Дата рождения',
                         dataIndex: 'birthday',
                         key: 'birthday',
+                        editable: true,
                         width: 140
                     },
                     {
@@ -116,6 +118,7 @@ export const useTableData = () => {
                         title: 'Адрес проживания',
                         dataIndex: 'address',
                         key: 'address',
+                        editable: true,
                         width: 180
                     }
                 ]
@@ -123,7 +126,7 @@ export const useTableData = () => {
             // /. Основная информация
             {
                 title: 'Банковская информация',
-                editable: false,
+                editable: true,
                 children: [
                     {
                         title: 'Банк',
@@ -135,6 +138,7 @@ export const useTableData = () => {
                         title: 'Номер карты',
                         dataIndex: 'cardNum',
                         key: 'cardNum',
+                        editable: true,
                         width: 170
                     }
                 ]
@@ -142,7 +146,7 @@ export const useTableData = () => {
             // /. Банковская информация
             {
                 title: 'Документы сотрудника',
-                editable: false,
+                editable: true,
                 children: [
                     {
                         title: 'Гражданство',
@@ -156,6 +160,7 @@ export const useTableData = () => {
                         title: 'Паспорт',
                         dataIndex: 'passport',
                         key: 'passport',
+                        editable: true,
                         width: 120
                     },
                     {
@@ -169,6 +174,7 @@ export const useTableData = () => {
                         dataIndex: 'validity',
                         key: 'validity',
                         width: 130,
+                        editable: true,
                         render: (text: string, record: Contact) => {
                             return (
                                 <span
@@ -191,6 +197,7 @@ export const useTableData = () => {
                         title: 'Адрес прописки',
                         dataIndex: 'residencePlace',
                         key: 'residencePlace',
+                        editable: true,
                         width: 190
                     },
                     {
@@ -204,6 +211,7 @@ export const useTableData = () => {
                         title: 'СНИЛС',
                         dataIndex: 'SNILS',
                         key: 'SNILS',
+                        editable: true,
                         width: 160
                     },
                     {
@@ -216,6 +224,7 @@ export const useTableData = () => {
                         title: 'Мед.книжка',
                         dataIndex: 'medicalBook',
                         key: 'medicalBook',
+                        editable: true,
                         width: 120
                     }
                 ]
@@ -268,13 +277,15 @@ export const useTableData = () => {
                 ]
             }
             // /. Информация от HR
-        ],
-        []
-    );
+        ];
 
-    // const updatedColumns = getUpdatedColumns(columns, tableEditingKey);
-    // console.log('updatedColumns>', updatedColumns);
-    // const filteredColumns = updatedColumns?.filter((col) => !col.hidden);
+        return result.filter((col) => !col.hidden);
+    }, [isEditingMode, tableEditingKey]);
+
+    const columns = useMemo(() => {
+        if (!isEditingMode) return tempColumns;
+        return getUpdatedColumns(tempColumns, tableEditingKey);
+    }, [tempColumns, isEditingMode, tableEditingKey]);
 
     const dataSource = useMemo<Contact[]>(() => {
         return formatDataToPreview<Contact>(
@@ -285,13 +296,13 @@ export const useTableData = () => {
     }, [filteredContacts, currentPage, itemPerPage]);
 
     const onEditCellClick = (record: Contact): void => {
-        console.log('new KEY>', record.key);
-        form.setFieldsValue(record);
+        console.log('onEditCellClick>', toJS(record.key));
+        // form.setFieldsValue(record);
         setTableEditingKey(record.key);
     };
 
     const onButtonCancelClick = (): void => {
-        setTableEditingKey('');
+        setTableEditingKey(null);
     };
 
     const onButtonSaveClick = async (key: Key): Promise<void> => {
@@ -317,6 +328,7 @@ export const useTableData = () => {
         //     console.error('Validate Failed:', error);
         // }
         console.log('onButtonSaveClick');
+        setTableEditingKey(null);
     };
 
     return { columns, dataSource };
