@@ -1,6 +1,7 @@
 {
   "name": "employees-database-app",
   "version": "0.1.0",
+  "homepage": "https://Fpsska.github.io/Employees-database-app",
   "private": true,
   "author": "Fpsska",
   "type": "module",
@@ -47,6 +48,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "gh-pages": "^6.3.0",
     "prettier": "^2.8.7",
     "sass": "^1.89.2",
     "vite": "^7.0.6",
