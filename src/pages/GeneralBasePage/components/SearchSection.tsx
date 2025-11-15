@@ -11,7 +11,7 @@ const contactTranslates = ['контакт', 'контакта', 'контакт
 const SearchSection: FC = () => {
     const {
         filteredContacts,
-        isDataLoading,
+        isLoading,
         fetchStatus,
         isEditingMode,
         // actions
@@ -25,7 +25,7 @@ const SearchSection: FC = () => {
     );
 
     const isBtnSearchAvailable =
-        !isDataLoading && fetchStatus === 'success' && filteredContacts.length;
+        !isLoading && fetchStatus === 'success' && filteredContacts.length;
 
     // /. hooks
 

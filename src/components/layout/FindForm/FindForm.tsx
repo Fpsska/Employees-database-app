@@ -12,7 +12,7 @@ import useDebounce from '../../../utilts/hooks/useDebounce';
 
 const FindForm: FC = () => {
     const {
-        isDataLoading,
+        isLoading,
         fetchStatus,
         // actions
         setInputSearchValue
@@ -23,7 +23,7 @@ const FindForm: FC = () => {
 
     // /. hooks
 
-    const isControlsAvailable = !isDataLoading && fetchStatus === 'success';
+    const isControlsAvailable = !isLoading && fetchStatus === 'success';
 
     // /. variables
 

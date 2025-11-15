@@ -38,14 +38,15 @@ const Table: FC = () => {
         filteredContacts,
         tableEditingKey,
         fetchStatus,
-        isDataLoading,
+        isLoading,
         isEditingMode,
+        currentPage,
         // actions
-        setTableEditingKey
+        setTableEditingKey,
+        switchLoadingStatus
     } = tableStore;
 
-    const [form] = Form.useForm();
-    const { columns, dataSource } = useTableData();
+    const { columns, dataSource, formInstance } = useTableData();
 
     // /. hooks
 
@@ -54,10 +55,15 @@ const Table: FC = () => {
 
     // /. variables
 
-    // TODO
-    // useEffect(() => {
-    // show loader on pagination actions
-    // }, [itemPerPage, currentPage]);
+    useEffect(() => {
+        switchLoadingStatus(true);
+
+        const timeoutId = setTimeout(() => {
+            switchLoadingStatus(false);
+        }, 300);
+
+        return () => clearTimeout(timeoutId);
+    }, [currentPage]);
 
     useEffect(() => {
         if (!isEditingMode || !tableEditingKey) return;
@@ -77,16 +83,12 @@ const Table: FC = () => {
 
     return (
         <Form
-            form={form}
+            form={formInstance}
             component={false}
         >
             <AntTable
                 className="table"
-                components={{
-                    body: {
-                        cell: EditableCell
-                    }
-                }}
+                components={{ body: { cell: EditableCell } }}
                 columns={columns}
                 dataSource={dataSource}
                 bordered
@@ -95,7 +97,7 @@ const Table: FC = () => {
                 pagination={false}
                 loading={{
                     indicator: <LoadingOutlined />,
-                    spinning: isDataLoading
+                    spinning: isLoading
                 }}
                 locale={{
                     emptyText: isTableDataEmpty

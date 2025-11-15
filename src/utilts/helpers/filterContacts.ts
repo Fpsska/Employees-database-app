@@ -12,7 +12,6 @@ export function makeMultipleContactsFiltering(
     contact: Contact,
     value: string
 ): boolean {
-    console.log(value);
     const validKeys: string[] = Object.keys(contact).filter(
         (key: string) => !wrongKeys.includes(key)
     );

@@ -10,7 +10,7 @@ class TableStore {
     contacts: Contact[] = [];
     inputSearchValue = '';
     fetchStatus: 'pending' | 'success' | 'failed' | null = null;
-    isDataLoading = true;
+    isLoading = true;
     isEditingMode = false;
     tableEditingKey: Key | null = null;
     itemPerPage = 8;
@@ -28,11 +28,13 @@ class TableStore {
     }
 
     // ACTIONS
-    switchContactsLoadingStatus = (status: boolean) => {
-        this.isDataLoading = status;
+    switchLoadingStatus = (status: boolean) => {
+        this.isLoading = status;
     };
-    updateContacts = (data: Contact[]) => {
-        this.contacts = data;
+    updateContactById = (id: Key, changes: Partial<Contact>) => {
+        this.contacts = this.contacts.map((contact) =>
+            contact.key === id ? { ...contact, ...changes } : contact
+        );
     };
     setInputSearchValue = (value: string) => {
         this.inputSearchValue = value;
@@ -54,7 +56,7 @@ class TableStore {
         const URL =
             'https://employees-database-app-backend.vercel.app/api/data/';
         this.fetchStatus = 'pending';
-        this.isDataLoading = true;
+        this.isLoading = true;
 
         try {
             const response = await fetch(URL);
@@ -81,7 +83,7 @@ class TableStore {
             });
         } finally {
             runInAction(() => {
-                this.isDataLoading = false;
+                this.isLoading = false;
             });
         }
     };

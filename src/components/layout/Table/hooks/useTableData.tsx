@@ -5,7 +5,6 @@ import { checkValidity } from '../../../../utilts/helpers/checkValidity';
 import { Form, Popconfirm, Typography } from 'antd';
 import { tableStore } from '../../../../store/table.store';
 import { checkEditingStatus } from '../../../../utilts/helpers/checkEditingStatus';
-import { toJS } from 'mobx';
 import { getUpdatedColumns } from '../../../../utilts/helpers/getUpdatedColumns';
 
 export const useTableData = () => {
@@ -16,10 +15,11 @@ export const useTableData = () => {
         currentPage,
         isEditingMode,
         // actions
-        setTableEditingKey
+        setTableEditingKey,
+        updateContactById
     } = tableStore;
 
-    // const [form] = Form.useForm();
+    const [form] = Form.useForm();
 
     const tempColumns = useMemo(() => {
         const result: Columns = [
@@ -296,8 +296,7 @@ export const useTableData = () => {
     }, [filteredContacts, currentPage, itemPerPage]);
 
     const onEditCellClick = (record: Contact): void => {
-        console.log('onEditCellClick>', toJS(record.key));
-        // form.setFieldsValue(record);
+        form.setFieldsValue(record);
         setTableEditingKey(record.key);
     };
 
@@ -306,30 +305,14 @@ export const useTableData = () => {
     };
 
     const onButtonSaveClick = async (key: Key): Promise<void> => {
-        // try {
-        //     const row = await form.validateFields();
-        //     const newData: Contact[] = [...filteredContactsData];
-        //     const index = newData.findIndex((item) => key === item.key);
-
-        //     if (index > -1) {
-        //         const item = newData[index];
-        //         newData.splice(index, 1, {
-        //             ...item,
-        //             ...row
-        //         });
-        //         updateFilteredContactsData(newData);
-        //         setTableEditingKey('');
-        //     } else {
-        //         newData.push(row);
-        //         updateFilteredContactsData(newData);
-        //         setTableEditingKey('');
-        //     }
-        // } catch (error) {
-        //     console.error('Validate Failed:', error);
-        // }
-        console.log('onButtonSaveClick');
-        setTableEditingKey(null);
+        try {
+            const row = await form.validateFields();
+            updateContactById(key, row);
+            setTableEditingKey(null);
+        } catch (error) {
+            console.error('Validate Failed:', error);
+        }
     };
 
-    return { columns, dataSource };
+    return { columns, dataSource, formInstance: form };
 };

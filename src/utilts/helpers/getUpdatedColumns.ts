@@ -16,6 +16,8 @@ export function getUpdatedColumns(
             // @ts-ignore
             onCell: (record) => ({
                 record,
+                 // @ts-ignore
+                dataIndex: column.dataIndex,
                 editable: checkEditingStatus(record.key, editingKey)
             }),
             children:

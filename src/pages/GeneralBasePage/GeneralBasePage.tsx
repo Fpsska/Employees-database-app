@@ -11,7 +11,7 @@ import SearchSection from './components/SearchSection';
 // /. imports
 
 const GeneralBasePage: FC = () => {
-    const { isDataLoading } = tableStore;
+    const { isLoading } = tableStore;
 
     const [isPageLoading, setPageLoading] = useState<boolean>(true);
 
@@ -20,14 +20,14 @@ const GeneralBasePage: FC = () => {
     useEffect(() => {
         let timeoutId: number | undefined;
 
-        if (!isDataLoading) {
+        if (!isLoading) {
             timeoutId = setTimeout(() => {
                 setPageLoading(false);
             }, 1400);
         }
 
         return () => clearTimeout(timeoutId);
-    }, [isDataLoading]);
+    }, [isLoading]);
 
     // /. effects
 
