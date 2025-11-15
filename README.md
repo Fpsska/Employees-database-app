@@ -7,7 +7,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ###### _powered by :_
 - [ant-design](https://ant.design/)
 
-### `Watch demo` _[employees-database-app](https://employees-database-app.vercel.app/)_
+### `Watch demo` _[employees-database-app](https://fpsska.github.io/Employees-database-app/)_
 
 ## Available Scripts
 
